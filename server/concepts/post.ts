@@ -10,15 +10,16 @@ export interface PostOptions {
 export interface PostDoc extends BaseDoc {
   author: ObjectId;
   content: string;
-  options?: PostOptions;
+  files: string[];
+  replyTo?: ObjectId;
 }
 
 export default class PostConcept {
   public readonly posts = new DocCollection<PostDoc>("posts");
 
-  async create(author: ObjectId, content: string, options?: PostOptions) {
-    const _id = await this.posts.createOne({ author, content, options });
-    return { msg: "Post successfully created!", post: await this.posts.readOne({ _id }) };
+  async create(author: ObjectId, content: string, files?: string[], replyTo?: ObjectId) {
+    const _id = await this.posts.createOne({ author, content, replyTo, files: files ? files : [] });
+    return { msg: "Post successfully created!", id: _id, post: await this.posts.readOne({ _id }) };
   }
 
   async getPosts(query: Filter<PostDoc>) {
@@ -26,6 +27,12 @@ export default class PostConcept {
       sort: { dateUpdated: -1 },
     });
     return posts;
+  }
+
+  async getPost(_id: ObjectId) {
+    const post = await this.posts.readOne({ _id });
+    if (!post) throw new NotFoundError("Could not find post with id.");
+    return post;
   }
 
   async getByAuthor(author: ObjectId) {
