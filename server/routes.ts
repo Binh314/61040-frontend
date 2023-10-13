@@ -64,10 +64,10 @@ class Routes {
   }
 
   @Router.post("/login/coords")
-  async logInWithCoords(session: WebSessionDoc, username: string, password: string, latitude: string, longitude: string) {
+  async logInWithCoords(session: WebSessionDoc, username: string, password: string, latitude: number, longitude: number) {
     const u = await User.authenticate(username, password);
-    const lat = parseFloat(latitude);
-    const lon = parseFloat(longitude);
+    const lat = latitude;
+    const lon = longitude;
     await Location.create(u._id, "user", lat, lon);
     WebSession.start(session, u._id);
     return { msg: "Logged in!" };

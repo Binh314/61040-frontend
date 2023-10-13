@@ -5,12 +5,25 @@ import { ref } from "vue";
 
 const username = ref("");
 const password = ref("");
-const { loginUser, updateSession } = useUserStore();
+const address = ref("")
+const { loginUser, updateSession, loginUserCoords } = useUserStore();
 
 async function login() {
-  await loginUser(username.value, password.value);
-  void updateSession();
-  void router.push({ name: "Home" });
+  if (address.value) {
+    await loginUser(username.value, password.value, address.value);
+    void updateSession();
+    void router.push({ name: "Home" });
+  } else {
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const location = pos.coords;
+      const latitude = location.latitude;
+      const longitude = location.longitude;
+      await loginUserCoords(username.value, password.value, latitude, longitude);
+      void updateSession();
+      void router.push({ name: "Home" });
+    });
+  }
+
 }
 </script>
 
@@ -25,6 +38,10 @@ async function login() {
       <div class="pure-control-group">
         <label for="aligned-password">Password</label>
         <input type="password" v-model.trim="password" id="aligned-password" placeholder="Password" required />
+      </div>
+      <div class="pure-control-group">
+        <label for="aligned-address">Current Location</label>
+        <input type="address" v-model.trim="address" id="aligned-address" placeholder="Address" title="Leave blank to use GPS location."/>
       </div>
       <div class="pure-controls">
         <button type="submit" class="pure-button pure-button-primary">Submit</button>
