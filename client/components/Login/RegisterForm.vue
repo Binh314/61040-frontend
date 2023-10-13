@@ -5,7 +5,8 @@ import { ref } from "vue";
 
 const username = ref("");
 const password = ref("");
-const address = ref("")
+const address = ref("");
+const submitText = ref("Register");
 const { createUser, loginUser, updateSession, loginUserCoords } = useUserStore();
 
 async function register() {
@@ -15,6 +16,7 @@ async function register() {
     void updateSession();
     void router.push({ name: "Home" });
   } else {
+    submitText.value = "Registering...";
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const location = pos.coords;
       const latitude = location.latitude;
@@ -45,7 +47,7 @@ async function register() {
         <input type="address" v-model.trim="address" id="aligned-address" placeholder="Address" title="Leave blank to use GPS location."/>
       </div>
       <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Register</button>
+        <button type="submit" class="pure-button pure-button-primary">{{submitText}}</button>
       </div>
     </fieldset>
   </form>
