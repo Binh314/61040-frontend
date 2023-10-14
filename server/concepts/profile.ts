@@ -69,24 +69,23 @@ export default class EventConcept {
   }
 
   async addPost(person: ObjectId, post: ObjectId) {
-    this.notHasPost(person, post);
+    await this.notHasPost(person, post);
     const profile = await this.profiles.readOne({ person });
     if (!profile) throw new NotFoundError(`Profile does not exist.`);
     const posts = profile.posts;
     posts.push(post);
-    this.profiles.updateOne({ person }, { posts });
+    await this.profiles.updateOne({ person }, { posts });
     return { msg: "Successfully added post to profile." };
   }
 
   async removePost(person: ObjectId, post: ObjectId) {
-    this.hasPost(person, post);
     const profile = await this.profiles.readOne({ person });
     if (!profile) throw new NotFoundError(`Profile does not exist.`);
     const posts = profile.posts;
     const personStrings = posts.map((id: ObjectId) => id.toString());
     const post_idx = personStrings.indexOf(person.toString());
-    posts.splice(post_idx, 1);
-    this.profiles.updateOne({ person }, { posts });
+    if (post_idx !== -1) posts.splice(post_idx, 1);
+    await this.profiles.updateOne({ person }, { posts });
     return { msg: "Successfully removed post from profile." };
   }
 
@@ -104,7 +103,7 @@ export default class EventConcept {
     if (!profile) {
       throw new NotFoundError(`Profile does not exist!`);
     }
-    if (profile.posts.filter((id: ObjectId) => id.toString() == person.toString()).length === 0) {
+    if (profile.posts.filter((id: ObjectId) => id.toString() == postId.toString()).length === 0) {
       throw new NotAllowedError(`Profile does not have post.`);
     }
   }
@@ -113,7 +112,7 @@ export default class EventConcept {
     if (!profile) {
       throw new NotFoundError(`Profile does not exist!`);
     }
-    if (profile.posts.filter((id: ObjectId) => id.toString() == person.toString()).length > 0) {
+    if (profile.posts.filter((id: ObjectId) => id.toString() == postId.toString()).length > 0) {
       throw new NotAllowedError(`Profile already has post.`);
     }
   }

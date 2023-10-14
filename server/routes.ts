@@ -135,7 +135,7 @@ class Routes {
     const created = await Post.create(user, content, filesArray, replyId);
     await Location.create(created.id, "post", location.lat, location.lon);
 
-    Profile.addPost(user, created.id);
+    await Profile.addPost(user, created.id);
 
     return { msg: created.msg, post: await Responses.post(created.post) };
   }
