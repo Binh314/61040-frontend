@@ -22,41 +22,60 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <header>
-    <nav>
-      <div class="title">
-        <img src="@/assets/images/logo.svg" />
-        <RouterLink :to="{ name: 'Home' }">
-          <h1>Nakama</h1>
-        </RouterLink>
-      </div>
-      <ul>
-        <li>
-          <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }"> Home </RouterLink>
-        </li>
-        <li v-if="isLoggedIn">
-          <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
-        </li>
-        <li v-else>
-          <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>
-        </li>
-      </ul>
-    </nav>
-    <article v-if="toast !== null" class="toast" :class="toast.style">
-      <p>{{ toast.message }}</p>
-    </article>
-  </header>
-  <RouterView />
+  <div class = "row">
+      <header>
+        <!-- <div class = "col"> -->
+        <nav class = "col">
+          <div class="title">
+            <img src="@/assets/images/logo.svg" />
+            <RouterLink :to="{ name: 'Home' }">
+              <h1>Nakama</h1>
+            </RouterLink>
+          </div>
+          <ul>
+            <li>
+              <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }"> Home </RouterLink>
+            </li>
+            <li v-if="isLoggedIn">
+              <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
+            </li>
+            <li v-else>
+              <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>
+            </li>
+          </ul>
+        </nav>
+        <!-- </div> -->
+      <article v-if="toast !== null" class="toast" :class="toast.style">
+        <p>{{ toast.message }}</p>
+      </article>
+    </header>
+    <div class = "col content">
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <style scoped>
 @import "./assets/toast.css";
+
+.row {
+  display: flex;
+}
+
+.col {
+  flex: 50%;
+}
+
 
 nav {
   padding: 1em 2em;
   background-color: lightgray;
   display: flex;
   align-items: center;
+  overflow: hidden;
+  flex-direction: column;
+  height: 100vh;
+  position:fixed;
 }
 
 h1 {
@@ -84,12 +103,19 @@ ul {
   list-style-type: none;
   margin-left: auto;
   display: flex;
-  align-items: center;
-  flex-direction: row;
+  align-items: end;
+  flex-direction: column;
   gap: 1em;
+  height: 85vh;
+  /* justify-content: space-between; */
 }
 
 .underline {
   text-decoration: underline;
 }
 </style>
+
+
+<!--Sources to Make NavBar Vertical
+https://www.freecodecamp.org/news/fixed-side-and-bottom-navbar-with-css-flexbox/
+https://www.freecodecamp.org/news/fixed-side-and-bottom-navbar-with-css-flexbox/-->
