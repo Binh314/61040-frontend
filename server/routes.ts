@@ -530,7 +530,8 @@ class Routes {
     const userProfile = await Profile.getProfile(user);
     const userInterests = userProfile ? userProfile.interests : [];
 
-    const posts = await Post.getPosts({ author: { $ne: user } }); // exclude posts by user
+    const query = { author: { $ne: user } }; // exclude posts by user
+    const posts = await Post.getPosts({}); // exclude posts by user
     const profiles = await Profile.getProfiles({ person: { $in: posts.map((post) => post.author) } });
     const profileMap = new Map(profiles.map((profile) => [profile.person.toString(), profile]));
 
