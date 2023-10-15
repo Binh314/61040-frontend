@@ -10,7 +10,7 @@ const { currentUsername } = storeToRefs(useUserStore());
 
 const deleteEvent = async () => {
   try {
-    await fetchy(`/api/posts/${props.event._id}`, "DELETE");
+    await fetchy(`/api/events/${props.event._id}`, "DELETE");
   } catch {
     return;
   }
@@ -25,6 +25,9 @@ const deleteEvent = async () => {
 <template @click="emit('seeMoreEventDetails', props.event._id)">
   <h2 class = "host">{{ props.event.host }}</h2>
   <h2 class = "title">{{ props.event.title }}</h2>
+
+  <br>
+
   <!-- Source https://stackoverflow.com/questions/27419509/open-google-map-with-specific-address-in-a-browser -->
   <p class = "location"> <b>Location:</b> <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">{{event.location}}</a> </p>
   <p class = "time" v-if="formatDate(props.event.startTime).split(' ')[0] === formatDate(props.event.endTime).split(' ')[0]">
@@ -35,22 +38,20 @@ const deleteEvent = async () => {
   </p>
   <p class = "age" v-if="event.ageReq"> <b>Age Requirement:</b> {{ props.event.ageReq }} </p>
 
+  <p class="tags" v-if="event.topics.length > 0"><b>Topics:</b> {{  props.event.topics.join(", ")  }}</p>
+
   <p v-if="event.photo"><img class = "photo" :src="event.photo"></p>
 
-  <p class = "description" v-if="event.description > 0"><b>Description:</b>{{ props.event.description }}</p>
-  <p class="tags" v-if="event.topics.length > 0"><b>Topics:</b> {{  props.event.topics.join(", ")  }}</p>
-  <p class="tags" v-if="event.amenities.length > 0"><b>Amenities:</b> {{  props.event.amenities.join(", ")  }}</p>
-  <p class="tags" v-if="event.accommodations.length > 0"><b>Accommodations:</b> {{  props.event.accommodations.join(", ")  }}</p>
   <template v-if="detailed.includes(event._id)">
-    <p class = "stuff" v-if="event.attending.length > 0"><b>Attendees:</b> {{ props.event.attending.join(", ") }}</p>
-    <p class = "stuff" v-if="event.interested.length > 0"><b>Interested:</b> {{ props.event.interested.join(", ") }}</p>
+    <label for="description" v-if="event.description"><b>Description:</b></label>
+    <p class = "description" v-if="event.description"> {{ props.event.description }} </p>
+    <p class="tags" v-if="event.amenities.length > 0"> <b>Amenities:</b> {{  props.event.amenities.join(", ")  }}</p>
+    <p class="tags" v-if="event.accommodations.length > 0"> <b>Accommodations:</b> {{  props.event.accommodations.join(", ")  }}</p>
+    <p class = "stuff" v-if="event.attending.length > 0"> <b>Attendees:</b> {{ props.event.attending.join(", ") }}</p>
+    <p class = "stuff" v-if="event.interested.length > 0"> <b>Interested:</b> {{ props.event.interested.join(", ") }}</p>
     <p class = "capacity"><b>Capacity: </b>{{ props.event.attending.length }} / {{ props.event.capacity }}</p>
   </template>
-    <menu v-if="props.event.host == currentUsername">
-      <li><button class="btn-small pure-button" @click="emit('editEvent', props.event._id)">Edit</button></li>
-      <li><button class="button-error btn-small pure-button" @click="deleteEvent">Delete</button></li>
-    </menu>
-    <menu v-else>
+    <menu>
       <li>
         <button class="btn-small pure-button" @click="emit('seeMoreEventDetails', props.event._id)" 
           v-if="!detailed.includes(event._id)">
@@ -62,6 +63,10 @@ const deleteEvent = async () => {
         </button>
       </li>
     </menu>
+    <menu v-if="props.event.host == currentUsername">
+      <li><button class="btn-small pure-button" @click="emit('editEvent', props.event._id)">Edit</button></li>
+      <li><button class="button-error btn-small pure-button" @click="deleteEvent">Delete</button></li>
+    </menu>
     <article class="timestamp">
       <p v-if="props.event.dateCreated !== props.event.dateUpdated">Edited on: {{ formatDate(props.event.dateUpdated) }}</p>
       <p v-else>Created on: {{ formatDate(props.event.dateCreated) }}</p>
@@ -69,6 +74,15 @@ const deleteEvent = async () => {
 </template>
 
 <style scoped>
+
+.host {
+  font-weight: normal;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 p {
   margin: 0em;
 }

@@ -585,7 +585,7 @@ class Routes {
 
     const timeNow = new Date();
     // exclude posts by user and get events that have not ended
-    const events = await Event.getEvents({ host: { $ne: user }, endTime: { $gte: timeNow } });
+    const events = await Event.getEvents({ endTime: { $gte: timeNow } });
 
     const eventDates = new Map(events.map((event) => [event._id.toString(), event.startTime]));
     const eventMap = new Map(events.map((event) => [event._id.toString(), event]));

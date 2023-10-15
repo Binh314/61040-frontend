@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toDateString } from "@/utils/formatDate";
 import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
@@ -8,17 +9,19 @@ const location = ref("");
 const description = ref("");
 const ageReq = ref("");
 const capacity = ref("");
-const startDate = ref("")
-const endDate = ref("")
+const startTime = ref("")
+const endTime = ref("")
 const topics = ref("");
 const amenities = ref("");
 const accommodations = ref("");
 const emit = defineEmits(["refreshEvents"]);
 
-const createEvent = async (title: string, location: string, description: string, capacity: string, ageReq: string, photo: string) => {
+const createEvent = async (title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string) => {
   try {
+    const startTime = toDateString(startDate);
+    const endTime = toDateString(endDate);
     await fetchy("/api/events", "POST", {
-      body: { title, location, description, capacity, ageReq, photo},
+      body: { title, location, description, capacity, ageReq, photo, startTime, endTime },
     });
   } catch (_) {
     return;
@@ -33,7 +36,7 @@ const emptyForm = () => {
 </script>
 
 <template>
-  <form @submit.prevent="createEvent(title, location, description, capacity, ageReq, photo)">
+  <form @submit.prevent="createEvent(title, location, description, capacity, startTime, endTime, ageReq, photo)">
     <label for="title">Title:</label>
     <input id="title" v-model="title" placeholder="event title" required> 
 
@@ -41,7 +44,10 @@ const emptyForm = () => {
     <input id="location" v-model="location" placeholder="address or location name" required>
 
     <label for="startTime">Start Time:</label>
-    <input type="datetime-local" id="startTime" value = "" name="meeting-time"/>
+    <input type="datetime-local" v-model="startTime" id="startTime" name="start-time" required/>
+
+    <label for="endTime">End Time:</label>
+    <input type="datetime-local" v-model="endTime" id="endTime" name="end-time" required/>
 
     <label for="ageReq">Age Requirement:</label>
     <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2">
