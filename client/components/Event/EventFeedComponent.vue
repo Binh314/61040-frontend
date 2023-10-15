@@ -6,41 +6,50 @@ import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
-import SearchEventForm from "./SearchEventForm.vue";
 
 const { isLoggedIn } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
 let events = ref<Array<Record<string, string>>>([]);
 let editing = ref("");
-let searchAuthor = ref("");
+let detailed = ref<Array<string>>([]);
+let searchHost = ref("");
 
-async function getEventFeed(author?: string) {
-  let query: Record<string, string> = author !== undefined ? { author } : {};
-  let postResults;
+async function getEventFeed(host?: string) {
+  let query: Record<string, string> = host !== undefined ? { host } : {};
+  let eventResults;
   try {
-    postResults = await fetchy("/api/feed/events", "GET")
+    eventResults = await fetchy("/api/feed/events", "GET")
   } catch (_) {
     return;
   }
-  searchAuthor.value = author ? author : "";
-  events.value = postResults;
+  searchHost.value = host ? host : "";
+  events.value = eventResults;
 }
 
-async function getEvents(author?: string) {
-  let query: Record<string, string> = author !== undefined ? { author } : {};
-  let postResults;
+async function getEvents(host?: string) {
+  let query: Record<string, string> = host !== undefined ? { host } : {};
+  let eventResults;
   try {
-    postResults = await fetchy("/api/events", "GET", { query })
+    eventResults = await fetchy("/api/events", "GET", { query })
   } catch (_) {
     return;
   }
-  searchAuthor.value = author ? author : "";
-  events.value = postResults;
+  searchHost.value = host ? host : "";
+  events.value = eventResults;
 }
 
 function updateEditing(id: string) {
   editing.value = id;
+}
+
+function addDetailed(id: string) {
+  detailed.value.push(id);
+}
+
+function removeDetailed(id: string) {
+  const idx = detailed.value.indexOf(id);
+  detailed.value.splice(idx, 1);
 }
 
 onBeforeMount(async () => {
@@ -55,17 +64,19 @@ onBeforeMount(async () => {
 
 <template>
   <section v-if="isLoggedIn">
-    <h2>Create a post:</h2>
+    <h2>Create an event:</h2>
     <createEventForm @refreshPosts="getEventFeed" />
   </section>
   <div class="row">
-    <h2 v-if="!searchAuthor">Events:</h2>
-    <h2 v-else>Events by {{ searchAuthor }}:</h2>
-    <SearchEventForm @getPostsByAuthor="getEvents" />
+    <h2 v-if="!searchHost">Events:</h2>
+    <h2 v-else>Events by {{ searchHost }}:</h2>
+    <!-- <SearchEventForm @getEventsByHost="getEvents" /> -->
   </div>
   <section class="events" v-if="loaded && events.length !== 0">
+    <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
     <article v-for="event in events" :key="event._id">
-      <EventComponent v-if="editing !== event._id" :event="event" @refreshEvents="getEventFeed" @editEvents="updateEditing" />
+      <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEventFeed" 
+      @editEvents="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
       <EditEventForm v-else :event="event" @refreshEvents="getEventFeed" @editEvent="updateEditing" />
     </article>
   </section>

@@ -223,6 +223,18 @@ class Routes {
     return Responses.events(events);
   }
 
+  @Router.get("/events/id/:id")
+  async getEvent(id: string) {
+    let events;
+    if (id) {
+      const _id = new ObjectId(id);
+      events = await Event.getEvents({ _id });
+    } else {
+      events = await Event.getEvents({});
+    }
+    return Responses.events(events);
+  }
+
   @Router.get("/events/nearby")
   async getNearbyEvents(session: WebSessionDoc, radius: string) {
     const user = WebSession.getUser(session);
@@ -282,9 +294,9 @@ class Routes {
    * @param endTime "yyyy/mm/dd hh:mm timezone" format. time uses 24-hour time
    */
   @Router.post("/events")
-  async createEvent(session: WebSessionDoc, title: string, description: string, location: string, startTime: string, endTime: string, ageReq: string, capacity: string, photo?: string) {
+  async createEvent(session: WebSessionDoc, title: string, description: string, location: string, startTime: string, endTime: string, capacity: string, ageReq?: string, photo?: string) {
     const user = WebSession.getUser(session);
-    const ageInt = parseInt(ageReq);
+    const ageInt = ageReq ? parseInt(ageReq) : undefined;
     const capacityInt = parseInt(capacity);
     const loc = await Location.getFromAddress(location);
 
@@ -295,7 +307,7 @@ class Routes {
     const start = new Date(startTimestamp);
     const end = new Date(endTimestamp);
 
-    const created = await Event.create(user, title, description, location, start, end, ageInt, capacityInt, photo);
+    const created = await Event.create(user, title, description, location, start, end, capacityInt, ageInt, photo);
     await Location.create(created.id, "event", loc.lat, loc.lon, location);
     return { msg: created.msg, event: await Responses.event(created.event) };
   }

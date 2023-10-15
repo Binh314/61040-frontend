@@ -2,13 +2,23 @@
 import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
-const content = ref("");
+const title = ref("");
+const photo = ref("");
+const location = ref("");
+const description = ref("");
+const ageReq = ref("");
+const capacity = ref("");
+const startDate = ref("")
+const endDate = ref("")
+const topics = ref("");
+const amenities = ref("");
+const accommodations = ref("");
 const emit = defineEmits(["refreshEvents"]);
 
-const createEvent = async (content: string) => {
+const createEvent = async (title: string, location: string, description: string, capacity: string, ageReq: string, photo: string) => {
   try {
     await fetchy("/api/events", "POST", {
-      body: { content },
+      body: { title, location, description, capacity, ageReq, photo},
     });
   } catch (_) {
     return;
@@ -18,15 +28,35 @@ const createEvent = async (content: string) => {
 };
 
 const emptyForm = () => {
-  content.value = "";
+  title.value = "";
 };
 </script>
 
 <template>
-  <form @submit.prevent="createEvent(content)">
-    <label for="content">Event Details:</label>
-    <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
-    <button type="submit" class="pure-button-primary pure-button">Create Post</button>
+  <form @submit.prevent="createEvent(title, location, description, capacity, ageReq, photo)">
+    <label for="title">Title:</label>
+    <input id="title" v-model="title" placeholder="event title" required> 
+
+    <label for="location">Location:</label>
+    <input id="location" v-model="location" placeholder="address or location name" required>
+
+    <label for="startTime">Start Time:</label>
+    <input type="datetime-local" id="startTime" value = "" name="meeting-time"/>
+
+    <label for="ageReq">Age Requirement:</label>
+    <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2">
+
+    <label for="capacity">Capacity:</label>
+    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event">
+
+
+    <label for="description">Description:</label>
+    <textarea id="description" v-model="description" placeholder="description of event"> </textarea>
+
+    <label for="photo">Photo:</label>
+    <input id="location" v-model="photo" placeholder="url of photo for event"> 
+
+    <button type="submit" class="pure-button-primary pure-button">Create Event</button>
   </form>
 </template>
 
