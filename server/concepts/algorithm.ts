@@ -5,7 +5,8 @@ export default class AlgorithmConcept {
     const timeNow = new Date();
     const diff = Math.abs(timeNow.getTime() - date.getTime());
     const scaledDiff = diff / (1000 * 3600 * 24); // difference in days
-    const numCommonTags = viewerTags.filter((tag) => contentTags.includes(tag)).length;
+    const lowercaseTags = contentTags.map((e) => e.toLowerCase());
+    const numCommonTags = viewerTags.filter((tag) => lowercaseTags.includes(tag.toLowerCase())).length;
 
     const distanceScore = (distance / 1000) ** 2;
     const commonTagsScore = (this.tagScale * numCommonTags) ** 2;

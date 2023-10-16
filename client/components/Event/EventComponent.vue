@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { useUserStore } from "@/stores/user";
 import { formatDate, formatEventDate, formatTime } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";

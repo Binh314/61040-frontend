@@ -39,6 +39,9 @@ onBeforeMount(async () => {
             <li>
               <RouterLink :to="{ name: 'Events' }" :class="{ underline: currentRouteName == 'Events' }"> Events </RouterLink>
             </li>
+            <li>
+              <RouterLink :to="{ name: 'Test' }" :class="{ underline: currentRouteName == 'Test' }"> Test </RouterLink>
+            </li>
             <li v-if="isLoggedIn">
               <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
             </li>
@@ -68,6 +71,11 @@ onBeforeMount(async () => {
 .col {
   flex: 50%;
 }
+
+/* .content {
+  display: flex;
+  align-items: end;
+} */
 
 
 nav {

@@ -23,7 +23,20 @@ export interface EventDoc extends BaseDoc {
 export default class EventConcept {
   public readonly events = new DocCollection<EventDoc>("events");
 
-  async create(host: ObjectId, title: string, description: string, location: string, startTime: Date, endTime: Date, capacity: number, ageReq?: number, photo?: string) {
+  async create(
+    host: ObjectId,
+    title: string,
+    description: string,
+    location: string,
+    startTime: Date,
+    endTime: Date,
+    capacity: number,
+    topics: string[],
+    amenities: string[],
+    accommodations: string[],
+    ageReq?: number,
+    photo?: string,
+  ) {
     const _id = await this.events.createOne({
       host,
       title,
@@ -33,9 +46,9 @@ export default class EventConcept {
       location,
       ageReq,
       capacity,
-      topics: [],
-      amenities: [],
-      accommodations: [],
+      topics,
+      amenities,
+      accommodations,
       interested: [],
       attending: [],
       photo,

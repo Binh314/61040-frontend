@@ -65,7 +65,7 @@ onBeforeMount(async () => {
 <template>
   <section v-if="isLoggedIn">
     <h2>Create an event:</h2>
-    <createEventForm @refreshPosts="getEventFeed" />
+    <createEventForm @refreshEvents="getEventFeed" />
   </section>
   <div class="row">
     <h2 v-if="!searchHost">Events:</h2>
