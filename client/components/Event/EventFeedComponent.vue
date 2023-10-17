@@ -63,7 +63,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <section v-if="isLoggedIn">
+  <section class="formArea" v-if="isLoggedIn">
     <h2>Create an event:</h2>
     <createEventForm @refreshEvents="getEventFeed" />
   </section>
@@ -95,7 +95,7 @@ section,
 p,
 .row {
   margin: 0 auto;
-  max-width: 60em;
+  /* max-width: 60em; */
 }
 
 article {
@@ -111,9 +111,14 @@ article {
   padding: 1em;
 }
 
+.formArea {
+  padding: 1em;
+}
+
 .row {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+  padding: 1em
 }
 </style>

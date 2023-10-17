@@ -103,6 +103,9 @@ const indicateAttendance = async () => {
 
     <p class="tags" v-if="event.amenities.length > 0"> <b>Amenities:</b> {{  props.event.amenities.join(", ")  }}</p>
     <p class="tags" v-if="event.accommodations.length > 0"> <b>Accommodations:</b> {{  props.event.accommodations.join(", ")  }}</p>
+
+    <br>
+
     <p class = "stuff" v-if="event.attending.length > 0"> <b>Attendees:</b> {{ props.event.attending.join(", ") }}</p>
     <p class = "stuff" v-if="event.interested.length > 0"> <b>Interested:</b> {{ props.event.interested.join(", ") }}</p>
     <p class = "capacity"><b>Capacity: </b>{{ props.event.attending.length }} / {{ props.event.capacity }}</p>

@@ -23,7 +23,7 @@ onBeforeMount(async () => {
 
 <template>
   <!-- <div class = "row"> -->
-  <div class = "pure-grid">
+  <div class = "pure-grid page">
     <div class="pure-u-1-6"> <!--2/12-->
       <header>
         <!-- <div class = "col"> -->
@@ -86,13 +86,13 @@ onBeforeMount(async () => {
 
 nav {
   padding: 1em 2em;
-  background-color: lightgray;
+  background-color: rgba(211, 211, 211, 0.5);
   display: flex;
   align-items: center;
   overflow: hidden;
   flex-direction: column;
   height: 100vh;
-  position:fixed;
+  position: fixed;
   /* z-index: 1; */
 }
 

@@ -21,6 +21,7 @@ const createEvent = async (title: string, location: string, description: string,
   try {
     const startTime = toDateString(startDate);
     const endTime = toDateString(endDate);
+    // if (new Date(startTime) > new Date(endTime)) throw new Error("The end time needs to be later than the start time.");
     await fetchy("/api/events", "POST", {
       body: { title, location, description, capacity, ageReq, photo, startTime, endTime, topics, amenities, accommodations },
     });

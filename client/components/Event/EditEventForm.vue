@@ -53,6 +53,7 @@ const editEvent = async(title: string, location: string, description: string, ca
   try {
     const startTime = toDateString(startDate);
     const endTime = toDateString(endDate);
+    // if (new Date(startTime) > new Date(endTime)) throw new Error("The end time needs to be later than the start time.");
     await fetchy(`/api/events/${props.event._id}/edit`, "PATCH", 
       { body: { update: 
         { title: title,
