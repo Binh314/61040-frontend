@@ -21,7 +21,9 @@ const deletePost = async () => {
 <template>
   <p class="author">{{ props.post.author }}</p>
   <p>{{ props.post.content }}</p>
-  <p v-for="file in props.post.files">  <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"></p>
+  <p class="files">  
+    <img v-for="file in props.post.files" class="postImage" src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg">
+  </p>
   <div class="base">
     <menu v-if="props.post.author == currentUsername">
       <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
@@ -69,4 +71,17 @@ menu {
 .base article:only-child {
   margin-left: auto;
 }
+
+.postImage {
+  max-width: 45%;
+  display: inline-block;
+  padding: 0.5em;
+}
+
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 </style>

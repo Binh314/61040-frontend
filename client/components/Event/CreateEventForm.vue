@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TagsInput from "@/components/Global/TagsInput.vue";
-import { toDateString } from "@/utils/formatDate";
+import { formatDatepick, toDateString } from "@/utils/formatDate";
 import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
@@ -10,8 +10,8 @@ const location = ref("");
 const description = ref("");
 const ageReq = ref("");
 const capacity = ref("");
-const startTime = ref("")
-const endTime = ref("")
+const startTime = ref(formatDatepick(new Date()))
+const endTime = ref(formatDatepick(new Date()))
 const topics = ref<Array<string>>([]);
 const amenities = ref<Array<string>>([]);
 const accommodations = ref<Array<string>>([]);

@@ -134,6 +134,7 @@ ul {
 
 .content {
   /* z-index: 2; */
+  padding: 1em;
 }
 
 </style>

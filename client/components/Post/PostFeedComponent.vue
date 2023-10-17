@@ -54,7 +54,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <section v-if="isLoggedIn">
+  <section class="postForm" v-if="isLoggedIn">
     <h2>Create a post:</h2>
     <CreatePostForm @refreshPosts="getPostFeed" />
   </section>
@@ -100,10 +100,15 @@ article {
   padding: 1em;
 }
 
+.postForm {
+  padding: 1em;
+}
+
 .row {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
   max-width: 60em;
+  padding: 1em;
 }
 </style>

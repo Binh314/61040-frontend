@@ -91,7 +91,7 @@ const indicateAttendance = async () => {
 
   <p class="tags" v-if="event.topics.length > 0"><b>Topics:</b> {{  props.event.topics.join(", ")  }}</p>
 
-  <p v-if="event.photo"><img class = "photo" :src="event.photo"></p>
+  <p v-if="event.photo"><img class="photo" :src="event.photo"></p>
 
   <br>
 
@@ -163,7 +163,7 @@ p {
 }
 
 .photo{
-  max-height: 25vw;
+  max-width: 75%;
 }
 
 .title {
