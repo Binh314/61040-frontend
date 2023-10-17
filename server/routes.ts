@@ -424,6 +424,12 @@ class Routes {
     return Event.removeInterest(user, _id);
   }
 
+  @Router.patch("/events/:_id/removeUser/")
+  async removePersonFromEvent(session: WebSessionDoc, _id: ObjectId) {
+    const user = WebSession.getUser(session);
+    return Event.removePersonFromEvent(user, _id);
+  }
+
   @Router.patch("/events/:_id/attendance/remove/")
   async removeEventAttendance(session: WebSessionDoc, _id: ObjectId) {
     const user = WebSession.getUser(session);

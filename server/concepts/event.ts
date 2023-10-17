@@ -137,6 +137,25 @@ export default class EventConcept {
     }
   }
 
+  async removePersonFromEvent(person: ObjectId, _id: ObjectId) {
+    const event = await this.events.readOne({ _id });
+    if (!event) throw new NotFoundError(`Event does not exist.`);
+
+    const interested = event.interested;
+    const attending = event.attending;
+
+    let personStrings = interested.map((id: ObjectId) => id.toString());
+    const interest_idx = personStrings.indexOf(person.toString());
+    if (interest_idx !== -1) interested.splice(interest_idx, 1);
+
+    personStrings = attending.map((id: ObjectId) => id.toString());
+    const attend_idx = personStrings.indexOf(person.toString());
+    if (attend_idx !== -1) attending.splice(attend_idx, 1);
+
+    this.events.updateOne({ _id }, { interested: interested, attending: attending });
+    return { msg: "Successfully removed user from event." };
+  }
+
   async indicateInterest(person: ObjectId, _id: ObjectId) {
     this.isNotInterested(person, _id);
 

@@ -3,11 +3,24 @@
 import { useUserStore } from "@/stores/user";
 import { formatDate, formatEventDate, formatTime } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
+import { computed, ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["event", "detailed"]);
 const emit = defineEmits(["editEvent", "refreshEvents", "seeMoreEventDetails", "seeLessEventDetails"]);
 const { currentUsername } = storeToRefs(useUserStore());
+
+const addEventActive = ref(false);
+
+const interestedInEvent = computed(() => props.event.interested.includes(currentUsername.value));
+const attendingEvent = computed(() => props.event.attending.includes(currentUsername.value));
+
+const dropdownText = computed(() => {
+  if (addEventActive.value) return "Not Interested";
+  else if (interestedInEvent.value) return "Interested";
+  else if (attendingEvent.value) return "Attending";
+  else return "Add Event";
+});
 
 const deleteEvent = async () => {
   try {
@@ -17,6 +30,43 @@ const deleteEvent = async () => {
   }
   emit("refreshEvents");
 };
+
+const toggleDropdown = async () => {
+  if (addEventActive.value && (interestedInEvent.value || attendingEvent.value)) 
+    await removeInterest();
+  addEventActive.value = !addEventActive.value;
+}
+
+const removeInterest = async () => {
+  try {
+    await fetchy(`/api/events/${props.event._id}/removeUser`, "PATCH")
+  } catch (_) {
+    return;
+  }
+  emit("refreshEvents");
+}
+
+const indicateInterest = async () => {
+  if (!interestedInEvent.value)
+    try {
+      await fetchy(`/api/events/${props.event._id}/interest/add`, "PATCH")
+    } catch (_) {
+      return;
+    }
+  addEventActive.value = false;
+  emit("refreshEvents");
+}
+
+const indicateAttendance = async () => {
+  if (!attendingEvent.value)
+    try {
+      await fetchy(`/api/events/${props.event._id}/attendance/add`, "PATCH")
+    } catch (_) {
+      return;
+    }
+  addEventActive.value = false;
+  emit("refreshEvents");
+}
 
 
 
@@ -76,6 +126,15 @@ const deleteEvent = async () => {
       <li><button class="btn-small pure-button" @click="emit('editEvent', props.event._id)">Edit</button></li>
       <li><button class="button-error btn-small pure-button" @click="deleteEvent">Delete</button></li>
     </menu>
+    <div v-else class="dropdownBox">
+      <div class="addEvent">
+        <button class="pure-button dropdownButton" @click="toggleDropdown">{{ dropdownText }}</button>
+        <div class="dropdownOptions" v-if="addEventActive">
+          <button class="pure-button dropdownButton" @click="indicateInterest">Interested</button> <br/>
+          <button class="pure-button dropdownButton" @click="indicateAttendance">Attending</button>
+        </div>
+      </div>
+    </div>
     <article class="timestamp">
       <p v-if="props.event.dateCreated !== props.event.dateUpdated">Edited on: {{ formatDate(props.event.dateUpdated) }}</p>
       <p v-else>Created on: {{ formatDate(props.event.dateCreated) }}</p>
@@ -83,6 +142,10 @@ const deleteEvent = async () => {
 </template>
 
 <style scoped>
+
+.dropdownButton {
+  width: 10em;
+}
 
 .host {
   font-weight: normal;
