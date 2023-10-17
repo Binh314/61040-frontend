@@ -22,10 +22,12 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class = "row">
+  <!-- <div class = "row"> -->
+  <div class = "pure-grid">
+    <div class="pure-u-1-6"> <!--2/12-->
       <header>
         <!-- <div class = "col"> -->
-        <nav class = "col">
+        <nav>
           <div class="title">
             <img src="@/assets/images/logo.svg" />
             <RouterLink :to="{ name: 'Home' }">
@@ -54,9 +56,13 @@ onBeforeMount(async () => {
       <article v-if="toast !== null" class="toast" :class="toast.style">
         <p>{{ toast.message }}</p>
       </article>
-    </header>
-    <div class = "col content">
-      <RouterView />
+          </header>
+    </div>
+    <div class="pure-u-1-2"> <!--6/12-->
+        <RouterView class="content"/>
+    </div>
+    <div class="pure-u-1-3"> <!--4/12-->
+        <p>to do</p>
     </div>
   </div>
 </template>
@@ -64,13 +70,13 @@ onBeforeMount(async () => {
 <style scoped>
 @import "./assets/toast.css";
 
-.row {
+/* .row {
   display: flex;
 }
 
 .col {
   flex: 50%;
-}
+} */
 
 /* .content {
   display: flex;
@@ -87,6 +93,7 @@ nav {
   flex-direction: column;
   height: 100vh;
   position:fixed;
+  /* z-index: 1; */
 }
 
 h1 {
@@ -124,6 +131,11 @@ ul {
 .underline {
   text-decoration: underline;
 }
+
+.content {
+  /* z-index: 2; */
+}
+
 </style>
 
 

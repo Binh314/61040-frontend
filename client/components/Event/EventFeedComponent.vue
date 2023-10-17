@@ -76,7 +76,7 @@ onBeforeMount(async () => {
     <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
     <article v-for="event in events" :key="event._id">
       <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEventFeed" 
-      @editEvents="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
+      @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
       <EditEventForm v-else :event="event" @refreshEvents="getEventFeed" @editEvent="updateEditing" />
     </article>
   </section>
@@ -115,6 +115,5 @@ article {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
-  max-width: 60em;
 }
 </style>

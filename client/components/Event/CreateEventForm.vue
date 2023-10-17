@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TagsInput from "@/components/Helper/TagsInput.vue";
+import TagsInput from "@/components/Global/TagsInput.vue";
 import { toDateString } from "@/utils/formatDate";
 import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
@@ -32,20 +32,20 @@ const createEvent = async (title: string, location: string, description: string,
 };
 
 function updateTopics(tags: string[]) {
-  topics.value.length = 0; // clear array
-  topics.value.push(...tags);
+  // topics.value.length = 0; // clear array
+  // topics.value.push(...tags);
 }
 
 function updateAmenities(tags: string[]) {
-  console.log('amenities');
-  console.log(tags);
-  amenities.value.length = 0; // clear array
-  amenities.value.push(...tags);
+  // console.log('amenities');
+  // console.log(tags);
+  // amenities.value.length = 0; // clear array
+  // amenities.value.push(...tags);
 }
 
 function updateAccommodations(tags: string[]) {
-  accommodations.value.length = 0; // clear array
-  accommodations.value.push(...tags);
+  // accommodations.value.length = 0; // clear array
+  // accommodations.value.push(...tags);
 }
 
 const emptyForm = () => {
@@ -91,13 +91,13 @@ const emptyForm = () => {
     <textarea id="description" v-model="description" placeholder="description of event"> </textarea>
 
     <label for="topicsInput">Topics:</label>
-    <TagsInput id="topicsInput" :tags="topics" @updateTags="updateTopics"/>
+    <TagsInput id="topicsInput" :initTags="topics" @updateTags="updateTopics"/>
 
     <label for="amenitiesInput">Amenities:</label>
-    <TagsInput id="amenitiesInput" :tags="amenities" @updateTags="updateAmenities"/>
+    <TagsInput id="amenitiesInput" :initTags="amenities" @updateTags="updateAmenities"/>
 
     <label for="accommodationsInput">Accommodations:</label>
-    <TagsInput id="accommodationsInput" :tags="accommodations" @updateTags="updateAccommodations"/>
+    <TagsInput id="accommodationsInput" :initTags="accommodations" @updateTags="updateAccommodations"/>
 
     <label for="photo">Photo:</label>
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent> 

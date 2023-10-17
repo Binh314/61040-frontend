@@ -9,3 +9,4 @@ export const formatDate = (date: Date): string => moment(date).format("MMMM Do Y
 export const formatEventDate = (date: Date): string => moment(date).format("MMMM Do YYYY, h:mm a");
 export const formatTime = (date: Date): string => moment(date).format("h:mm:ss a");
 export const toDateString = (date: string): string => moment(date).utc().toDate().toString();
+export const formatDatepick = (date: Date): string => moment(date).format("YYYY-MM-DD[T]hh:mm");

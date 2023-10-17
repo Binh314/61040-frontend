@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TestComponent from "@/components/Helper/TagsInput.vue";
+import TestComponent from "@/components/Global/TagsInput.vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 

@@ -1,14 +1,14 @@
 <script setup lang="ts"  crossorigin="anonymous"> 
 // src="https://kit.fontawesome.com/40828c6ea5.js"
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
 
 const emit = defineEmits(["updateTags"]);
 const props = defineProps(["initTags"]);
 
-const tags = ref<Array<string>>([]);
+const tags = ref<Array<string>>(props.initTags);
 
 function inputWidth(i: number) {
-  return Math.max(tags.value[i].length, 8) * 5/8 + "em"; // Adjust the multiplier to set the width according to your preference
+  return Math.max(tags.value[i].length, 8) * 5/8 + "em"; 
 }
 
 
@@ -21,20 +21,23 @@ function addTag() {
 function removeTag(i: number) {
   tags.value.splice(i, 1);
   console.log(tags.value);
-  emit("updateTags", tags.value)
+  emit("updateTags", tags.value);
 }
 
 
-onBeforeMount(async () => {
-  tags.value.push(...props.initTags);
-});
+// onBeforeMount(() => {
+//   console.log(props.initTags);
+//   tags.value.push(...props.initTags);
+// });
+
 </script>
 
 
 <template>
   <div>
     <span v-for="(tag, index) in tags">
-      <input v-model="tags[index]" class = "tagInput" @blur="emit('updateTags', tags)"  :style="{ width: inputWidth(index) }" @keypress.enter.prevent> 
+      <input v-model="tags[index]" class = "tagInput" @blur="emit('updateTags', tags)"  placeholder = "enter tag"
+      :style="{ width: inputWidth(index) }" autofocus @keypress.enter.prevent> 
       <font-awesome-icon :ref="`input${index}`" :icon="['fas', 'square-xmark']" size="xl" @click="removeTag(index)" class="removeIcon"/>
     </span>
     <font-awesome-icon :icon="['far', 'square-plus']" size="xl" @click="addTag" class="addIcon"/>
