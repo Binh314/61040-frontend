@@ -12,15 +12,22 @@ const ageReq = ref("");
 const capacity = ref("");
 const startTime = ref(formatDatepick(new Date()))
 const endTime = ref(formatDatepick(new Date()))
-const topics = ref<Array<string>>([]);
-const amenities = ref<Array<string>>([]);
-const accommodations = ref<Array<string>>([]);
+const topics = ref<Array<string>>(['',]);
+const amenities = ref<Array<string>>(['',]);
+const accommodations = ref<Array<string>>(['',]);
 const emit = defineEmits(["refreshEvents"]);
+
+const topicString = ref("topic")
+const amenityString = ref("amenity")
+const accommodationString = ref("accommodation")
 
 const createEvent = async (title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string, topics: string[], amenities: string[], accommodations: string[]) => {
   try {
     const startTime = toDateString(startDate);
     const endTime = toDateString(endDate);
+    topics.filter(e=>e);
+    amenities.filter(e=>e);
+    accommodations.filter(e=>e);
     // if (new Date(startTime) > new Date(endTime)) throw new Error("The end time needs to be later than the start time.");
     await fetchy("/api/events", "POST", {
       body: { title, location, description, capacity, ageReq, photo, startTime, endTime, topics, amenities, accommodations },
@@ -69,38 +76,67 @@ const emptyForm = () => {
 
 <template>
   <form @submit.prevent="createEvent(title, location, description, capacity, startTime, endTime, ageReq, photo, topics, amenities, accommodations)">
-    <label for="title">Title:</label>
+    <label for="title"> Title </label>
     <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent> 
 
-    <label for="location">Location:</label>
+    <label for="location"> 
+      <!-- <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />  -->
+      Location
+    </label>
     <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent>
 
-    <label for="startTime">Start Time:</label>
+    <label for="startTime"> 
+      <!-- <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" />  -->
+      Start Time
+    </label>
     <input type="datetime-local" v-model="startTime" id="startTime" name="start-time" required @keypress.enter.prevent/>
 
-    <label for="endTime">End Time:</label>
+    <label for="endTime"> 
+      <!-- <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" />  -->
+      End Time
+    </label>
     <input type="datetime-local" v-model="endTime" id="endTime" name="end-time" required @keypress.enter.prevent/>
 
-    <label for="ageReq">Age Requirement:</label>
+    <label for="ageReq">
+      <!-- <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> -->
+      Age Requirement
+    </label>
     <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2" @keypress.enter.prevent>
 
-    <label for="capacity">Capacity:</label>
+    <label for="capacity">
+      <!-- <font-awesome-icon :icon="['fas', 'people-group']" size="lg" class="icon"/> -->
+      Capacity
+    </label>
     <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent>
 
 
-    <label for="description">Description:</label>
+    <label for="description">
+      Description
+    </label>
     <textarea id="description" v-model="description" placeholder="description of event"> </textarea>
 
-    <label for="topicsInput">Topics:</label>
-    <TagsInput id="topicsInput" :initTags="topics" @updateTags="updateTopics"/>
+    <label for="topicsInput">
+      <!-- <font-awesome-icon icon="tags" size="lg" class="icon" /> -->
+      Topics
+    </label>
+    <TagsInput id="topicsInput" :initTags="topics" :tagName="topicString" @updateTags="updateTopics"/>
 
-    <label for="amenitiesInput">Amenities:</label>
-    <TagsInput id="amenitiesInput" :initTags="amenities" @updateTags="updateAmenities"/>
+    <label for="amenitiesInput">
+      <!-- <font-awesome-icon :icon="['fas', 'wifi']" size="lg" class="icon"/> -->
+      Amenities
+    </label>
+    <TagsInput id="amenitiesInput" :initTags="amenities" :tagName="amenityString" @updateTags="updateAmenities"/>
 
-    <label for="accommodationsInput">Accommodations:</label>
-    <TagsInput id="accommodationsInput" :initTags="accommodations" @updateTags="updateAccommodations"/>
+    <label for="accommodationsInput">
+      <!-- <font-awesome-icon :icon="['fab', 'accessible-icon']" size="lg" class="icon" /> -->
+      Accommodations
+    </label>
+    <TagsInput id="accommodationsInput" :initTags="accommodations" :tagName="accommodationString" @updateTags="updateAccommodations"/>
 
-    <label for="photo">Photo:</label>
+    <label for="photo">
+      <!-- <font-awesome-icon :icon="['fas', 'image']" size="lg" class="icon"/> -->
+      Photo
+    </label>
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent> 
 
     <button type="submit" class="pure-button-primary pure-button">Create Event</button>
@@ -108,6 +144,14 @@ const emptyForm = () => {
 </template>
 
 <style scoped>
+.icon {
+  width: 1em;
+}
+
+label {
+  padding-top: 1em;
+}
+
 form {
   background-color: var(--base-bg);
   border-radius: 1em;

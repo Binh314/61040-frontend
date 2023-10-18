@@ -3,11 +3,12 @@
 import { ref } from "vue";
 
 const emit = defineEmits(["updateTags"]);
-const props = defineProps(["initTags"]);
+const props = defineProps(["initTags", 'tagName']);
 
 const tags = ref<Array<string>>(props.initTags);
 
 function inputWidth(i: number) {
+  if (tags.value[i].length === 0) return props.tagName.length * 3 / 4 + "em";
   return Math.max(tags.value[i].length, 8) * 5/8 + "em"; 
 }
 
@@ -36,8 +37,8 @@ function removeTag(i: number) {
 <template>
   <div>
     <span v-for="(tag, index) in tags">
-      <input v-model="tags[index]" class = "tagInput" @blur="emit('updateTags', tags)"  placeholder = "enter tag"
-      :style="{ width: inputWidth(index) }" autofocus @keypress.enter.prevent> 
+      <input v-model="tags[index]" class = "tagInput" @blur="emit('updateTags', tags)"  :placeholder="tagName"
+      :style="{ width: inputWidth(index) }" @keypress.enter.prevent> 
       <font-awesome-icon :ref="`input${index}`" :icon="['fas', 'square-xmark']" size="xl" @click="removeTag(index)" class="removeIcon"/>
     </span>
     <font-awesome-icon :icon="['far', 'square-plus']" size="xl" @click="addTag" class="addIcon"/>

@@ -80,35 +80,40 @@ const indicateAttendance = async () => {
   <br>
 
   <!-- Source https://stackoverflow.com/questions/27419509/open-google-map-with-specific-address-in-a-browser -->
-  <p class = "location"> <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">{{event.location}}</a> </p>
+  <p class = "location"> <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">{{event.location}}</a> </p>
   <p class = "time" v-if="formatDate(props.event.startTime).split(' ')[0] === formatDate(props.event.endTime).split(' ')[0]">
-    {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatTime(props.event.endTime) }}
+    <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" /> {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatTime(props.event.endTime) }}
   </p>
   <p class = "time" v-else>
     {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatEventDate(props.event.endTime) }}
   </p>
-  <p class = "age" v-if="event.ageReq"> <b>Ages</b> {{ props.event.ageReq }}+ </p>
+  <p class = "age" v-if="event.ageReq"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ props.event.ageReq }}+ </p>
 
-  <p class="tags" v-if="event.topics.length > 0"><b>Topics:</b> {{  props.event.topics.join(", ")  }}</p>
+  <p class="tags" v-if="event.topics.length > 0"> <font-awesome-icon icon="tags" size="lg" class="icon" /> {{  props.event.topics.join(", ")  }}</p>
 
   <p v-if="event.photo"><img class="photo" :src="event.photo"></p>
 
   <br>
 
   <template v-if="detailed.includes(event._id)">
-    <label for="description" v-if="event.description"><b>Description:</b></label>
+    <label for="description" v-if="event.description"><b>Description</b></label>
     <p class = "description" v-if="event.description"> {{ props.event.description }} </p>
 
     <br>
 
-    <p class="tags" v-if="event.amenities.length > 0"> <b>Amenities:</b> {{  props.event.amenities.join(", ")  }}</p>
-    <p class="tags" v-if="event.accommodations.length > 0"> <b>Accommodations:</b> {{  props.event.accommodations.join(", ")  }}</p>
+    <label for="amenities" v-if="event.amenities.length > 0"><b>Amenities</b></label>
+    <p id="amenities" class="tags" v-if="event.amenities.length > 0"> {{  props.event.amenities.join(", ")  }}</p>
+
+    <label for="accommodations" v-if="event.accommodations.length > 0"><b>Accommodations</b></label>
+    <p id="accommodations" class="tags" v-if="event.accommodations.length > 0">{{  props.event.accommodations.join(", ")  }}</p>
 
     <br>
 
-    <p class = "stuff" v-if="event.attending.length > 0"> <b>Attendees:</b> {{ props.event.attending.join(", ") }}</p>
-    <p class = "stuff" v-if="event.interested.length > 0"> <b>Interested:</b> {{ props.event.interested.join(", ") }}</p>
-    <p class = "capacity"><b>Capacity: </b>{{ props.event.attending.length }} / {{ props.event.capacity }}</p>
+    <label for="attendees"><b>Attendees</b> ({{ props.event.attending.length }} / {{ props.event.capacity }}) </label>
+    <p id="attendees" class = "stuff" v-if="event.attending.length > 0">  {{ props.event.attending.join(", ") }}</p>
+
+    <label for="interested"  v-if="event.interested.length > 0"><b>Interested</b></label>
+    <p class = "stuff" v-if="event.interested.length > 0"> {{ props.event.interested.join(", ") }} </p>
   </template>
     <menu>
       <li>
@@ -146,6 +151,12 @@ const indicateAttendance = async () => {
 
 <style scoped>
 
+label {
+  padding-top: 1em;
+}
+.icon {
+  width: 1em;
+}
 .dropdownButton {
   width: 10em;
 }

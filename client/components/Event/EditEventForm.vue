@@ -23,6 +23,10 @@ const accommodations = ref<Array<string>>(props.event.accommodations);
 const startPick = ref(null);
 const endPick = ref(null);
 
+const topicString = ref("topic")
+const amenityString = ref("amenity")
+const accommodationString = ref("accommodation")
+
 console.log(props.event.topics.value)
 
 function updateTopics(tags: string[]) {
@@ -104,13 +108,13 @@ const editEvent = async(title: string, location: string, description: string, ca
     <textarea id="description" v-model="description" placeholder="description of event"> </textarea>
 
     <label for="topicsInput">Topics:</label>
-    <TagsInput id="topicsInput" :initTags="topics" @updateTags="updateTopics"/>
+    <TagsInput id="topicsInput" :initTags="topics" @updateTags="updateTopics" :tagName="topicString"/>
 
     <label for="amenitiesInput">Amenities:</label>
-    <TagsInput id="amenitiesInput" :initTags="amenities" @updateTags="updateAmenities"/>
+    <TagsInput id="amenitiesInput" :initTags="amenities" @updateTags="updateAmenities" :tagName="amenityString"/>
 
     <label for="accommodationsInput">Accommodations:</label>
-    <TagsInput id="accommodationsInput" :initTags="accommodations" @updateTags="updateAccommodations"/>
+    <TagsInput id="accommodationsInput" :initTags="accommodations" @updateTags="updateAccommodations" :tagName="accommodationString"/>
 
     <label for="photo">Photo:</label>
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent> 
