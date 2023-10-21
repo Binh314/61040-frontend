@@ -226,12 +226,14 @@ class Routes {
   @Router.get("/events/id/:id")
   async getEvent(id: string) {
     let events;
+    console.log(id);
     if (id) {
       const _id = new ObjectId(id);
       events = await Event.getEvents({ _id });
     } else {
       events = await Event.getEvents({});
     }
+    console.log(events);
     return Responses.events(events);
   }
 

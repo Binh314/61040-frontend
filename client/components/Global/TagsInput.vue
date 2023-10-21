@@ -37,7 +37,7 @@ function removeTag(i: number) {
 <template>
   <div>
     <span v-for="(tag, index) in tags">
-      <input v-model="tags[index]" class = "tagInput" @blur="emit('updateTags', tags)"  :placeholder="tagName"
+      <input v-model="tags[index]" class = "tagInput" @blur="emit('updateTags', tags)"  :placeholder="`click to enter ${tagName}`"
       :style="{ width: inputWidth(index) }" @keypress.enter.prevent> 
       <font-awesome-icon :ref="`input${index}`" :icon="['fas', 'square-xmark']" size="xl" @click="removeTag(index)" class="removeIcon"/>
     </span>

@@ -1,18 +1,19 @@
 <script setup lang="ts">
+import EventFeedComponent from "@/components/Event/EventFeedComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import EventInfoComponent from "../components/Event/EventInfoComponent.vue";
 
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 </script>
 
 <template>
   <main>
+    <h1>Events Feed</h1>
     <section>
       <h1 v-if="isLoggedIn"></h1>
       <h1 v-else>Please login!</h1>
     </section>
-    <EventInfoComponent />
+    <EventFeedComponent />
   </main>
 </template>
 

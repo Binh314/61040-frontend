@@ -2,6 +2,7 @@ import { storeToRefs } from "pinia";
 import { createRouter, createWebHistory } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
+import EventFeedView from "../views/EventFeedView.vue";
 import EventView from "../views/EventView.vue";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
@@ -20,6 +21,11 @@ const router = createRouter({
     {
       path: "/events",
       name: "Events",
+      component: EventFeedView,
+    },
+    {
+      path: "/event/:id",
+      name: "Event",
       component: EventView,
     },
     {

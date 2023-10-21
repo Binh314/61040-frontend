@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import TestComponent from "@/components/Global/TagsInput.vue";
+import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
+void router.push({ name: "Event", params: {id: "652c98e1dedae962fc7cb38f"}});
+
 </script>
 
 <template>
   <main>
-    <TestComponent />
   </main>
 </template>
 
