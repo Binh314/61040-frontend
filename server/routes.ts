@@ -223,17 +223,23 @@ class Routes {
     return Responses.events(events);
   }
 
+  @Router.get("/events/hosting")
+  async getHostingEvents(session: WebSessionDoc) {
+    const host = WebSession.getUser(session);
+    const timeNow = new Date();
+    const events = await Event.getEvents({ host, endTime: { $gt: timeNow } });
+    return Responses.events(events);
+  }
+
   @Router.get("/events/id/:id")
   async getEvent(id: string) {
     let events;
-    console.log(id);
     if (id) {
       const _id = new ObjectId(id);
       events = await Event.getEvents({ _id });
     } else {
       events = await Event.getEvents({});
     }
-    console.log(events);
     return Responses.events(events);
   }
 

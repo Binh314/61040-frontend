@@ -42,9 +42,6 @@ onBeforeMount(async () => {
               <RouterLink :to="{ name: 'Events' }" :class="{ underline: currentRouteName == 'Events' }"> Events </RouterLink>
             </li>
             <li>
-              <RouterLink :to="{ name: 'Event', params: {id: '652c98e1dedae962fc7cb38f'} }" :class="{ underline: currentRouteName == 'Event' }"> Event </RouterLink>
-            </li>
-            <li>
               <RouterLink :to="{ name: 'Test' }" :class="{ underline: currentRouteName == 'Test' }"> Test </RouterLink>
             </li>
             <li v-if="isLoggedIn">
@@ -61,11 +58,8 @@ onBeforeMount(async () => {
       </article>
           </header>
     </div>
-    <div class="pure-u-1-2"> <!--6/12-->
+    <div class="pure-u-5-6"> <!--10/12-->
         <RouterView class="content"/>
-    </div>
-    <div class="pure-u-1-3"> <!--4/12-->
-        <p>to do</p>
     </div>
   </div>
 </template>

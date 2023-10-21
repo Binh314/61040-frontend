@@ -1,33 +1,45 @@
 <script setup lang="ts">
 import EditEventForm from "@/components/Event/EditEventForm.vue";
+import EventAttendingComponent from "@/components/Event/EventAttendingComponent.vue";
 import EventComponent from "@/components/Event/EventComponent.vue";
-import router from "@/router";
+import EventHostingComponent from "@/components/Event/EventHostingComponent.vue";
+import EventInterestedComponent from "@/components/Event/EventInterestedComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import router from "../../router";
 const { isLoggedIn } = storeToRefs(useUserStore());
+
+// const currentRoute = ref(useRoute());
+// const currentRouteName = computed(() => currentRoute.value.name);
 
 const loaded = ref(false);
 let events = ref<Array<Record<string, string>>>([]);
 let editing = ref("");
 let detailed = ref<Array<string>>([]);
-let searchHost = ref("");
 
-// async function getEventFeed(host?: string) {
-//   let query: Record<string, string> = host !== undefined ? { host } : {};
-//   let eventResults;
-//   try {
-//     eventResults = await fetchy("/api/feed/events", "GET", query)
-//   } catch (_) {
-//     return;
-//   }
-//   searchHost.value = host ? host : "";
-//   events.value = eventResults;
-// }
+watch(async () => router.currentRoute.value.params.id, 
+  async newId => { 
+    const id = await newId;
+    if (typeof id === "string") 
+      await getEventById(id);
+    }
+);
+    
+async function getEvent() {
+  let eventResults;
+  try {
+    const id = useRoute().params.id;
+    eventResults = await fetchy(`/api/events/id/${id}`, "GET")
+  } catch (_) {
+    return;
+  }
+  events.value = eventResults;
+}
 
-async function getEvent(id: string) {
-  let query: Record<string, string> = {_id: id};
+async function getEventById(id: string) {
   let eventResults;
   try {
     eventResults = await fetchy(`/api/events/id/${id}`, "GET")
@@ -51,29 +63,36 @@ function removeDetailed(id: string) {
 }
 
 onBeforeMount(async () => {
-  const id = router.currentRoute.value.params.id;
-  console.log(id)
-  if (typeof id === "string")
-  await getEvent(id);
+  await getEvent();
   loaded.value = true;
 });
+
 
 </script>
 
 <template>
-  <div class="row">
-    <h2>Event</h2>
+  <div class="pure-grid">
+      <div class="pure-u-2-3">
+          <div class="row">
+            <h2>Event</h2>
+          </div>
+          <section class="events" v-if="loaded && events.length !== 0">
+            <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
+            <article v-for="event in events" :key="event._id">
+              <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEvent()"
+              @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
+              <EditEventForm v-else :event="event" @refreshEvents="getEvent()" @editEvent="updateEditing" />
+            </article>
+          </section>
+          <p v-else-if="loaded">No events found</p>
+          <p v-else>Loading...</p>
+      </div>
+      <div class="pure-u-1-3">
+        <EventAttendingComponent/>
+        <EventInterestedComponent/>
+        <EventHostingComponent/>
+      </div>
   </div>
-  <section class="events" v-if="loaded && events.length !== 0">
-    <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
-    <article v-for="event in events" :key="event._id">
-      <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEvent" 
-      @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
-      <EditEventForm v-else :event="event" @refreshEvents="getEvent" @editEvent="updateEditing" />
-    </article>
-  </section>
-  <p v-else-if="loaded">No events found</p>
-  <p v-else>Loading...</p>
 </template>
 
 <style scoped>

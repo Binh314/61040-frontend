@@ -4,6 +4,8 @@ import { storeToRefs } from "pinia";
 import EventInfoComponent from "../components/Event/EventInfoComponent.vue";
 
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
+
+
 </script>
 
 <template>
@@ -12,7 +14,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
       <h1 v-if="isLoggedIn"></h1>
       <h1 v-else>Please login!</h1>
     </section>
-    <EventInfoComponent />
+    <EventInfoComponent/>
   </main>
 </template>
 

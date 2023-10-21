@@ -14,6 +14,7 @@ let events = ref<Array<Record<string, string>>>([]);
 let editing = ref("");
 let detailed = ref<Array<string>>([]);
 let searchHost = ref("");
+let creating = ref(false);
 
 async function getEventFeed(host?: string) {
   let query: Record<string, string> = host !== undefined ? { host } : {};
@@ -25,6 +26,7 @@ async function getEventFeed(host?: string) {
   }
   searchHost.value = host ? host : "";
   events.value = eventResults;
+  creating.value = false;
 }
 
 async function getEvents(host?: string) {
@@ -52,6 +54,10 @@ function removeDetailed(id: string) {
   detailed.value.splice(idx, 1);
 }
 
+function createEvent() {
+  creating.value = true;
+}
+
 onBeforeMount(async () => {
   if (isLoggedIn) {
     await getEventFeed();
@@ -63,25 +69,30 @@ onBeforeMount(async () => {
 </script>
 
 <template>
+  <div v-if="creating">
   <section class="formArea" v-if="isLoggedIn">
-    <h2>Create an event:</h2>
-    <createEventForm @refreshEvents="getEventFeed" />
+      <h2>Create an event:</h2>
+      <createEventForm @refreshEvents="getEventFeed" />
   </section>
-  <div class="row">
-    <h2 v-if="!searchHost">Events:</h2>
-    <h2 v-else>Events by {{ searchHost }}:</h2>
-    <!-- <SearchEventForm @getEventsByHost="getEvents" /> -->
   </div>
-  <section class="events" v-if="loaded && events.length !== 0">
-    <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
-    <article v-for="event in events" :key="event._id">
-      <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEventFeed" 
-      @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
-      <EditEventForm v-else :event="event" @refreshEvents="getEventFeed" @editEvent="updateEditing" />
-    </article>
-  </section>
-  <p v-else-if="loaded">No events found</p>
-  <p v-else>Loading...</p>
+  <div v-else>
+    <div class="row">
+      <button @click="createEvent" >Create an Event</button>
+      <h2 v-if="!searchHost"></h2>
+      <h2 v-else> {{ searchHost }}:</h2>
+      <!-- <SearchEventForm @getEventsByHost="getEvents" /> -->
+    </div>
+    <section class="events" v-if="loaded && events.length !== 0">
+      <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
+      <article v-for="event in events" :key="event._id">
+        <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEventFeed"
+        @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
+        <EditEventForm v-else :event="event" @refreshEvents="getEventFeed" @editEvent="updateEditing" />
+      </article>
+    </section>
+    <p v-else-if="loaded">No events found</p>
+    <p v-else>Loading...</p>
+  </div>
 </template>
 
 <style scoped>
