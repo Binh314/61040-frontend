@@ -4,11 +4,11 @@ import EventAttendingComponent from "@/components/Event/EventAttendingComponent.
 import EventComponent from "@/components/Event/EventComponent.vue";
 import EventHostingComponent from "@/components/Event/EventHostingComponent.vue";
 import EventInterestedComponent from "@/components/Event/EventInterestedComponent.vue";
+import EventUpcomingComponent from "@/components/Event/EventUpcomingComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref, watch } from "vue";
-import { useRoute } from "vue-router";
 import router from "../../router";
 const { isLoggedIn } = storeToRefs(useUserStore());
 
@@ -16,38 +16,32 @@ const { isLoggedIn } = storeToRefs(useUserStore());
 // const currentRouteName = computed(() => currentRoute.value.name);
 
 const loaded = ref(false);
+const componentKey = ref(1);
 let events = ref<Array<Record<string, string>>>([]);
 let editing = ref("");
 let detailed = ref<Array<string>>([]);
+const eventId = ref("")
 
 watch(async () => router.currentRoute.value.params.id, 
   async newId => { 
     const id = await newId;
     if (typeof id === "string") 
-      await getEventById(id);
-    }
+      eventId.value = id;
+    await getEvent();
+  }
 );
     
 async function getEvent() {
   let eventResults;
   try {
-    const id = useRoute().params.id;
-    eventResults = await fetchy(`/api/events/id/${id}`, "GET")
+    eventResults = await fetchy(`/api/events/id/${eventId.value}`, "GET")
   } catch (_) {
     return;
   }
   events.value = eventResults;
+  componentKey.value = componentKey.value * -1; // reload sidebar
 }
 
-async function getEventById(id: string) {
-  let eventResults;
-  try {
-    eventResults = await fetchy(`/api/events/id/${id}`, "GET")
-  } catch (_) {
-    return;
-  }
-  events.value = eventResults;
-}
 
 function updateEditing(id: string) {
   editing.value = id;
@@ -63,6 +57,9 @@ function removeDetailed(id: string) {
 }
 
 onBeforeMount(async () => {
+  const id = router.currentRoute.value.params.id;
+  if (typeof id === "string")
+    eventId.value = id;
   await getEvent();
   loaded.value = true;
 });
@@ -79,18 +76,19 @@ onBeforeMount(async () => {
           <section class="events" v-if="loaded && events.length !== 0">
             <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
             <article v-for="event in events" :key="event._id">
-              <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEvent()"
+              <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEvent"
               @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
-              <EditEventForm v-else :event="event" @refreshEvents="getEvent()" @editEvent="updateEditing" />
+              <EditEventForm v-else :event="event" @refreshEvents="getEvent" @editEvent="updateEditing" />
             </article>
           </section>
           <p v-else-if="loaded">No events found</p>
           <p v-else>Loading...</p>
       </div>
       <div class="pure-u-1-3">
-        <EventAttendingComponent/>
-        <EventInterestedComponent/>
-        <EventHostingComponent/>
+        <EventAttendingComponent :key="componentKey"/>
+        <EventInterestedComponent :key="componentKey"/>
+        <EventHostingComponent :key="componentKey"/>
+        <EventUpcomingComponent :key="componentKey"/>
       </div>
   </div>
 </template>

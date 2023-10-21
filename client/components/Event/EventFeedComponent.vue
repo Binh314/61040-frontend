@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import createEventForm from "@/components/Event/CreateEventForm.vue";
 import EditEventForm from "@/components/Event/EditEventForm.vue";
+import EventAttendingComponent from "@/components/Event/EventAttendingComponent.vue";
 import EventComponent from "@/components/Event/EventComponent.vue";
+import EventHostingComponent from "@/components/Event/EventHostingComponent.vue";
+import EventInterestedComponent from "@/components/Event/EventInterestedComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
@@ -15,6 +18,7 @@ let editing = ref("");
 let detailed = ref<Array<string>>([]);
 let searchHost = ref("");
 let creating = ref(false);
+const componentKey = ref(1);
 
 async function getEventFeed(host?: string) {
   let query: Record<string, string> = host !== undefined ? { host } : {};
@@ -27,6 +31,7 @@ async function getEventFeed(host?: string) {
   searchHost.value = host ? host : "";
   events.value = eventResults;
   creating.value = false;
+  componentKey.value =  - componentKey.value;
 }
 
 async function getEvents(host?: string) {
@@ -69,29 +74,38 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div v-if="creating">
-  <section class="formArea" v-if="isLoggedIn">
-      <h2>Create an event:</h2>
-      <createEventForm @refreshEvents="getEventFeed" />
-  </section>
-  </div>
-  <div v-else>
-    <div class="row">
-      <button @click="createEvent" >Create an Event</button>
-      <h2 v-if="!searchHost"></h2>
-      <h2 v-else> {{ searchHost }}:</h2>
-      <!-- <SearchEventForm @getEventsByHost="getEvents" /> -->
+  <div class="pure-grid">
+    <div class="pure-u-2-3">
+      <div v-if="creating">
+      <section class="formArea" v-if="isLoggedIn">
+          <h2>Create an event:</h2>
+          <createEventForm @refreshEvents="getEventFeed" />
+      </section>
+      </div>
+      <div v-else>
+        <div class="row">
+          <button @click="createEvent" >Create an Event</button>
+          <h2 v-if="!searchHost"></h2>
+          <h2 v-else> {{ searchHost }}:</h2>
+          <!-- <SearchEventForm @getEventsByHost="getEvents" /> -->
+        </div>
+        <section class="events" v-if="loaded && events.length !== 0">
+          <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
+          <article v-for="event in events" :key="event._id">
+            <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEventFeed"
+            @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
+            <EditEventForm v-else :event="event" @refreshEvents="getEventFeed" @editEvent="updateEditing" />
+          </article>
+        </section>
+        <p v-else-if="loaded">No events found</p>
+        <p v-else>Loading...</p>
+      </div>
     </div>
-    <section class="events" v-if="loaded && events.length !== 0">
-      <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
-      <article v-for="event in events" :key="event._id">
-        <EventComponent v-if="editing !== event._id" :event="event" :detailed="detailed" @refreshEvents="getEventFeed"
-        @editEvent="updateEditing" @seeMoreEventDetails="addDetailed" @seeLessEventDetails="removeDetailed"/>
-        <EditEventForm v-else :event="event" @refreshEvents="getEventFeed" @editEvent="updateEditing" />
-      </article>
-    </section>
-    <p v-else-if="loaded">No events found</p>
-    <p v-else>Loading...</p>
+    <div class="pure-u-1-3">
+      <EventAttendingComponent :key="componentKey"/>
+      <EventInterestedComponent :key="componentKey"/>
+      <EventHostingComponent :key="componentKey"/>
+    </div>
   </div>
 </template>
 
