@@ -6,18 +6,18 @@ import { NotAllowedError, NotFoundError } from "./errors";
 export interface ProfileDoc extends BaseDoc {
   person: ObjectId;
   name: string;
-  bio: string;
-  location: string;
   interests: string[];
   posts: ObjectId[];
   birthdate?: Date;
+  bio?: string;
+  location?: string;
   photo?: string;
 }
 
 export default class EventConcept {
   public readonly profiles = new DocCollection<ProfileDoc>("profiles");
   async create(person: ObjectId, name: string) {
-    const _id = await this.profiles.createOne({ person, name, bio: "", location: "", interests: [], posts: [] });
+    const _id = await this.profiles.createOne({ person, name, interests: [], posts: [] });
     return { msg: "Profile successfully created!", id: _id, profile: await this.profiles.readOne({ _id }) };
   }
   async getProfiles(query: Filter<ProfileDoc>) {

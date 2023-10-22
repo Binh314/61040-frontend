@@ -139,11 +139,23 @@ const emptyForm = () => {
     </label>
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent> 
 
-    <button type="submit" class="pure-button-primary pure-button">Create Event</button>
+    <menu>
+        <li><button type="submit" class="pure-button-primary pure-button">Create Event</button></li>
+        <li><button class="btn-small pure-button" @click="emit('refreshEvents')">Cancel</button></li>
+      </menu>
   </form>
 </template>
 
 <style scoped>
+
+menu {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  padding: 0;
+  margin: 0;
+}
 .icon {
   width: 1em;
 }

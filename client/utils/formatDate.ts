@@ -11,3 +11,7 @@ export const formatEventDate = (date: Date): string => moment(date).format("MMMM
 export const formatTime = (date: Date): string => moment(date).format("h:mm a");
 export const toDateString = (date: string): string => moment(date).utc().toDate().toString();
 export const formatDatepick = (date: Date): string => moment(date).format("YYYY-MM-DD[T]HH:mm");
+export const calculateAge = (date: Date): number => {
+  const now = moment();
+  return now.diff(moment(date), "years");
+};

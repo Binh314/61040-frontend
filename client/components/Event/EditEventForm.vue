@@ -85,38 +85,38 @@ const editEvent = async(title: string, location: string, description: string, ca
 
 <template>
   <form @submit.prevent="editEvent(title, location, description, capacity, startTime, endTime, ageReq, photo, topics, amenities, accommodations)">
-    <label for="title">Title:</label>
+    <label for="title">Title</label>
     <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent> 
 
-    <label for="location">Location:</label>
+    <label for="location">Location</label>
     <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent>
 
-    <label for="startTime">Start Time:</label>
+    <label for="startTime">Start Time</label>
     <input ref="startPick" type="datetime-local" v-model="startTime" id="startTime" name="start-time" required @keypress.enter.prevent/>
 
-    <label for="endTime">End Time:</label>
+    <label for="endTime">End Time</label>
     <input ref="endPick" type="datetime-local" v-model="endTime" id="endTime" name="end-time" required @keypress.enter.prevent/>
 
-    <label for="ageReq">Age Requirement:</label>
+    <label for="ageReq">Age Requirement</label>
     <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2" @keypress.enter.prevent>
 
-    <label for="capacity">Capacity:</label>
+    <label for="capacity">Capacity</label>
     <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent>
 
 
-    <label for="description">Description:</label>
+    <label for="description">Description</label>
     <textarea id="description" v-model="description" placeholder="description of event"> </textarea>
 
-    <label for="topicsInput">Topics:</label>
+    <label for="topicsInput">Topics</label>
     <TagsInput id="topicsInput" :initTags="topics" @updateTags="updateTopics" :tagName="topicString"/>
 
-    <label for="amenitiesInput">Amenities:</label>
+    <label for="amenitiesInput">Amenities</label>
     <TagsInput id="amenitiesInput" :initTags="amenities" @updateTags="updateAmenities" :tagName="amenityString"/>
 
-    <label for="accommodationsInput">Accommodations:</label>
+    <label for="accommodationsInput">Accommodations</label>
     <TagsInput id="accommodationsInput" :initTags="accommodations" @updateTags="updateAccommodations" :tagName="accommodationString"/>
 
-    <label for="photo">Photo:</label>
+    <label for="photo">Photo</label>
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent> 
 
     <div class="base">
@@ -162,6 +162,10 @@ menu {
   gap: 1em;
   padding: 0;
   margin: 0;
+}
+
+label {
+  padding-top: 1em;
 }
 
 .base {

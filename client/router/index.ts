@@ -7,6 +7,7 @@ import EventView from "../views/EventView.vue";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
+import ProfileView from "../views/ProfileView.vue";
 import SettingView from "../views/SettingView.vue";
 import TestView from "../views/TestView.vue";
 
@@ -27,6 +28,11 @@ const router = createRouter({
       path: "/event/:id",
       name: "Event",
       component: EventView,
+    },
+    {
+      path: "/profile/:username",
+      name: "Profile",
+      component: ProfileView,
     },
     {
       path: "/test",

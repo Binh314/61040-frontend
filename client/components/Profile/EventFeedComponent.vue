@@ -76,12 +76,11 @@ onBeforeMount(async () => {
 <template>
   <div class="pure-grid">
     <div class="pure-u-2-3">
-      <h1>Event Feed</h1>
       <div v-if="creating">
-      <section class="formArea" v-if="isLoggedIn">
-          <h2>Create an event:</h2>
-          <createEventForm @refreshEvents="getEventFeed" />
-      </section>
+        <section class="formArea" v-if="isLoggedIn">
+            <h2>Create an event:</h2>
+            <createEventForm @refreshEvents="getEventFeed" />
+        </section>
       </div>
       <div v-else>
         <div class="row">
@@ -115,10 +114,6 @@ section {
   display: flex;
   flex-direction: column;
   gap: 1em;
-}
-
-h1 {
-  text-align: center;
 }
 
 section,

@@ -15,7 +15,6 @@ let detailed = ref<Array<string>>([]);
 let searchHost = ref("");
 
 async function getHostingEvents() {
-  let query: Record<string, string> =  { host: currentUsername.value };
   let eventResults;
   try {
     eventResults = await fetchy("/api/events/hosting", "GET")
@@ -35,10 +34,10 @@ onBeforeMount(async () => {
 
 <template>
   <section class="events" v-if="loaded && events.length !== 0">
-  <h2>Events You Are Hosting</h2>
-  <div v-for="event in events" :key="event._id">
-      <EventBriefComponent class="brief" :event="event"/>
-  </div>
+    <h2>Events You Are Hosting</h2>
+    <div v-for="event in events" :key="event._id">
+        <EventBriefComponent class="brief" :event="event"/>
+    </div>
   </section>
 </template>
 
