@@ -3,6 +3,7 @@ import { useUserStore } from "@/stores/user";
 import { formatDate } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
 import { fetchy } from "../../utils/fetchy";
+import ProfileHeaderComponent from "../Profile/ProfileHeaderComponent.vue";
 
 const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
@@ -19,7 +20,7 @@ const deletePost = async () => {
 </script>
 
 <template>
-  <p class="author">{{ props.post.author }}</p>
+  <p class="author"> <ProfileHeaderComponent :username="props.post.author"/> </p>
   <p>{{ props.post.content }}</p>
   <p class="files">  
     <img v-for="file in props.post.files" class="postImage" src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg">
@@ -42,7 +43,6 @@ p {
 }
 
 .author {
-  font-weight: bold;
   font-size: 1.2em;
 }
 

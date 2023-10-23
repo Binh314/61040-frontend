@@ -46,6 +46,7 @@ async function getEventPage() {
 <style scoped>
 article:hover {
   background-color: darkgray;
+  cursor:pointer;
 }
 
 article {
