@@ -84,7 +84,7 @@ section,
 p,
 .row {
   margin: 0 auto;
-  max-width: 60em;
+  max-width: 100%;
 }
 
 article {
@@ -108,7 +108,7 @@ article {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
-  max-width: 60em;
+  max-width: 100%;
   padding: 1em;
 }
 </style>

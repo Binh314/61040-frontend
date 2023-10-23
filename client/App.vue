@@ -31,7 +31,7 @@ onBeforeMount(async () => {
           <div class="title">
             <img src="@/assets/images/logo.svg" />
             <RouterLink :to="{ name: 'Home' }">
-              <h1>Nakama</h1>
+              <h2>Nakama</h2>
             </RouterLink>
           </div>
           <ul>
@@ -45,9 +45,9 @@ onBeforeMount(async () => {
               <RouterLink :to="{ name: 'Test' }" :class="{ underline: currentRouteName == 'Test' }"> Test </RouterLink>
             </li>
             <li v-if="isLoggedIn">
-              <li>
-                <RouterLink :to="{ name: 'Profile', params: {username: currentUsername} }" :class="{ underline: currentRouteName == 'Profile' }"> Profile </RouterLink>
-              </li>
+              <RouterLink :to="{ name: 'Profile', params: {username: currentUsername} }" :class="{ underline: currentRouteName == 'Profile' }"> Profile </RouterLink>
+            </li>
+            <li v-if="isLoggedIn">
               <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
             </li>
             <li v-else>

@@ -9,21 +9,20 @@ const props = defineProps(["profile"]);
 const emit = defineEmits(["editProfile", "refreshProfile"]);
 const { currentUsername } = storeToRefs(useUserStore());
 
+
 const age = computed(() => {
   const bday = new Date(props.profile.birthdate);
   return calculateAge(bday);
 })
 
+
 </script>
 
 
 <template>
-  <p class="bio" v-if="props.profile.bio">{{ props.profile.bio }}</p>
-
-  <h2 class = "user">{{ props.profile.person.username }}</h2>
-  <h2 class = "name">{{ props.profile.name }}</h2>
-  <br>
-  
+  <img v-if="props.profile.photo" class="photo" :src="props.profile.photo">
+  <h1 class = "name"> {{ props.profile.name }}</h1>
+  <p>@{{ props.profile.person.username }}</p>
   <p class = "age" v-if="age"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ age }} </p>
 
   <p class = "location" v-if="profile.location"> 
@@ -31,11 +30,12 @@ const age = computed(() => {
       {{props.profile.location}}
   </p>
 
-  <p class="tags" v-if="props.profile.interests.length > 0"> <font-awesome-icon icon="tags" size="lg" class="icon" /> {{  props.profile.interests.join(", ")  }}</p>
+  <p class="interests" v-if="props.profile.interests.length > 0"> <font-awesome-icon class="icon" :icon="['fas', 'thumbs-up']" size="lg" /> {{  props.profile.interests.join(", ")  }}</p>
 
   <br>
 
-  <p><img v-if="props.profile.photo" class="photo" :src="props.profile.photo"></p>
+  <p class="bio" v-if="props.profile.bio">{{ props.profile.bio }}</p>
+
 
     <br>
 
@@ -46,6 +46,12 @@ const age = computed(() => {
 
 <style scoped>
 
+.row {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 auto;
+  max-width: 100%;
+}
 
 label {
   padding-top: 1em;
@@ -61,16 +67,19 @@ label {
   font-weight: normal;
 }
 
-h2 {
+h1 {
   margin-top: 0;
   margin-bottom: 0;
 }
+
 p {
   margin: 0em;
 }
 
-.photo{
-  max-width: 75%;
+img {
+  object-fit: cover;
+  width: 25%;
+  aspect-ratio: 1;
 }
 
 .title {

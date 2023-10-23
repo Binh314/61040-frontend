@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TagsInput from "@/components/Global/TagsInput.vue";
-import { formatDatepick, toDateString } from "@/utils/formatDate";
+import { formatBdaypick, toDateString } from "@/utils/formatDate";
 import { onMounted, ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
@@ -12,7 +12,7 @@ const name = ref(props.profile.name);
 const photo = ref(props.profile.photo);
 const location = ref(props.profile.location);
 const bio = ref(props.profile.bio);
-const birthdate = ref(formatDatepick(props.profile.birthdate));
+const birthdate = ref(formatBdaypick(props.profile.birthdate));
 const interests = ref<Array<string>>(props.profile.interests);
 
 
@@ -59,6 +59,9 @@ const editProfile = async(name: string, bio: string, location: string, bday: str
 
 <template>
   <form @submit.prevent="editProfile(name, bio, location, birthdate, interests, photo)">
+    <label for="photo">Photo</label>
+    <input id="photo" v-model="photo" placeholder="url of your profile photo" @keypress.enter.prevent> 
+
     <label for="name">Name</label>
     <input id="name" v-model="name" placeholder="your name" required @keypress.enter.prevent> 
 
@@ -68,14 +71,11 @@ const editProfile = async(name: string, bio: string, location: string, bday: str
     <label for="birthdate">Birthday</label>
     <input ref="bdayPick" type="date" v-model="birthdate" id="birthdate" name="birthday" @keypress.enter.prevent/>
 
-    <label for="bio">Bio</label>
-    <textarea id="bio" v-model="bio" placeholder="your bio"> </textarea>
-
     <label for="interestsInput">Interests</label>
     <TagsInput id="interestsInput" :initTags="interests" @updateTags="updateInterests" :tagName="interestString"/>
 
-    <label for="photo">Photo</label>
-    <input id="photo" v-model="photo" placeholder="url of your profile photo" @keypress.enter.prevent> 
+    <label for="bio">Bio</label>
+    <textarea id="bio" v-model="bio" placeholder="your bio"> </textarea>
 
     <div class="base">
       <menu>
