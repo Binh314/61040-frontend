@@ -132,12 +132,14 @@ h2 {
   display:flex;
   justify-content : flex-end;
   padding-right: 2em;
+  padding-left: 2em;
 }
 
 .receivedContainer {
   display:flex;
   justify-content : flex-start;
   padding-left: 2em;
+  padding-right: 2em;
 }
 
 .sent {
