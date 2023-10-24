@@ -43,7 +43,7 @@ async function login() {
       </div>
       <div class="pure-control-group">
         <label for="aligned-address">Current Location</label>
-        <input type="address" v-model.trim="address" id="aligned-address" placeholder="Address" title="Leave blank to use GPS location."/>
+        <input type="address" v-model.trim="address" id="aligned-address" placeholder="Address" title="Leave blank to use GPS location." autocomplete="off"/>
       </div>
       <div class="pure-controls">
         <button type="submit" class="pure-button pure-button-primary">{{submitText}}</button>

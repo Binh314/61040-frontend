@@ -6,6 +6,7 @@ import EventFeedView from "../views/EventFeedView.vue";
 import EventView from "../views/EventView.vue";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
+import MessageView from "../views/MessageView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import SettingView from "../views/SettingView.vue";
@@ -28,6 +29,11 @@ const router = createRouter({
       path: "/event/:id",
       name: "Event",
       component: EventView,
+    },
+    {
+      path: "/messages/:username?",
+      name: "Messages",
+      component: MessageView,
     },
     {
       path: "/profile/:username",

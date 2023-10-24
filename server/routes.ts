@@ -550,13 +550,13 @@ class Routes {
   async getMessages(session: WebSessionDoc, otherUser: string) {
     const user = WebSession.getUser(session);
     const toId = (await User.getUserByUsername(otherUser))._id;
-    return await Message.getConversation(user, toId);
+    return Responses.messages(await Message.getConversation(user, toId));
   }
 
   @Router.get("/message/all")
   async getAllMessages(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
-    return await Message.getMessages({ $or: [{ from: user }, { to: user }] });
+    return Responses.messages(await Message.getMessages({ $or: [{ from: user }, { to: user }] }));
   }
 
   // Normal Feed

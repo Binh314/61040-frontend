@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import EditPostForm from "@/components/Post/EditPostForm.vue";
-import PostComponent from "@/components/Post/PostComponent.vue";
-import EditProfileForm from "@/components/Profile/EditProfileForm.vue";
-import ProfileComponent from "@/components/Profile/ProfileComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
+// import router from "../../router";
 import router from "../../router";
+import MessageComponent from "./MessageComponent.vue";
+import MessageListComponent from "./MessageListComponent.vue";
+
 const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
 
 // const currentRoute = ref(useRoute());
 // const currentRouteName = computed(() => currentRoute.value.name);
 
-let posts = ref<Array<Record<string, string>>>([]);
+let messages = ref<Array<Record<string, string>>>([]);
 
 const loaded = ref(false);
 const componentKey = ref(1);
@@ -21,30 +21,34 @@ let profile = ref<Record<string, string>>();
 let editing = ref("");
 const username = ref("");
 
-async function getPosts() {
-  const author = username.value;
-  let query: Record<string, string> = { author };
-  let postResults;
+const messaging = ref<Array<string>>();
+
+// setInterval(getMessages, 1000);
+
+async function getMessages() {
+  let messageResults;
   try {
-    postResults = await fetchy("/api/posts", "GET", { query })
+    messageResults = await fetchy("/api/message/all", "GET")
   } catch (_) {
     return;
   }
-  posts.value = postResults;
+  messages.value = messageResults;
+  const usernames = messages.value.map(message => 
+    (message.from === currentUsername.value) ? message.to : message.from
+  );
+  messaging.value = [...new Set(usernames)];
 }
 
-    
-async function getProfile() {
-  let profileResult;
-  try {
-    profileResult = await fetchy(`/api/profile/user/${username.value}`, "GET")
-  } catch (_) {
-    return;
+  
+watch(async () => router.currentRoute.value.params.username, 
+  async name => { 
+    const user = await name;
+    if (typeof user === "string") 
+      username.value = user;
+    console.log(username.value)
+    await getMessages();
   }
-  profile.value = profileResult;
-  componentKey.value = componentKey.value * -1; // reload sidebar
-}
-
+);
 
 function updateEditing(id: string) {
   editing.value = id;
@@ -52,11 +56,9 @@ function updateEditing(id: string) {
 
 onBeforeMount(async () => {
   const user = router.currentRoute.value.params.username;
-  console.log(user);
   if (typeof user === "string")
     username.value = user;
-  await getProfile();
-  await getPosts();
+  await getMessages();
   loaded.value = true;
 });
 
@@ -64,29 +66,18 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="row">
+  <div class="pure-grid">
+    <div class="pure-u-1-4">
+      <h1>Messages</h1>
+      <button>New Message</button>
+      <MessageListComponent :messaging="messaging"/>
+    </div>
+    <div class="pure-u-1-2">
+      <MessageComponent v-if="username" :username="username"/>
+    </div>
+    <div class="pure-u-1-4">
+    </div>
   </div>
-  <section class="profile" v-if="profile">
-    <article>
-      <ProfileComponent v-if="editing !== profile._id" :profile="profile" @refreshProfile="getProfile"
-      @editProfile="updateEditing" />
-      <EditProfileForm v-else :profile="profile" @refreshProfile="getProfile" @editProfile="updateEditing" />
-    </article>
-  </section>
-  <p v-else-if="loaded">No profile found</p>
-  <p v-else>Loading...</p>
-
-  <br>
-
-  <h2>Posts</h2>
-  <section class="posts" v-if="loaded && posts.length !== 0">
-    <article v-for="post in posts" :key="post._id">
-      <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
-      <EditPostForm v-else :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
-    </article>
-  </section>
-  <p v-else-if="loaded">No posts found</p>
-  <p v-else>Loading...</p>
 </template>
 
 <style scoped>
@@ -96,6 +87,9 @@ section {
   gap: 1em;
 }
 
+button {
+  margin-bottom: 2em;
+}
 
 section,
 p,

@@ -76,71 +76,69 @@ const indicateAttendance = async () => {
 
 <template @click="emit('seeMoreEventDetails', props.event._id)">
   <h3 class="host"> <ProfileHeaderComponent :username="props.event.host"/> </h3>
-  <div class="eventContents">
-    <h2 class = "title">{{ props.event.title }}</h2>
+  <h2 class = "title">{{ props.event.title }}</h2>
+  <br>
+  <!-- Source https://stackoverflow.com/questions/27419509/open-google-map-with-specific-address-in-a-browser -->
+  <p class = "location">
+    <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />
+    <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
+      {{event.location}}
+    </a>
+  </p>
+  <p class = "time" v-if="formatDate(props.event.startTime).split(' ')[0] === formatDate(props.event.endTime).split(' ')[0]">
+    <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" /> {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatTime(props.event.endTime) }}
+  </p>
+  <p class = "time" v-else>
+    {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatEventDate(props.event.endTime) }}
+  </p>
+  <p class = "age" v-if="event.ageReq"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ props.event.ageReq }}+ </p>
+  <p class="tags" v-if="event.topics.length > 0"> <font-awesome-icon icon="tags" size="lg" class="icon" /> {{  props.event.topics.join(", ")  }}</p>
+  <p v-if="event.photo"><img class="photo" :src="event.photo"></p>
+  <br>
+  <template v-if="detailed.includes(event._id)">
+    <label for="description" v-if="event.description"><b>Description</b></label>
+    <p class = "description" v-if="event.description"> {{ props.event.description }} </p>
     <br>
-    <!-- Source https://stackoverflow.com/questions/27419509/open-google-map-with-specific-address-in-a-browser -->
-    <p class = "location">
-      <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />
-      <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
-        {{event.location}}
-      </a>
-    </p>
-    <p class = "time" v-if="formatDate(props.event.startTime).split(' ')[0] === formatDate(props.event.endTime).split(' ')[0]">
-      <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" /> {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatTime(props.event.endTime) }}
-    </p>
-    <p class = "time" v-else>
-      {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatEventDate(props.event.endTime) }}
-    </p>
-    <p class = "age" v-if="event.ageReq"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ props.event.ageReq }}+ </p>
-    <p class="tags" v-if="event.topics.length > 0"> <font-awesome-icon icon="tags" size="lg" class="icon" /> {{  props.event.topics.join(", ")  }}</p>
-    <p v-if="event.photo"><img class="photo" :src="event.photo"></p>
+    <label for="amenities" v-if="event.amenities.length > 0"><b>Amenities</b></label>
+    <p id="amenities" class="tags" v-if="event.amenities.length > 0"> {{  props.event.amenities.join(", ")  }}</p>
+    <label for="accommodations" v-if="event.accommodations.length > 0"><b>Accommodations</b></label>
+    <p id="accommodations" class="tags" v-if="event.accommodations.length > 0">{{  props.event.accommodations.join(", ")  }}</p>
     <br>
-    <template v-if="detailed.includes(event._id)">
-      <label for="description" v-if="event.description"><b>Description</b></label>
-      <p class = "description" v-if="event.description"> {{ props.event.description }} </p>
-      <br>
-      <label for="amenities" v-if="event.amenities.length > 0"><b>Amenities</b></label>
-      <p id="amenities" class="tags" v-if="event.amenities.length > 0"> {{  props.event.amenities.join(", ")  }}</p>
-      <label for="accommodations" v-if="event.accommodations.length > 0"><b>Accommodations</b></label>
-      <p id="accommodations" class="tags" v-if="event.accommodations.length > 0">{{  props.event.accommodations.join(", ")  }}</p>
-      <br>
-      <label for="attendees"><b>Attendees</b> ({{ props.event.attending.length }} / {{ props.event.capacity }}) </label>
-      <p id="attendees" class = "stuff" v-if="event.attending.length > 0">  {{ props.event.attending.join(", ") }}</p>
-      <label for="interested"  v-if="event.interested.length > 0"><b>Interested</b></label>
-      <p class = "stuff" v-if="event.interested.length > 0"> {{ props.event.interested.join(", ") }} </p>
-    </template>
-      <menu>
-        <li>
-          <button class="btn-small pure-button" @click="emit('seeMoreEventDetails', props.event._id)"
-            v-if="!detailed.includes(event._id)">
-            See More Details
-          </button>
-          <button class="btn-small pure-button" @click="emit('seeLessEventDetails', props.event._id)"
-            v-else>
-            See Less Details
-          </button>
-        </li>
-      </menu>
-      <br>
-      <menu v-if="props.event.host == currentUsername" class = "options">
-        <li><button class="btn-small pure-button" @click="emit('editEvent', props.event._id)">Edit</button></li>
-        <li><button class="button-error btn-small pure-button" @click="deleteEvent">Delete</button></li>
-      </menu>
-      <div v-else class="dropdownBox">
-        <div class="addEvent">
-          <button class="pure-button dropdownButton" @click="toggleDropdown">{{ dropdownText }}</button>
-          <div class="dropdownOptions" v-if="addEventActive">
-            <button class="pure-button dropdownButton" @click="indicateInterest">Interested</button> <br/>
-            <button class="pure-button dropdownButton" @click="indicateAttendance">Attending</button>
-          </div>
+    <label for="attendees"><b>Attendees</b> ({{ props.event.attending.length }} / {{ props.event.capacity }}) </label>
+    <p id="attendees" class = "stuff" v-if="event.attending.length > 0">  {{ props.event.attending.join(", ") }}</p>
+    <label for="interested"  v-if="event.interested.length > 0"><b>Interested</b></label>
+    <p class = "stuff" v-if="event.interested.length > 0"> {{ props.event.interested.join(", ") }} </p>
+  </template>
+    <menu>
+      <li>
+        <button class="btn-small pure-button" @click="emit('seeMoreEventDetails', props.event._id)"
+          v-if="!detailed.includes(event._id)">
+          See More Details
+        </button>
+        <button class="btn-small pure-button" @click="emit('seeLessEventDetails', props.event._id)"
+          v-else>
+          See Less Details
+        </button>
+      </li>
+    </menu>
+    <br>
+    <menu v-if="props.event.host == currentUsername" class = "options">
+      <li><button class="btn-small pure-button" @click="emit('editEvent', props.event._id)">Edit</button></li>
+      <li><button class="button-error btn-small pure-button" @click="deleteEvent">Delete</button></li>
+    </menu>
+    <div v-else class="dropdownBox">
+      <div class="addEvent">
+        <button class="pure-button dropdownButton" @click="toggleDropdown">{{ dropdownText }}</button>
+        <div class="dropdownOptions" v-if="addEventActive">
+          <button class="pure-button dropdownButton" @click="indicateInterest">Interested</button> <br/>
+          <button class="pure-button dropdownButton" @click="indicateAttendance">Attending</button>
         </div>
       </div>
-      <article class="timestamp">
-        <p v-if="props.event.dateCreated !== props.event.dateUpdated">Edited on: {{ formatDate(props.event.dateUpdated) }}</p>
-        <p v-else>Created on: {{ formatDate(props.event.dateCreated) }}</p>
-      </article>
-  </div>
+    </div>
+    <article class="timestamp">
+      <p v-if="props.event.dateCreated !== props.event.dateUpdated">Edited on: {{ formatDate(props.event.dateUpdated) }}</p>
+      <p v-else>Created on: {{ formatDate(props.event.dateCreated) }}</p>
+    </article>
 </template>
 
 <style scoped>

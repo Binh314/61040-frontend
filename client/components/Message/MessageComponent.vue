@@ -1,50 +1,154 @@
 <script setup lang="ts">
 
 import { useUserStore } from "@/stores/user";
-import { calculateAge } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { onBeforeMount, onBeforeUnmount, ref } from "vue";
+import { fetchy } from "../../utils/fetchy";
+import ProfileChatComponent from "../Profile/ProfileChatComponent.vue";
 
-const props = defineProps(["profile"]);
-const emit = defineEmits(["editProfile", "refreshProfile"]);
-const { currentUsername } = storeToRefs(useUserStore());
+const text = ref("");
+const emit = defineEmits(["refreshPosts"]);
+const props = defineProps(["username"]);
+const loaded = ref(false);
+const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
+const interval = ref();
+
+let messages = ref<Array<Record<string, string>>>([]);
+
+async function getMessages() {
+  let messageResults;
+  try {
+    messageResults = await fetchy(`/api/message/user/${props.username}`, "GET")
+  } catch (_) {
+    return;
+  }
+  messages.value = messageResults;
+}
+
+const sendMessage = async (text: string) => {
+  if (!text) return;
+  try {
+    await fetchy(`/api/message/${props.username}`, "POST", {
+      body: { text }, alert: false
+    });
+  } catch (_) {
+    return;
+  }
+  emit("refreshPosts");
+  emptyForm();
+  getMessages();
+};
+
+onBeforeMount(async () => {
+  // const user = router.currentRoute.value.params.username;
+  // console.log(user);
+  // if (typeof user === "string")
+  //   username.value = user;
+  await getMessages();
+  loaded.value = true;
+  console.log("mount");
+  interval.value = setInterval(getMessages, 1000);
+});
+
+onBeforeUnmount(async () => {
+  console.log("unmount");
+  clearInterval(interval.value);
+});
 
 
-const age = computed(() => {
-  const bday = new Date(props.profile.birthdate);
-  return calculateAge(bday);
-})
-
-
+const emptyForm = () => {
+  text.value = "";
+};
 </script>
 
-
 <template>
-  <img v-if="props.profile.photo" class="photo" :src="props.profile.photo">
-  <h1 class = "name"> {{ props.profile.name }}</h1>
-  <p>@{{ props.profile.person.username }}</p>
-  <p class = "age" v-if="age"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ age }} </p>
-
-  <p class = "location" v-if="profile.location"> 
-    <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> 
-      {{props.profile.location}}
-  </p>
-
-  <p class="interests" v-if="props.profile.interests.length > 0"> <font-awesome-icon class="icon" :icon="['fas', 'thumbs-up']" size="lg" /> {{  props.profile.interests.join(", ")  }}</p>
-
-  <br>
-
-  <p class="bio" v-if="props.profile.bio">{{ props.profile.bio }}</p>
-
-
-    <br>
-
-    <menu v-if="props.profile.person.username == currentUsername" class = "options">
-      <li><button class="btn-small pure-button" @click="emit('editProfile', props.profile._id)">Edit</button></li>
-    </menu>
+  <div class="messagesSection">
+    <section class="profile">
+      <ProfileChatComponent :username="username"/>
+    </section>
+    <section class="messages">
+      <body class = "message" v-for="message in messages">
+        <div v-if="message.from === currentUsername" class="sentContainer">
+          <p class="sent">
+            {{ message.text }}
+          </p>
+        </div>
+        <div v-else class="receivedContainer">
+          <p class="received">
+            {{ message.text }}
+          </p>
+        </div>
+        <br/>
+      </body>
+    </section>
+    <form @submit.prevent="sendMessage(text)">
+      <input id="text" v-model="text" placeholder="Enter text." autocomplete="off"/>
+      <button type="submit" class="pure-button-primary pure-button">Send</button>
+    </form>
+  </div>
 </template>
 
 <style scoped>
+
+.messagesSection {
+  border-style: solid;
+}
+
+.messages {
+  display:flex;
+  flex-direction: column-reverse;
+}
+
+.sentContainer {
+  display:flex;
+  justify-content : flex-end;
+  padding-right: 2em;
+}
+
+.receivedContainer {
+  display:flex;
+  justify-content : flex-start;
+  padding-left: 2em;
+}
+
+.sent {
+  background-color: plum;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+}
+
+.received {
+  padding: 0.5em 1em;
+  background-color: lightgray;
+  border-radius: 1em;
+}
+
+.messagesSection {
+  height:95vh;
+  width:100%;
+}
+
+.messages {
+  overflow-y: scroll;
+  height: 80%;
+}
+
+form {
+  background-color: var(--base-bg);
+  border-radius: 1em;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  padding: 1em;
+}
+
+input {
+  width:80%
+}
+
+button {
+  width: 20%
+}
 
 .row {
   display: flex;

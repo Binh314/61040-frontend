@@ -86,10 +86,10 @@ const editEvent = async(title: string, location: string, description: string, ca
 <template>
   <form @submit.prevent="editEvent(title, location, description, capacity, startTime, endTime, ageReq, photo, topics, amenities, accommodations)">
     <label for="title">Title</label>
-    <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent> 
+    <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent autocomplete="off"> 
 
     <label for="location">Location</label>
-    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent>
+    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent autocomplete="off">
 
     <label for="startTime">Start Time</label>
     <input ref="startPick" type="datetime-local" v-model="startTime" id="startTime" name="start-time" required @keypress.enter.prevent/>
@@ -98,10 +98,10 @@ const editEvent = async(title: string, location: string, description: string, ca
     <input ref="endPick" type="datetime-local" v-model="endTime" id="endTime" name="end-time" required @keypress.enter.prevent/>
 
     <label for="ageReq">Age Requirement</label>
-    <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2" @keypress.enter.prevent>
+    <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2" @keypress.enter.prevent autocomplete="off">
 
     <label for="capacity">Capacity</label>
-    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent>
+    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent autocomplete="off">
 
 
     <label for="description">Description</label>
@@ -117,7 +117,7 @@ const editEvent = async(title: string, location: string, description: string, ca
     <TagsInput id="accommodationsInput" :initTags="accommodations" @updateTags="updateAccommodations" :tagName="accommodationString"/>
 
     <label for="photo">Photo</label>
-    <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent> 
+    <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent autocomplete="off"> 
 
     <div class="base">
       <menu>

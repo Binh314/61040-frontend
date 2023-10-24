@@ -77,37 +77,37 @@ const emptyForm = () => {
 <template>
   <form @submit.prevent="createEvent(title, location, description, capacity, startTime, endTime, ageReq, photo, topics, amenities, accommodations)">
     <label for="title"> Title </label>
-    <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent> 
+    <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent autocomplete="off"/> 
 
     <label for="location"> 
       <!-- <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />  -->
       Location
     </label>
-    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent>
+    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent autocomplete="off"/>
 
     <label for="startTime"> 
       <!-- <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" />  -->
       Start Time
     </label>
-    <input type="datetime-local" v-model="startTime" id="startTime" name="start-time" required @keypress.enter.prevent/>
+    <input type="datetime-local" v-model="startTime" id="startTime" name="start-time" required @keypress.enter.prevent autocomplete="off"/>
 
     <label for="endTime"> 
       <!-- <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" />  -->
       End Time
     </label>
-    <input type="datetime-local" v-model="endTime" id="endTime" name="end-time" required @keypress.enter.prevent/>
+    <input type="datetime-local" v-model="endTime" id="endTime" name="end-time" required @keypress.enter.prevent autocomplete="off"/>
 
     <label for="ageReq">
       <!-- <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> -->
       Age Requirement
     </label>
-    <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2" @keypress.enter.prevent>
+    <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2" @keypress.enter.prevent autocomplete="off"/>
 
     <label for="capacity">
       <!-- <font-awesome-icon :icon="['fas', 'people-group']" size="lg" class="icon"/> -->
       Capacity
     </label>
-    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent>
+    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent autocomplete="off"/>
 
 
     <label for="description">
@@ -137,7 +137,7 @@ const emptyForm = () => {
       <!-- <font-awesome-icon :icon="['fas', 'image']" size="lg" class="icon"/> -->
       Photo
     </label>
-    <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent> 
+    <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent autocomplete="off"/> 
 
     <menu>
         <li><button type="submit" class="pure-button-primary pure-button">Create Event</button></li>
