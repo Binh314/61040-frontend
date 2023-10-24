@@ -33,9 +33,11 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="preview" v-for="user in messaging">
-    <ProfileMessageComponent :username="user" @sendMessage="sendMessage"/>
-  </div>
+  <section>
+    <div class="preview" v-for="user in messaging">
+      <ProfileMessageComponent :username="user" @sendMessage="sendMessage"/>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -51,6 +53,11 @@ p,
 .row {
   margin: 0 auto;
   /* max-width: 60em; */
+}
+
+section {
+  overflow-y: scroll;
+  height: 71vh;
 }
 
 .preview {

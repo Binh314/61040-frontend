@@ -8,6 +8,8 @@ export const useUserStore = defineStore(
   () => {
     const currentUsername = ref("");
 
+    const eventMode = ref(false);
+
     const isLoggedIn = computed(() => currentUsername.value !== "");
 
     const resetStore = () => {
@@ -58,6 +60,7 @@ export const useUserStore = defineStore(
     return {
       currentUsername,
       isLoggedIn,
+      eventMode,
       createUser,
       loginUser,
       loginUserCoords,

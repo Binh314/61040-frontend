@@ -122,7 +122,6 @@ section {
   gap: 1em;
 }
 
-
 button {
   margin-bottom: 2em;
 }

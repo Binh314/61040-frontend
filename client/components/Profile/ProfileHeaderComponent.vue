@@ -1,14 +1,23 @@
 <script setup lang="ts">
 
 import router from "@/router";
+import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
+import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 import { useRoute, } from "vue-router";
 
+
+
+const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
 const currentRoute = useRoute();
 const props = defineProps(["username"]);
 
 let profile = ref<Record<string, string>>({});
+
+async function goToMessages() {
+  void router.push({ name: "Messages", params: {username: props.username} });
+}
 
 async function getProfile() {
   let profileResult;
@@ -31,15 +40,25 @@ onBeforeMount(async () => {
 
 <template>
   <div class="header" @click="goToProfile">
-    <span class="name"> {{ profile.name }} </span> 
-
-    <span class="username"> @{{ props.username }} </span>
+    <span class="profile">
+      <span class="name"> {{ profile.name }} </span>
+      <span class="username"> @{{ props.username }} </span>
+    </span>
+    <font-awesome-icon v-if="username !== currentUsername" class="icon" :icon="['far', 'envelope']" size="lg" @click.stop="goToMessages" />
   </div>
 </template>
 
 <style scoped>
 
-.header:hover {
+.icon {
+  margin-left: 0.5em;
+}
+
+.icon:hover {
+  cursor:pointer
+}
+
+.profile:hover {
   cursor: pointer;
   text-decoration: underline;
 }

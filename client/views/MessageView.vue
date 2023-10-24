@@ -16,4 +16,6 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 h1 {
   text-align: center;
 }
+
+
 </style>

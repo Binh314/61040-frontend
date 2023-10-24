@@ -161,12 +161,12 @@ form {
 }
 
 .messagesSection {
-  height:95vh;
+  height:90vh;
   width:100%;
 }
 
 .messages {
-  height: 80%;
+  height: 79%;
   overflow-y: scroll;
 }
 

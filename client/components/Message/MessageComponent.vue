@@ -155,13 +155,13 @@ h2 {
 }
 
 .messagesSection {
-  height:95vh;
+  height:90vh;
   width:100%;
 }
 
 .messages {
   overflow-y: scroll;
-  height: 80%;
+  height: 79%;
 }
 
 form {
