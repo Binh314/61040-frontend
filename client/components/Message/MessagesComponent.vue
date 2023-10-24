@@ -2,7 +2,7 @@
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref, watch } from "vue";
+import { onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import router from "../../router";
 import MessageComponent from "./MessageComponent.vue";
 import MessageListComponent from "./MessageListComponent.vue";
@@ -20,6 +20,7 @@ const componentKey = ref(1);
 let profile = ref<Record<string, string>>();
 let editing = ref("");
 const username = ref("");
+const interval = ref();
 
 const messaging = ref<Array<string>>();
 
@@ -87,8 +88,13 @@ onBeforeMount(async () => {
   if (typeof user === "string")
     username.value = user;
   await getMessages();
+  interval.value = setInterval(refreshList, 1000);
   loaded.value = true;
 });
+
+onBeforeUnmount(async () => {
+  clearInterval(interval.value);
+})
 
 
 </script>
