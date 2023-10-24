@@ -1,17 +1,23 @@
 <script setup lang="ts">
 
 import router from "@/router";
+import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
+import { storeToRefs } from "pinia";
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 import { useRoute, } from "vue-router";
+
+const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
 
 const currentRoute = useRoute();
 const props = defineProps(["username"]);
 const interval = ref();
 const message = ref("");
 const loaded = ref(false);
+const emit = defineEmits(["sendMessage"]);
 
 let profile = ref<Record<string, string>>({});
+
 
 async function getProfile() {
   let profileResult;
@@ -38,6 +44,7 @@ async function getMessages() {
   } catch (_) {
     return;
   }
+  if (messageResults[0].text !== message.value) emit("sendMessage");
   message.value = messageResults[0].text;
 }
 
@@ -63,7 +70,7 @@ onBeforeUnmount(async () => {
       <span class="name"> {{ profile.name }} </span>
       <span class="username"> @{{ props.username }} </span>
       </h2>
-      <p>{{message}}</p>
+      <p> {{message}}</p>
     </div>
   </div>
 </template>

@@ -3,10 +3,10 @@ import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref, watch } from "vue";
-// import router from "../../router";
 import router from "../../router";
 import MessageComponent from "./MessageComponent.vue";
 import MessageListComponent from "./MessageListComponent.vue";
+import MessageNewComponent from "./MessageNewComponent.vue";
 
 const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
 
@@ -25,6 +25,10 @@ const messaging = ref<Array<string>>();
 
 // setInterval(getMessages, 1000);
 
+async function refreshList() {
+  await getMessages();
+}
+
 async function getMessages() {
   let messageResults;
   try {
@@ -33,22 +37,46 @@ async function getMessages() {
     return;
   }
   messages.value = messageResults;
-  const usernames = messages.value.map(message => 
+  const u = messages.value.map(message => 
     (message.from === currentUsername.value) ? message.to : message.from
   );
-  messaging.value = [...new Set(usernames)];
+  const usernames = [... new Set(u)];
+  let sameNames = usernames.length === messaging.value?.length;
+  for (let i = 0; i < usernames.length; i++) {
+    if (messaging === undefined) {sameNames = false; break;}
+    if (messaging.value === undefined) {sameNames = false; break;}
+    if (usernames[i] !== messaging.value[i]) {
+      sameNames = false;
+      break;
+    }
+  }
+  if (!sameNames) {
+    messaging.value = [];
+    setTimeout(() => {
+      messaging.value = usernames;
+    }, 50);
+  }
 }
 
+
+async function newMessage() {
+  void router.push({ name: "Messages"});
+}
   
 watch(async () => router.currentRoute.value.params.username, 
   async name => { 
+    loaded.value = false;
     const user = await name;
     if (typeof user === "string") 
       username.value = user;
-    console.log(username.value)
+    else username.value = ""
     await getMessages();
   }
 );
+
+async function updateLoad() {
+  loaded.value = true;
+}
 
 function updateEditing(id: string) {
   editing.value = id;
@@ -69,11 +97,12 @@ onBeforeMount(async () => {
   <div class="pure-grid">
     <div class="pure-u-1-4">
       <h1>Messages</h1>
-      <button>New Message</button>
-      <MessageListComponent :messaging="messaging"/>
+      <button @click="newMessage">New Message</button>
+      <MessageListComponent :messaging="messaging" @sendMessage="refreshList"/>
     </div>
     <div class="pure-u-1-2">
-      <MessageComponent v-if="username" :username="username"/>
+      <MessageComponent v-if="username" :username="username" @sendMessage="refreshList"/>
+      <MessageNewComponent v-else @newMessage="refreshList"/>
     </div>
     <div class="pure-u-1-4">
     </div>
@@ -86,6 +115,7 @@ section {
   flex-direction: column;
   gap: 1em;
 }
+
 
 button {
   margin-bottom: 2em;

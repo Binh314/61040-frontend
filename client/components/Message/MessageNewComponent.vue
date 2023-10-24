@@ -2,72 +2,62 @@
 
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
+import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 import router from "../../router";
 import { fetchy } from "../../utils/fetchy";
-import ProfileChatComponent from "../Profile/ProfileChatComponent.vue";
 
 const text = ref("");
+const emit = defineEmits(["refreshPosts"]);
 const props = defineProps(["username"]);
-const emit = defineEmits(["sendMessage"])
-const loaded = ref(false);
+const loading = ref(false);
 const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
 const interval = ref();
-const name = ref("");
-const componentKey = ref(1);
+const validUsername = ref(false);
+const username = ref("");
 
 let messages = ref<Array<Record<string, string>>>([]);
 
-watch(async () => router.currentRoute.value.params.username, 
-  async n => { 
-    const user = await n;
-    if (typeof user === "string") 
-      name.value = user;
-    else name.value = ""
-    console.log(name.value)
-    messages.value = [];
-    componentKey.value = componentKey.value * -1;
-    loaded.value = false;
-  }
-);
+async function goToMessages() {
+  void router.push({ name: "Messages", params: {username: username.value} });
+}
 
 async function getMessages() {
   let messageResults;
   try {
-    messageResults = await fetchy(`/api/message/user/${props.username}`, "GET")
+    messageResults = await fetchy(`/api/message/user/${username.value}`, "GET")
   } catch (_) {
     return;
   }
   messages.value = messageResults;
-  loaded.value = true;
+}
+
+async function checkProfile() {
+  loading.value = true;
+  try {
+    await fetchy(`/api/profile/user/${username.value}`, "GET", {alert: false});
+    validUsername.value = true;
+    await getMessages();
+  } catch (_) {
+    validUsername.value = false;
+    messages.value = [];
+  }
+  loading.value = false;
 }
 
 const sendMessage = async (text: string) => {
   if (!text) return;
   try {
-    await fetchy(`/api/message/${props.username}`, "POST", {
+    await fetchy(`/api/message/${username.value}`, "POST", {
       body: { text }, alert: false
     });
   } catch (_) {
     return;
   }
   emptyForm();
-  emit("sendMessage");
-  await getMessages();
+  await goToMessages();
 };
 
 onBeforeMount(async () => {
-  // const user = router.currentRoute.value.params.username;
-  // console.log(user);
-  // if (typeof user === "string")
-  //   username.value = user;
-  messages.value = [];
-  name.value = props.username;
-  console.log("mount");
-  interval.value = setInterval(getMessages, 1000);
-  componentKey.value = componentKey.value * -1;
-  await getMessages();
-  loaded.value = true;
 });
 
 onBeforeUnmount(async () => {
@@ -84,9 +74,12 @@ const emptyForm = () => {
 <template>
   <div class="messagesSection">
     <section class="profile">
-      <ProfileChatComponent v-if="name" :username="name" :key="componentKey"/>
+      <form class="userForm" @submit.prevent="sendMessage(text)">
+        <label for="userInput">To:</label>
+        <input id="userInput" :class="(validUsername) ? 'valid' : 'invalid'" v-model="username" placeholder="Enter username to message." autocomplete="off" @input="checkProfile"/>
+      </form>
     </section>
-    <section class="messages" >
+    <section class="messages">
       <body class = "message" v-for="message in messages">
         <div v-if="message.from === currentUsername" class="sentContainer">
           <p class="sent">
@@ -101,20 +94,39 @@ const emptyForm = () => {
         <br/>
       </body>
     </section>
-    <form v-if="loaded" @submit.prevent="sendMessage(text)">
+    <form v-if="validUsername" @submit.prevent="sendMessage(text)">
       <input id="text" v-model="text" placeholder="Enter text." autocomplete="off"/>
       <button type="submit" class="pure-button-primary pure-button">Send</button>
     </form>
-    <h2 v-else> Loading... </h2>
   </div>
 </template>
 
 <style scoped>
 
-h2 {
-  text-align: center;
+form {
+  background-color: var(--base-bg);
+  border-radius: 1em;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  padding: 1em;
 }
 
+.userForm {
+  display:flex;
+  align-items: center;
+
+}
+
+
+.valid {
+  color: black;
+  width: 50%;
+}
+.invalid {
+  color: darkred;
+  width: 50%;
+}
 .messagesSection {
   border-style: solid;
 }
@@ -122,10 +134,6 @@ h2 {
 .messages {
   display:flex;
   flex-direction: column-reverse;
-}
-
-.loading {
-  background-color: black;
 }
 
 .sentContainer {
@@ -158,17 +166,8 @@ h2 {
 }
 
 .messages {
-  overflow-y: scroll;
   height: 80%;
-}
-
-form {
-  background-color: var(--base-bg);
-  border-radius: 1em;
-  display: flex;
-  flex-direction: row;
-  gap: 0.5em;
-  padding: 1em;
+  overflow-y: scroll;
 }
 
 input {
@@ -186,9 +185,7 @@ button {
   max-width: 100%;
 }
 
-label {
-  padding-top: 1em;
-}
+
 .icon {
   width: 1em;
 }

@@ -10,14 +10,16 @@ const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
 // const currentRouteName = computed(() => currentRoute.value.name);
 
 const props = defineProps(["messaging"]);
-
+const emit = defineEmits(["sendMessage"]);
 const loaded = ref(false);
 const componentKey = ref(1);
 let profile = ref<Record<string, string>>();
 let editing = ref("");
 const username = ref("");
 
-
+const sendMessage = async () => {
+  emit("sendMessage");
+}
 
 function updateEditing(id: string) {
   editing.value = id;
@@ -32,7 +34,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="preview" v-for="user in messaging">
-    <ProfileMessageComponent :username="user"/>
+    <ProfileMessageComponent :username="user" @sendMessage="sendMessage"/>
   </div>
 </template>
 
@@ -51,7 +53,9 @@ p,
   /* max-width: 60em; */
 }
 
-
+.preview {
+  margin-bottom: 1em;
+}
 
 article {
   background-color: var(--base-bg);
