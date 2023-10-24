@@ -40,6 +40,7 @@ const deletePost = async () => {
 <style scoped>
 p {
   margin: 0em;
+  white-space: pre
 }
 
 .author {

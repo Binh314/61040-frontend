@@ -113,6 +113,10 @@ menu {
   align-items: center;
 }
 
+p {
+  white-space: pre
+}
+
 .base article:only-child {
   margin-left: auto;
 }
