@@ -14,6 +14,15 @@ export const useUserStore = defineStore(
 
     const resetStore = () => {
       currentUsername.value = "";
+      eventMode.value = false;
+    };
+
+    const turnOnEventMode = () => {
+      eventMode.value = true;
+    };
+
+    const turnOffEventMode = () => {
+      eventMode.value = false;
     };
 
     const createUser = async (username: string, password: string) => {
@@ -61,6 +70,8 @@ export const useUserStore = defineStore(
       currentUsername,
       isLoggedIn,
       eventMode,
+      turnOnEventMode,
+      turnOffEventMode,
       createUser,
       loginUser,
       loginUserCoords,

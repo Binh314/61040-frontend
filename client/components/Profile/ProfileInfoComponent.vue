@@ -8,7 +8,7 @@ import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 import router from "../../router";
-const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
+const { isLoggedIn, currentUsername, eventMode } = storeToRefs(useUserStore());
 
 // const currentRoute = ref(useRoute());
 // const currentRouteName = computed(() => currentRoute.value.name);

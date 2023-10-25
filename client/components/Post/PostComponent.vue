@@ -10,6 +10,7 @@ const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername } = storeToRefs(useUserStore());
 
 const deletePost = async () => {
+  if (!confirm("Are you sure you want to delete this post?")) return;
   try {
     await fetchy(`/api/posts/${props.post._id}`, "DELETE");
   } catch {

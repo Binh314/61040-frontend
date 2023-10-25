@@ -8,7 +8,7 @@ import { RouterLink, RouterView, useRoute } from "vue-router";
 const currentRoute = useRoute();
 const currentRouteName = computed(() => currentRoute.name);
 const userStore = useUserStore();
-const { isLoggedIn, currentUsername } = storeToRefs(userStore);
+const { isLoggedIn, currentUsername, eventMode } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
 
 // Make sure to update the session before mounting the app in case the user is already logged in
@@ -35,10 +35,13 @@ onBeforeMount(async () => {
             </RouterLink>
           </div>
           <ul>
-            <li>
+            <li v-if="!eventMode">
               <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }"> Home </RouterLink>
             </li>
-            <li>
+            <li v-if="eventMode">
+              <RouterLink :to="{ name: 'EventMode' }" :class="{ underline: currentRouteName == 'Home' }"> Home </RouterLink>
+            </li>
+            <li v-if="!eventMode">
               <RouterLink :to="{ name: 'Events' }" :class="{ underline: currentRouteName == 'Events' }"> Events </RouterLink>
             </li>
             <li v-if="isLoggedIn">

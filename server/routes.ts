@@ -291,7 +291,7 @@ class Routes {
     const timeNow = new Date();
     const locations = await Location.getAtLocation(user, "event");
     const eventIds = locations.map((location) => location.poi);
-    const query = { _id: { $in: eventIds }, startTime: { $lte: timeNow }, endTime: { $gte: timeNow }, attending: { $in: [user] } };
+    const query = { _id: { $in: eventIds }, startTime: { $lte: timeNow }, endTime: { $gte: timeNow }, $or: [{ host: user }, { attending: { $in: [user] } }] };
     const events = await Event.getEvents(query);
     return Responses.events(events);
   }
@@ -652,6 +652,9 @@ class Routes {
     if (attendingEvents.length === 0) throw new NotAllowedError("Not currently at an event.");
 
     const stringAttendees = attendingEvents.map((event) => event.attending.map((id) => id.toString())).flat();
+    const stringHosts = attendingEvents.map((event) => event.host.toString());
+    stringAttendees.push(...stringHosts);
+
     const locationsAtEvent = await Location.getAtLocation(user, "user");
     const usersAtEvent = locationsAtEvent.map((loc) => loc.poi);
 
@@ -708,6 +711,9 @@ class Routes {
     if (attendingEvents.length === 0) throw new NotAllowedError("Not currently at an event.");
 
     const stringAttendees = attendingEvents.map((event) => event.attending.map((id) => id.toString())).flat();
+    const stringHosts = attendingEvents.map((event) => event.host.toString());
+    stringAttendees.push(...stringHosts);
+
     const locationsAtEvent = await Location.getAtLocation(user, "user");
     const usersAtEvent = locationsAtEvent.map((loc) => loc.poi);
 

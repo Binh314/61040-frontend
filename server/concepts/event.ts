@@ -204,6 +204,8 @@ export default class EventConcept {
     const interested = event.interested;
     const attending = event.attending;
 
+    if (attending.length >= event.capacity) throw new NotAllowedError("Event is at full capacity.");
+
     attending.push(person);
 
     const personStrings = interested.map((id: ObjectId) => id.toString());

@@ -24,6 +24,7 @@ const dropdownText = computed(() => {
 });
 
 const deleteEvent = async () => {
+  if (!confirm("Are you sure you want to delete this event?")) return;
   try {
     await fetchy(`/api/events/${props.event._id}`, "DELETE");
   } catch {

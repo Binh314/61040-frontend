@@ -1,32 +1,60 @@
 <script setup lang="ts">
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
+import { fetchy } from "@/utils/fetchy";
 import { ref } from "vue";
+
 
 const username = ref("");
 const password = ref("");
 const address = ref("");
 const submitText = ref("Submit");
-const { loginUser, updateSession, loginUserCoords } = useUserStore();
+const { loginUser, updateSession, loginUserCoords, turnOnEventMode, turnOffEventMode } = useUserStore();
 
 async function login() {
+  submitText.value = "Logging in..."
   if (address.value) {
-    await loginUser(username.value, password.value, address.value);
-    void updateSession();
-    void router.push({ name: "Home" });
+    await loginAddress();
   } else {
-    submitText.value = "Logging in..."
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      const location = pos.coords;
-      const latitude = location.latitude;
-      const longitude = location.longitude;
-      await loginUserCoords(username.value, password.value, latitude, longitude);
-      void updateSession();
-      void router.push({ name: "Home" });
-    });
+    await loginLocation();
+  }
+}
+
+async function loginAddress() {
+  await loginUser(username.value, password.value, address.value);
+  void updateSession();
+  route();
+}
+
+async function loginLocation() {
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const location = pos.coords;
+    const latitude = location.latitude;
+    const longitude = location.longitude;
+    await loginUserCoords(username.value, password.value, latitude, longitude);
+    void updateSession();
+    route();
+  });
+}
+
+async function route() {
+  let eventResults;
+  try {
+    eventResults = await fetchy("/api/events/at", "GET");
+  } catch {
+    turnOffEventMode();
+    void router.push({ name: "Home" });
   }
 
+  if (eventResults) {
+    turnOnEventMode();
+    void router.push({ name: "EventMode" });
+    return;
+  }
+  turnOffEventMode();
+  void router.push({ name: "Home" });
 }
+
 </script>
 
 <template>

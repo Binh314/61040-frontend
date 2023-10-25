@@ -5,7 +5,7 @@ import ProfileInfoComponent from "@/components/Profile/ProfileInfoComponent.vue"
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 
-const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
+const { currentUsername, isLoggedIn, eventMode } = storeToRefs(useUserStore());
 </script>
 
 <template>
@@ -20,8 +20,8 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
         <ProfileInfoComponent/>
       </div>
       <div class="pure-u-1-3">
-        <EventAttendingComponent/>
-        <EventUpcomingComponent/>
+        <EventAttendingComponent v-if="!eventMode"/>
+        <EventUpcomingComponent v-if="!eventMode"/>
       </div>
     </div>
   </main>
