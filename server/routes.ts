@@ -118,19 +118,14 @@ class Routes {
    * @param replyTo post ID
    */
   @Router.post("/posts")
-  async createPost(session: WebSessionDoc, content: string, files?: string, replyTo?: string) {
+  async createPost(session: WebSessionDoc, content: string, files?: string[], replyTo?: string) {
     const user = WebSession.getUser(session);
 
     const location = await Location.get(user);
     let replyId = undefined;
     if (replyTo) replyId = new ObjectId(replyTo);
 
-    const filesArray = files
-      ? files
-          .split(",")
-          .map((e) => e.trim())
-          .filter((e) => e)
-      : [];
+    const filesArray = files;
 
     const created = await Post.create(user, content, filesArray, replyId);
     await Location.create(created.id, "post", location.lat, location.lon);

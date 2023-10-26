@@ -32,7 +32,7 @@ const deletePost = async () => {
     <p class="author"> <ProfileHeaderComponent :username="props.post.author"/> </p>
     <p>{{ props.post.content }}</p>
     <p class="files">
-      <img v-for="file in props.post.files" class="postImage" src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg">
+      <img v-for="file in props.post.files" class="postImage" :src="file">
     </p>
     <div class="base">
       <menu v-if="props.post.author == currentUsername && !eventMode">
@@ -99,7 +99,9 @@ menu {
 }
 
 .postImage {
-  max-width: 45%;
+  object-fit:scale-down;
+  max-width: 100%;
+  max-height: 50vh;
   display: inline-block;
   padding: 0.5em;
   border-radius: 1em;

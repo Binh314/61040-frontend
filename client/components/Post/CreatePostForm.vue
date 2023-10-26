@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
+import TagsInput from "../Global/TagsInput.vue";
 
 const content = ref("");
+const files = ref<Array<string>>([]);
 const emit = defineEmits(["refreshPosts"]);
 
-const createPost = async (content: string) => {
+const createPost = async (content: string, f: string[]) => {
+  const files = f.filter(e=>e);
   try {
     await fetchy("/api/posts", "POST", {
-      body: { content },
+      body: { content, files },
     });
   } catch (_) {
     return;
@@ -17,23 +20,50 @@ const createPost = async (content: string) => {
   emptyForm();
 };
 
+function updatePhotos() {
+
+}
+
 const emptyForm = () => {
   content.value = "";
+  files.value = [];
 };
 </script>
 
 <template>
-  <form @submit.prevent="createPost(content)">
+  <form @submit.prevent="createPost(content, files)">
     <label for="content">Post Contents:</label>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
+
+    <label for="photos"> Attach Photos: </label>
+    <TagsInput class="photos" :initTags="files" tagName="photo url" @updateTags="updatePhotos" />
+    <div class="files">
+      <img v-for="file in files" class="postImage" :src="file">
+    </div>
     <menu>
-    <li><button type="submit" class="pure-button-primary pure-button" @click="createPost(content)">Create Post</button></li>
+    <li><button type="submit" class="pure-button-primary pure-button">Create Post</button></li>
     <li><button class="btn-small pure-button" @click.prevent="emit('refreshPosts')">Cancel</button></li>
   </menu>
   </form>
 </template>
 
 <style scoped>
+
+.postImage {
+  object-fit: scale-down;
+  max-width: 100%;
+  max-height: 50vh;
+  display: inline-block;
+  padding: 0.5em;
+  border-radius: 1em;
+}
+.files {
+  display: flex;
+  flex-wrap: wrap;
+}
+label {
+  margin-top: 1em;
+}
 form {
   background-color: var(--base-bg);
   border-radius: 1em;

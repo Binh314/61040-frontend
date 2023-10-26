@@ -147,6 +147,8 @@ const emptyForm = () => {
     </label>
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent autocomplete="off"/> 
 
+    <img class="photo" v-if="photo" :src="photo" />
+
     <menu>
       <li><button type="submit" class="pure-button-primary pure-button">Create Event</button></li>
       <li><button class="btn-small pure-button" @click.prevent="emit('refreshEvents')">Cancel</button></li>
@@ -155,6 +157,14 @@ const emptyForm = () => {
 </template>
 
 <style scoped>
+
+.photo{
+  height: 50vh;
+  max-width: 100%;
+  border-radius: 1em;
+  object-fit: scale-down;
+}
+
 
 menu {
   list-style-type: none;
@@ -170,7 +180,7 @@ menu {
 }
 
 label {
-  padding-top: 1em;
+  margin-top: 1em;
 }
 
 form {

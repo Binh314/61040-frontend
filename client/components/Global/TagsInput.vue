@@ -39,13 +39,22 @@ function removeTag(i: number) {
     <span v-for="(tag, index) in tags">
       <input v-model="tags[index]" class = "tagInput" @blur="emit('updateTags', tags)"  :placeholder="`click to enter ${tagName}`"
       :style="{ width: inputWidth(index) }" @keypress.enter.prevent> 
-      <font-awesome-icon :ref="`input${index}`" :icon="['fas', 'square-xmark']" size="xl" @click="removeTag(index)" class="removeIcon"/>
+      <font-awesome-icon :ref="`input${index}`" :icon="['fas', 'square-xmark']" size="2xl" @click="removeTag(index)" class="removeIcon"/>
     </span>
-    <font-awesome-icon :icon="['far', 'square-plus']" size="xl" @click="addTag" class="addIcon"/>
+    <font-awesome-icon :icon="['far', 'square-plus']" size="2xl" @click="addTag" class="addIcon"/>
   </div>
 </template>
 
 <style scoped>
+
+span {
+  line-height: 2em;
+}
+
+.addIcon {
+  margin-left: 0.5em;
+}
+
 h3 {
   display: flex;
   justify-content: center;
@@ -55,13 +64,15 @@ h3 {
 
 .removeIcon {
   gap: 0px;
+  margin-right: 0.5em;
 }
 
 .tagInput {
   gap: 0px;
   background-color: lightgrey;
   font-weight: bold;
-  text-align: center
+  text-align: center;
+  max-width: 85%;
 }
 
 .tagInput:focus {

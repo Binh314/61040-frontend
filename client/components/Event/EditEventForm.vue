@@ -130,6 +130,7 @@ const editEvent = async(title: string, location: string, description: string, ca
 
     <label for="photo">Photo</label>
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent autocomplete="off"> 
+    <img v-if="photo" class="photo" :src="photo" />
 
     <div class="base">
       <menu>
@@ -143,6 +144,14 @@ const editEvent = async(title: string, location: string, description: string, ca
 </template>
 
 <style scoped>
+
+.photo{
+  height: 50vh;
+  max-width: 100%;
+  border-radius: 1em;
+  object-fit: scale-down;
+}
+
 form {
   background-color: var(--base-bg);
   display: flex;

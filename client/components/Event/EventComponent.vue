@@ -80,11 +80,11 @@ const indicateAttendance = async () => {
   <h2 class = "title">{{ props.event.title }}</h2>
   <br>
   <!-- Source https://stackoverflow.com/questions/27419509/open-google-map-with-specific-address-in-a-browser -->
-  <p class = "time" v-if="formatDate(props.event.startTime).split(' ')[0] === formatDate(props.event.endTime).split(' ')[0]">
+  <p class = "time" v-if="formatDate(props.event.startTime).split(', ')[0] === formatDate(props.event.endTime).split(', ')[0]">
     <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" /> {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatTime(props.event.endTime) }}
   </p>
   <p class = "time" v-else>
-    {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatEventDate(props.event.endTime) }}
+    <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" /> {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatEventDate(props.event.endTime) }}
   </p>
   <p class = "location">
     <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />
@@ -168,7 +168,10 @@ p {
 }
 
 .photo{
-  max-width: 75%;
+  height: 50vh;
+  max-width: 100%;
+  border-radius: 1em;
+  object-fit: scale-down;
 }
 
 .title {
