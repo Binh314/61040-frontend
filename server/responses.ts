@@ -81,7 +81,7 @@ export default class Responses {
    */
   static async profile(profile: ProfileDoc | null) {
     if (!profile) return profile;
-    const person = await User.getUserById(profile.person);
+    const person = (await User.getUserById(profile.person)).username;
     return { ...profile, person: person };
   }
 

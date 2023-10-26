@@ -5,6 +5,7 @@
 import EventModePostFeedComponent from "@/components/EventMode/EventModePostFeedComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import EventModeProfileFeedComponent from "../components/EventMode/EventModeProfileFeedComponent.vue";
 
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 </script>
@@ -17,10 +18,11 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
     </section>
     <div class="pure-grid">
       <div class="pure-u-2-3">
-        <h1>Event Mode Home</h1>
-        <!-- <PostFeedComponent/> -->
+        <h1>Event Attendees</h1>
+        <EventModeProfileFeedComponent/>
       </div>
       <div class="pure-u-1-3">
+        <h2>Posts from Other Attendees</h2>
         <EventModePostFeedComponent/>
       </div>
     </div>
@@ -28,7 +30,7 @@ const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 </template>
 
 <style scoped>
-h1 {
+h1, h2 {
   text-align: center;
 }
 </style>

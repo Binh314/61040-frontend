@@ -1,13 +1,26 @@
+
 <script setup lang="ts">
 
+import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { calculateAge } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 
-const props = defineProps(["profile"]);
+const props = defineProps(["profile", "ownProfile"]);
 const emit = defineEmits(["editProfile", "refreshProfile"]);
-const { currentUsername } = storeToRefs(useUserStore());
+const { currentUsername, eventMode } = storeToRefs(useUserStore());
+
+const commonInterests = ref<Array<string>>([]);
+
+async function goToMessages() {
+  void router.push({ name: "Messages", params: {username: props.profile.person} });
+}
+
+async function goToProfile() {
+  void router.push({ name: "Profile", params: {username: props.profile.person} });
+}
+
 
 
 const age = computed(() => {
@@ -15,37 +28,80 @@ const age = computed(() => {
   return calculateAge(bday);
 })
 
+onBeforeMount( async () => {
+  const shared = [];
+  for (const interest of props.ownProfile.interests) {
+    if (props.profile.interests.includes(interest)) 
+      shared.push(interest);
+  }
+  commonInterests.value = shared;
+})
+
 
 </script>
 
 
 <template>
-  <img v-if="props.profile.photo" class="photo" :src="props.profile.photo">
-  <h1 class = "name"> {{ props.profile.name }}</h1>
-  <p>@{{ props.profile.person.username }}</p>
-  <p class = "age" v-if="age"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ age }} </p>
-
-  <p class = "location" v-if="profile.location"> 
-    <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> 
-      {{props.profile.location}}
-  </p>
-
-  <p class="interests" v-if="props.profile.interests.length > 0"> <font-awesome-icon class="icon" :icon="['fas', 'thumbs-up']" size="lg" /> {{  props.profile.interests.join(", ")  }}</p>
-
-  <br>
-
-  <p class="bio" v-if="props.profile.bio">{{ props.profile.bio }}</p>
-
-
+  <div class="container">
+    <h3>@{{ props.profile.person }}</h3>
     <br>
+    <div class="pure-grid">
+      <div class="pure-u-1-4">
+        <img v-if="props.profile.photo" class="photo" :src="props.profile.photo" @click.stop="goToProfile">
+        <img v-else class="photo" src="@/assets/images/user-solid.png" @click.stop="goToProfile"/>
+      </div>
+      <div class="pure-u-3-4">
+        <h1 class = "name">
+          <span class="names" @click.stop="goToProfile">
+            {{ props.profile.name }}
+          </span>
 
-    <menu v-if="props.profile.person.username == currentUsername" class = "options">
-      <li><button class="btn-small pure-button" @click="emit('editProfile', props.profile._id)">Edit</button></li>
-    </menu>
+          <font-awesome-icon v-if="props.profile.person.username !== currentUsername" class="message" :icon="['far', 'envelope']" size="lg" @click.stop="goToMessages" />
+        </h1>
+        <br>
+        <h2 class="commonInterests" v-if="commonInterests.length > 0" ><font-awesome-icon class="icon" :icon="['fas', 'heart']" size="lg" /> also likes {{  commonInterests.join(", ")  }}</h2>
+        <br>
+        <p class = "age" v-if="age"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ age }} </p>
+
+        <p class = "location" v-if="profile.location && props.ownProfile === undefined"> 
+            <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> 
+            {{props.profile.location}}
+        </p>
+
+        <p class="interests" v-if="props.profile.interests.length > 0"> <font-awesome-icon class="icon" :icon="['fas', 'thumbs-up']" size="lg" /> {{  props.profile.interests.join(", ")  }}</p>
+        <br>
+        <p class="bio" v-if="props.profile.bio && props.ownProfile === undefined">{{ props.profile.bio }}</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 
+.username {
+  font-size:large;
+  font-weight:normal;
+}
+
+.names:hover {
+  text-decoration: underline;
+  cursor:pointer;
+}
+
+.photo:hover {
+  cursor:pointer;
+}
+
+.commonInterests {
+  font-weight: bold;
+}
+.message {
+  margin-left: 0.5em;
+}
+
+.message:hover {
+  cursor:pointer
+}
 .row {
   display: flex;
   justify-content: flex-start;
@@ -67,19 +123,22 @@ label {
   font-weight: normal;
 }
 
-h1 {
+h1, h2, h3 {
   margin-top: 0;
   margin-bottom: 0;
 }
 
 p {
   margin: 0em;
+  line-height: 2em;
+  white-space: pre;
 }
 
 img {
   object-fit: cover;
-  width: 25%;
+  width: 90%;
   aspect-ratio: 1;
+  border-radius: 1em;
 }
 
 .title {
@@ -113,9 +172,7 @@ menu {
   align-items: center;
 }
 
-p {
-  white-space: pre
-}
+
 
 .base article:only-child {
   margin-left: auto;

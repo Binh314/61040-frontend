@@ -2,6 +2,7 @@
 import TagsInput from "@/components/Global/TagsInput.vue";
 import { formatDatepick, toDateString } from "@/utils/formatDate";
 import { ref } from "vue";
+import { useToastStore } from "../../stores/toast";
 import { fetchy } from "../../utils/fetchy";
 
 const title = ref("");
@@ -23,8 +24,15 @@ const accommodationString = ref("accommodation")
 
 const createEvent = async (title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string, topics: string[], amenities: string[], accommodations: string[]) => {
   try {
+
+    if (Date.parse(startDate) > Date.parse(endDate)) {
+      useToastStore().showToast({ message: "End time needs to be later than start time.", style: "error" });
+      return;
+    }
+    
     const startTime = toDateString(startDate);
     const endTime = toDateString(endDate);
+
     topics.filter(e=>e);
     amenities.filter(e=>e);
     accommodations.filter(e=>e);
@@ -79,12 +87,6 @@ const emptyForm = () => {
     <label for="title"> Title </label>
     <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent autocomplete="off"/> 
 
-    <label for="location"> 
-      <!-- <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />  -->
-      Location
-    </label>
-    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent autocomplete="off"/>
-
     <label for="startTime"> 
       <!-- <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" />  -->
       Start Time
@@ -97,6 +99,12 @@ const emptyForm = () => {
     </label>
     <input type="datetime-local" v-model="endTime" id="endTime" name="end-time" required @keypress.enter.prevent autocomplete="off"/>
 
+    <label for="location"> 
+      <!-- <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />  -->
+      Location
+    </label>
+    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent autocomplete="off"/>
+
     <label for="ageReq">
       <!-- <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> -->
       Age Requirement
@@ -107,7 +115,7 @@ const emptyForm = () => {
       <!-- <font-awesome-icon :icon="['fas', 'people-group']" size="lg" class="icon"/> -->
       Capacity
     </label>
-    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent autocomplete="off"/>
+    <input id="capacity" v-model="capacity" placeholder="maximum number of attendees" required @keypress.enter.prevent autocomplete="off"/>
 
 
     <label for="description">

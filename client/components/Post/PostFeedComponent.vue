@@ -64,10 +64,10 @@ onBeforeMount(async () => {
     <SearchPostForm @getPostsByAuthor="getPosts" />
   </div>
   <section class="posts" v-if="loaded && posts.length !== 0">
-    <article v-for="post in posts" :key="post._id">
+    <div v-for="post in posts" :key="post._id">
       <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPostFeed" @editPost="updateEditing" />
       <EditPostForm v-else :post="post" @refreshPosts="getPostFeed" @editPost="updateEditing" />
-    </article>
+    </div>
   </section>
   <p v-else-if="loaded">No posts found</p>
   <p v-else>Loading...</p>

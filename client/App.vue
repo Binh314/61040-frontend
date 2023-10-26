@@ -30,7 +30,10 @@ onBeforeMount(async () => {
         <nav>
           <div class="title">
             <img src="@/assets/images/logo.svg" />
-            <RouterLink :to="{ name: 'Home' }">
+            <RouterLink v-if="eventMode" :to="{ name: 'EventMode' }">
+              <h2>Nakama</h2>
+            </RouterLink>
+            <RouterLink v-else :to="{ name: 'Home' }">
               <h2>Nakama</h2>
             </RouterLink>
           </div>

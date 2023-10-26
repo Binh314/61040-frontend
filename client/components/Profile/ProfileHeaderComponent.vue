@@ -39,8 +39,8 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="header" @click="goToProfile">
-    <span class="profile">
+  <div class="header">
+    <span class="profile"  @click.stop="goToProfile">
       <span class="name"> {{ profile.name }} </span>
       <span class="username"> @{{ props.username }} </span>
     </span>

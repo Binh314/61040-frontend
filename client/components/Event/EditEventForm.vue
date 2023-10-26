@@ -2,6 +2,7 @@
 import TagsInput from "@/components/Global/TagsInput.vue";
 import { formatDate, formatDatepick, toDateString } from "@/utils/formatDate";
 import { onMounted, ref } from "vue";
+import { useToastStore } from "../../stores/toast";
 import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["event"]);
@@ -55,6 +56,12 @@ onMounted(() => {
 const editEvent = async(title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string, topics: string[], amenities: string[], accommodations: string[]) => {
   console.log('triggered');
   try {
+
+    if (Date.parse(startDate) > Date.parse(endDate)) {
+      useToastStore().showToast({ message: "End time needs to be later than start time.", style: "error" });
+      return;
+    }
+
     const startTime = toDateString(startDate);
     const endTime = toDateString(endDate);
     // if (new Date(startTime) > new Date(endTime)) throw new Error("The end time needs to be later than the start time.");
@@ -88,20 +95,20 @@ const editEvent = async(title: string, location: string, description: string, ca
     <label for="title">Title</label>
     <input id="title" v-model="title" placeholder="event title" required @keypress.enter.prevent autocomplete="off"> 
 
-    <label for="location">Location</label>
-    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent autocomplete="off">
-
     <label for="startTime">Start Time</label>
     <input ref="startPick" type="datetime-local" v-model="startTime" id="startTime" name="start-time" required @keypress.enter.prevent/>
 
     <label for="endTime">End Time</label>
     <input ref="endPick" type="datetime-local" v-model="endTime" id="endTime" name="end-time" required @keypress.enter.prevent/>
 
+    <label for="location">Location</label>
+    <input id="location" v-model="location" placeholder="address or location name" required @keypress.enter.prevent autocomplete="off">
+
     <label for="ageReq">Age Requirement</label>
     <input id="ageReq" v-model="ageReq" placeholder="age requirement (leave empty for no age restriction)" maxlength="2" @keypress.enter.prevent autocomplete="off">
 
     <label for="capacity">Capacity</label>
-    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" @keypress.enter.prevent autocomplete="off">
+    <input id="capacity" v-model="capacity" placeholder="maximum number of people who can be at the event" required @keypress.enter.prevent autocomplete="off">
 
 
     <label for="description">Description</label>

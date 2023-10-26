@@ -3,6 +3,7 @@ import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { ref } from "vue";
+import { useToastStore } from "../../stores/toast";
 
 
 const username = ref("");
@@ -34,6 +35,8 @@ async function loginLocation() {
     await loginUserCoords(username.value, password.value, latitude, longitude);
     void updateSession();
     route();
+  }, () => {
+    useToastStore().showToast({ message: "Please allow Nakama to know your location.", style: "error" });
   });
 }
 
@@ -46,7 +49,7 @@ async function route() {
     void router.push({ name: "Home" });
   }
 
-  if (eventResults) {
+  if (eventResults.length > 0) {
     turnOnEventMode();
     void router.push({ name: "EventMode" });
     return;
@@ -71,7 +74,7 @@ async function route() {
       </div>
       <div class="pure-control-group">
         <label for="aligned-address">Current Location</label>
-        <input type="address" v-model.trim="address" id="aligned-address" placeholder="Address" title="Leave blank to use GPS location." autocomplete="off"/>
+        <input type="address" v-model.trim="address" id="aligned-address" placeholder="Address (leave blank to use current location)" title="Leave blank to use GPS location." autocomplete="off"/>
       </div>
       <div class="pure-controls">
         <button type="submit" class="pure-button pure-button-primary">{{submitText}}</button>

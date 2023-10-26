@@ -112,6 +112,7 @@ img {
   height: 3em;
   aspect-ratio: 1;
   cursor:pointer;
+  border-radius: 1em;
 }
 
 

@@ -80,17 +80,17 @@ const indicateAttendance = async () => {
   <h2 class = "title">{{ props.event.title }}</h2>
   <br>
   <!-- Source https://stackoverflow.com/questions/27419509/open-google-map-with-specific-address-in-a-browser -->
-  <p class = "location">
-    <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />
-    <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
-      {{event.location}}
-    </a>
-  </p>
   <p class = "time" v-if="formatDate(props.event.startTime).split(' ')[0] === formatDate(props.event.endTime).split(' ')[0]">
     <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" /> {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatTime(props.event.endTime) }}
   </p>
   <p class = "time" v-else>
     {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatEventDate(props.event.endTime) }}
+  </p>
+  <p class = "location">
+    <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />
+    <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
+      {{event.location}}
+    </a>
   </p>
   <p class = "age" v-if="event.ageReq"> <font-awesome-icon :icon="['fas', 'id-card']" size="lg" class="icon" /> {{ props.event.ageReq }}+ </p>
   <p class="tags" v-if="event.topics.length > 0"> <font-awesome-icon icon="tags" size="lg" class="icon" /> {{  props.event.topics.join(", ")  }}</p>

@@ -8,7 +8,7 @@ const props = defineProps(["initTags", 'tagName']);
 const tags = ref<Array<string>>(props.initTags);
 
 function inputWidth(i: number) {
-  if (tags.value[i].length === 0) return props.tagName.length * 3 / 4 + "em";
+  if (tags.value[i].length === 0) return ("click to enter " + props.tagName).length * 5 / 8 + "em";
   return Math.max(tags.value[i].length, 8) * 5/8 + "em"; 
 }
 

@@ -19,9 +19,9 @@ async function getPostFeed(author?: string) {
   } catch (_) {
     return;
   }
-  searchAuthor.value = author ? author : "";
   posts.value = postResults;
 }
+
 
 // async function getPosts(author?: string) {
 //   let query: Record<string, string> = author !== undefined ? { author } : {};
@@ -48,9 +48,9 @@ onBeforeMount(async () => {
 
 <template>
   <section class="posts" v-if="loaded && posts.length !== 0">
-    <article v-for="post in posts" :key="post._id">
+    <div v-for="post in posts" :key="post._id">
       <PostComponent :post="post" @refreshPosts="getPostFeed"/>
-    </article>
+    </div>
   </section>
   <p v-else-if="loaded">No posts found</p>
   <p v-else>Loading...</p>
