@@ -64,7 +64,7 @@ function createEvent() {
 }
 
 onBeforeMount(async () => {
-  if (isLoggedIn) {
+  if (isLoggedIn.value) {
     await getEventFeed();
   } else {
     await getEvents();
@@ -76,16 +76,16 @@ onBeforeMount(async () => {
 <template>
   <div class="pure-grid">
     <div class="pure-u-2-3">
-      <h1>Event Feed</h1>
+      <h1>Events</h1>
       <div v-if="creating">
-      <section class="formArea" v-if="isLoggedIn">
-          <h2>Create an event:</h2>
-          <createEventForm @refreshEvents="getEventFeed" />
-      </section>
+        <section class="formArea" v-if="isLoggedIn">
+            <h2>Create an event:</h2>
+            <createEventForm @refreshEvents="getEventFeed" />
+        </section>
       </div>
       <div v-else>
         <div class="row">
-          <button @click="createEvent" >Create an Event</button>
+          <button class="pure-button pure-button-primary" @click="createEvent" v-if="isLoggedIn" >Create an Event</button>
           <h2 v-if="!searchHost"></h2>
           <h2 v-else> {{ searchHost }}:</h2>
           <!-- <SearchEventForm @getEventsByHost="getEvents" /> -->

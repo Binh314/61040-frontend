@@ -22,7 +22,7 @@ const topicString = ref("topic")
 const amenityString = ref("amenity")
 const accommodationString = ref("accommodation")
 
-const createEvent = async (title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string, topics: string[], amenities: string[], accommodations: string[]) => {
+const createEvent = async (title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string, top: string[], ame: string[], acc: string[]) => {
   try {
 
     if (Date.parse(startDate) > Date.parse(endDate)) {
@@ -33,9 +33,9 @@ const createEvent = async (title: string, location: string, description: string,
     const startTime = toDateString(startDate);
     const endTime = toDateString(endDate);
 
-    topics.filter(e=>e);
-    amenities.filter(e=>e);
-    accommodations.filter(e=>e);
+    const topics = top.filter(e=>e);
+    const amenities = ame.filter(e=>e);
+    const accommodations = acc.filter(e=>e);
     // if (new Date(startTime) > new Date(endTime)) throw new Error("The end time needs to be later than the start time.");
     await fetchy("/api/events", "POST", {
       body: { title, location, description, capacity, ageReq, photo, startTime, endTime, topics, amenities, accommodations },
@@ -148,9 +148,9 @@ const emptyForm = () => {
     <input id="photo" v-model="photo" placeholder="url of photo for event" @keypress.enter.prevent autocomplete="off"/> 
 
     <menu>
-        <li><button type="submit" class="pure-button-primary pure-button">Create Event</button></li>
-        <li><button class="btn-small pure-button" @click="emit('refreshEvents')">Cancel</button></li>
-      </menu>
+      <li><button type="submit" class="pure-button-primary pure-button">Create Event</button></li>
+      <li><button class="btn-small pure-button" @click.prevent="emit('refreshEvents')">Cancel</button></li>
+    </menu>
   </form>
 </template>
 
@@ -163,6 +163,7 @@ menu {
   gap: 1em;
   padding: 0;
   margin: 0;
+  align-items: center
 }
 .icon {
   width: 1em;

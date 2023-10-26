@@ -30,3 +30,13 @@ a.button {
   align-items: center;
   gap: 1em;
 }
+
+* {
+  /* font-family: "Comic Sans MS"; */
+  font-family: "GlobalFont";
+}
+
+@font-face {
+  font-family: GlobalFont;
+  src: url("@/assets/fonts/WildWords/CCWildWordsLower-Regular.ttf");
+}

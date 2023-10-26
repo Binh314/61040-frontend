@@ -25,7 +25,7 @@ const editPost = async (content: string) => {
     <div class="base">
       <menu>
         <li><button class="btn-small pure-button-primary pure-button" type="submit">Save</button></li>
-        <li><button class="btn-small pure-button" @click="emit('editPost')">Cancel</button></li>
+        <li><button class="btn-small pure-button" @click.prevent="emit('editPost')">Cancel</button></li>
       </menu>
       <p v-if="props.post.dateCreated !== props.post.dateUpdated" class="timestamp">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
       <p v-else class="timestamp">Created on: {{ formatDate(props.post.dateCreated) }}</p>

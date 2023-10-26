@@ -13,16 +13,22 @@ async function logout() {
 }
 
 async function delete_() {
+  if (!confirm("Are you sure you want to delete your account?")) return;
   await deleteUser();
   void router.push({ name: "Home" });
 }
 </script>
 
 <template>
-  <main class="column">
-    <h1>Settings for {{ currentUsername }}</h1>
-    <button class="pure-button pure-button-primary" @click="logout">Logout</button>
-    <button class="button-error pure-button" @click="delete_">Delete User</button>
-    <UpdateUserForm />
-  </main>
+
+  <div class="pure-grid">
+    <div class="pure-u-2-3">
+      <main class="column">
+        <h1>Settings for {{ currentUsername }}</h1>
+        <button class="pure-button pure-button-primary" @click="logout">Logout</button>
+        <button class="button-error pure-button" @click="delete_">Delete User</button>
+        <UpdateUserForm />
+      </main>
+    </div>
+  </div>
 </template>

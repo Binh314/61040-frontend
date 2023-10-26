@@ -71,8 +71,14 @@ onBeforeMount( async () => {
         <p class="interests" v-if="props.profile.interests.length > 0"> <font-awesome-icon class="icon" :icon="['fas', 'thumbs-up']" size="lg" /> {{  props.profile.interests.join(", ")  }}</p>
         <br>
         <p class="bio" v-if="props.profile.bio && props.ownProfile === undefined">{{ props.profile.bio }}</p>
+        
+        <br>
       </div>
     </div>
+    <br>
+    <menu v-if="props.profile.person == currentUsername" class = "options">
+      <li><button class="pure-button pure-button-primary" @click="emit('editProfile', props.profile._id)">Edit Profile</button></li>
+    </menu>
   </div>
 </template>
 

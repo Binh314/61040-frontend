@@ -79,7 +79,8 @@ onBeforeUnmount(async () => {
 .container {
   display:flex;
   align-items: stretch;
-  margin-right: 2em;
+  margin-right: 1em;
+  margin-left: 1em;
   gap: 0.5em;
   padding: 1em;
   background-color: var(--base-bg);

@@ -37,11 +37,9 @@ async function getEvents(host?: string) {
 }
 
 onBeforeMount(async () => {
-  if (isLoggedIn) {
+  if (isLoggedIn.value) {
     await getEventFeed();
-  } else {
-    await getEvents();
-  }
+  } 
   loaded.value = true;
 });
 </script>

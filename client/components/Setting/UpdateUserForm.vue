@@ -8,12 +8,14 @@ let password = ref("");
 const { updateUser, updateSession } = useUserStore();
 
 async function updateUsername() {
+  if (!confirm("Are you sure you want to change your username?")) return;
   await updateUser({ username: username.value });
   await updateSession();
   username.value = "";
 }
 
 async function updatePassword() {
+  if (!confirm("Are you sure you want to change your password?")) return;
   await updateUser({ password: password.value });
   await updateSession();
   password.value = "";

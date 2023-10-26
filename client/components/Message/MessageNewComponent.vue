@@ -75,8 +75,8 @@ const emptyForm = () => {
   <div class="messagesSection">
     <section class="profile">
       <form class="userForm" @submit.prevent="sendMessage(text)">
-        <label for="userInput">To:</label>
-        <input id="userInput" :class="(validUsername) ? 'valid' : 'invalid'" v-model="username" placeholder="Enter username to message." autocomplete="off" @input="checkProfile"/>
+        <label for="userInput">New Message To:</label>
+        <input id="userInput" type="text" :class="(validUsername) ? 'valid' : 'invalid'" v-model="username" placeholder="Enter username to message." autocomplete="off" @input="checkProfile"/>
       </form>
     </section>
     <section class="messages">

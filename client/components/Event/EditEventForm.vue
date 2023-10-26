@@ -53,7 +53,7 @@ onMounted(() => {
 
 
 
-const editEvent = async(title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string, topics: string[], amenities: string[], accommodations: string[]) => {
+const editEvent = async(title: string, location: string, description: string, capacity: string, startDate: string, endDate: string, ageReq: string, photo: string, top: string[], ame: string[], acc: string[]) => {
   console.log('triggered');
   try {
 
@@ -64,6 +64,11 @@ const editEvent = async(title: string, location: string, description: string, ca
 
     const startTime = toDateString(startDate);
     const endTime = toDateString(endDate);
+
+    const topics = top.filter(e=>e);
+    const amenities = ame.filter(e=>e);
+    const accommodations = acc.filter(e=>e);
+
     // if (new Date(startTime) > new Date(endTime)) throw new Error("The end time needs to be later than the start time.");
     await fetchy(`/api/events/${props.event._id}/edit`, "PATCH", 
       { body: { update: 
@@ -129,7 +134,7 @@ const editEvent = async(title: string, location: string, description: string, ca
     <div class="base">
       <menu>
         <li><button class="btn-small pure-button-primary pure-button" type="submit">Save</button></li>
-        <li><button class="btn-small pure-button" @click="emit('editEvent')">Cancel</button></li>
+        <li><button class="btn-small pure-button" @click.prevent="emit('editEvent')">Cancel</button></li>
       </menu>
       <p v-if="props.event.dateCreated !== props.event.dateUpdated" class="timestamp">Edited on: {{ formatDate(props.event.dateUpdated) }}</p>
       <p v-else class="timestamp">Created on: {{ formatDate(props.event.dateCreated) }}</p>

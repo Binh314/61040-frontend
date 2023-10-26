@@ -32,7 +32,7 @@ async function getEventPage() {
     </p>
     <p class = "time" v-else>
       <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" />
-      Happening Until {{ formatDateShort(props.event.endTime) }}
+      Happening Right Now!
     </p>
     <p class = "location"> 
       <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> 

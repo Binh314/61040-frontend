@@ -24,7 +24,7 @@ async function getAttendingEvents() {
 }
 
 onBeforeMount(async () => {
-  if (isLoggedIn) {
+  if (isLoggedIn.value) {
     await getAttendingEvents();
   } 
   loaded.value = true;

@@ -11,6 +11,7 @@ const emit = defineEmits(["editPost", "refreshPosts"]);
 const { currentUsername, eventMode } = storeToRefs(useUserStore());
 
 async function goToMessages(author: string) {
+  if (!eventMode.value) return;
   void router.push({ name: "Messages", params: {username: author} });
 }
 

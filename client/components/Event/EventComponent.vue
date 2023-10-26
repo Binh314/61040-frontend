@@ -129,10 +129,10 @@ const indicateAttendance = async () => {
     </menu>
     <div v-else class="dropdownBox">
       <div class="addEvent">
-        <button class="pure-button dropdownButton" @click="toggleDropdown">{{ dropdownText }}</button>
+        <button class="pure-button pure-button-primary dropdownButton" @click="toggleDropdown">{{ dropdownText }}</button>
         <div class="dropdownOptions" v-if="addEventActive">
-          <button class="pure-button dropdownButton" @click="indicateInterest">Interested</button> <br/>
-          <button class="pure-button dropdownButton" @click="indicateAttendance">Attending</button>
+          <button class="pure-button pure-button-primary dropdownButton" @click="indicateInterest">Interested</button> <br/>
+          <button class="pure-button pure-button-primary dropdownButton" @click="indicateAttendance">Attending</button>
         </div>
       </div>
     </div>

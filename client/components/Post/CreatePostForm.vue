@@ -26,7 +26,10 @@ const emptyForm = () => {
   <form @submit.prevent="createPost(content)">
     <label for="content">Post Contents:</label>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
-    <button type="submit" class="pure-button-primary pure-button">Create Post</button>
+    <menu>
+    <li><button type="submit" class="pure-button-primary pure-button" @click="createPost(content)">Create Post</button></li>
+    <li><button class="btn-small pure-button" @click.prevent="emit('refreshPosts')">Cancel</button></li>
+  </menu>
   </form>
 </template>
 
@@ -38,6 +41,15 @@ form {
   flex-direction: column;
   gap: 0.5em;
   padding: 1em;
+}
+menu {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+  padding: 0;
+  margin: 0;
 }
 
 textarea {

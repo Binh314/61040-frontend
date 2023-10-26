@@ -42,7 +42,7 @@ const editProfile = async(name: string, bio: string, location: string, bday: str
         { name: name,
           bio: bio,
           location: location,
-          interests: interests,
+          interests: interests.filter(e=>e),
           photo: photo
         },
         birthdate: birthdate

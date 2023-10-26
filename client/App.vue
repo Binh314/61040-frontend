@@ -29,7 +29,7 @@ onBeforeMount(async () => {
         <!-- <div class = "col"> -->
         <nav>
           <div class="title">
-            <img src="@/assets/images/logo.svg" />
+            <img src="@/assets/images/nika.svg" />
             <RouterLink v-if="eventMode" :to="{ name: 'EventMode' }">
               <h2>Nakama</h2>
             </RouterLink>
@@ -37,32 +37,44 @@ onBeforeMount(async () => {
               <h2>Nakama</h2>
             </RouterLink>
           </div>
-          <ul>
-            <li v-if="!eventMode">
-              <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }"> Home </RouterLink>
-            </li>
-            <li v-if="eventMode">
-              <RouterLink :to="{ name: 'EventMode' }" :class="{ underline: currentRouteName == 'Home' }"> Home </RouterLink>
-            </li>
-            <li v-if="!eventMode">
-              <RouterLink :to="{ name: 'Events' }" :class="{ underline: currentRouteName == 'Events' }"> Events </RouterLink>
-            </li>
-            <li v-if="isLoggedIn">
-              <RouterLink :to="{ name: 'Messages' }" :class="{ underline: currentRouteName == 'Messages' }"> Messages </RouterLink>
-            </li>
-            <!-- <li>
-              <RouterLink :to="{ name: 'Test' }" :class="{ underline: currentRouteName == 'Test' }"> Test </RouterLink>
-            </li> -->
-            <li v-if="isLoggedIn">
-              <RouterLink :to="{ name: 'Profile', params: {username: currentUsername} }" :class="{ underline: currentRouteName == 'Profile' }"> Profile </RouterLink>
-            </li>
-            <li v-if="isLoggedIn">
-              <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
-            </li>
-            <li v-else>
-              <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }"> Login </RouterLink>
-            </li>
-          </ul>
+            <ul>
+              <div class="pages">
+                <div>
+                  <li v-if="!eventMode">
+                    <font-awesome-icon :icon="['fas', 'house']" size="lg" class="icon" />
+                    <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }">Home </RouterLink>
+                  </li>
+                  <li v-if="eventMode">
+                    <font-awesome-icon :icon="['fas', 'house']" size="lg" class="icon" />
+                    <RouterLink :to="{ name: 'EventMode' }" :class="{ underline: currentRouteName == 'EventMode' }">Home </RouterLink>
+                  </li>
+                  <li v-if="!eventMode">
+                    <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon"/>
+                    <RouterLink :to="{ name: 'Events' }" :class="{ underline: currentRouteName == 'Events' }">Events </RouterLink>
+                  </li>
+                  <li v-if="isLoggedIn">
+                    <font-awesome-icon :icon="['fas', 'envelope']" size="lg" class="icon"/>
+                    <RouterLink :to="{ name: 'Messages' }" :class="{ underline: currentRouteName == 'Messages' }">Messages </RouterLink>
+                  </li>
+                </div>
+
+                <div>
+                  <li v-if="isLoggedIn">
+                    <font-awesome-icon :icon="['fas', 'gear']" size="lg" class="icon"/>
+                    <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }">Settings </RouterLink>
+                  </li>
+                  <li v-else>
+                    <font-awesome-icon :icon="['fas', 'right-to-bracket']" size="lg" class="icon" />
+                    <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }">Login </RouterLink>
+                  </li>
+                  <br>
+                  <li v-if="isLoggedIn">
+                    <font-awesome-icon :icon="['fas', 'user']" size="lg" class="icon"/>
+                    <RouterLink :to="{ name: 'Profile', params: {username: currentUsername} }" :class="{ underline: currentRouteName == 'Profile' }">Profile </RouterLink>
+                  </li>
+                </div>
+              </div>
+            </ul>
         </nav>
         <!-- </div> -->
       <article v-if="toast !== null" class="toast" :class="toast.style">
@@ -91,7 +103,16 @@ onBeforeMount(async () => {
   display: flex;
   align-items: end;
 } */
-
+.pages {
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 95%;
+}
+.icon  {
+  margin-right: 0.5em;
+  width: 1em;
+}
 
 nav {
   padding: 1em 2em;
@@ -130,8 +151,9 @@ ul {
   list-style-type: none;
   margin-left: auto;
   display: flex;
-  align-items: end;
+  align-items: start;
   flex-direction: column;
+  line-height: 2em;
   gap: 1em;
   height: 85vh;
   /* justify-content: space-between; */

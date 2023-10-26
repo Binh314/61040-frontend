@@ -130,16 +130,16 @@ h2 {
 
 .sentContainer {
   display:flex;
-  justify-content : flex-end;
+  justify-content: flex-end;
   padding-right: 2em;
-  padding-left: 4em;
+  padding-left: 50%;
 }
 
 .receivedContainer {
   display:flex;
   justify-content : flex-start;
   padding-left: 2em;
-  padding-right: 4em;
+  padding-right: 50%;
 }
 
 .sent {

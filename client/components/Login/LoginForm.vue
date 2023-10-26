@@ -74,7 +74,7 @@ async function route() {
       </div>
       <div class="pure-control-group">
         <label for="aligned-address">Current Location</label>
-        <input type="address" v-model.trim="address" id="aligned-address" placeholder="Address (leave blank to use current location)" title="Leave blank to use GPS location." autocomplete="off"/>
+        <input type="text" v-model.trim="address" id="aligned-address" placeholder="Address (leave blank to use current location)" title="Leave blank to use GPS location." autocomplete="off"/>
       </div>
       <div class="pure-controls">
         <button type="submit" class="pure-button pure-button-primary">{{submitText}}</button>
@@ -87,5 +87,8 @@ async function route() {
 h3 {
   display: flex;
   justify-content: center;
+}
+input {
+  width: 25em;
 }
 </style>

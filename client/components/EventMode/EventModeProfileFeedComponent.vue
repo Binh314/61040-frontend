@@ -53,7 +53,7 @@ onBeforeMount(async () => {
       <ProfileComponent :profile="profile" :ownProfile="ownProfile" @refreshProfiles="getProfilesFeed"/>
     </article>
   </section>
-  <p v-else-if="loaded">No events found</p>
+  <p v-else-if="loaded">No other attendees found</p>
   <p v-else>Loading...</p>
 </template>
 

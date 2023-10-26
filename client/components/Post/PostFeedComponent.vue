@@ -14,6 +14,7 @@ const loaded = ref(false);
 let posts = ref<Array<Record<string, string>>>([]);
 let editing = ref("");
 let searchAuthor = ref("");
+const creating = ref(false);
 
 async function getPostFeed(author?: string) {
   let query: Record<string, string> = author !== undefined ? { author } : {};
@@ -25,6 +26,7 @@ async function getPostFeed(author?: string) {
   }
   searchAuthor.value = author ? author : "";
   posts.value = postResults;
+  creating.value = false;
 }
 
 async function getPosts(author?: string) {
@@ -43,8 +45,12 @@ function updateEditing(id: string) {
   editing.value = id;
 }
 
+function createPost() {
+  creating.value = true;
+}
+
 onBeforeMount(async () => {
-  if (isLoggedIn) {
+  if (isLoggedIn.value) {
     await getPostFeed();
   } else {
     await getPosts();
@@ -54,23 +60,28 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <section class="postForm" v-if="isLoggedIn">
-    <h2>Create a post:</h2>
-    <CreatePostForm @refreshPosts="getPostFeed" />
-  </section>
-  <div class="row">
-    <h2 v-if="!searchAuthor">Posts:</h2>
-    <h2 v-else>Posts by {{ searchAuthor }}:</h2>
-    <SearchPostForm @getPostsByAuthor="getPosts" />
+  <div v-if="creating">
+    <section class="postForm" v-if="isLoggedIn">
+      <h2>Create a post:</h2>
+      <CreatePostForm @refreshPosts="getPostFeed" />
+    </section>
   </div>
-  <section class="posts" v-if="loaded && posts.length !== 0">
-    <div v-for="post in posts" :key="post._id">
-      <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPostFeed" @editPost="updateEditing" />
-      <EditPostForm v-else :post="post" @refreshPosts="getPostFeed" @editPost="updateEditing" />
+  <div v-else>
+    <button class="pure-button pure-button-primary" @click="createPost" v-if="isLoggedIn" >Create a Post</button>
+    <div class="row">
+      <h2 v-if="!searchAuthor">Posts:</h2>
+      <h2 v-else>Posts by {{ searchAuthor }}:</h2>
+      <SearchPostForm @getPostsByAuthor="getPosts" />
     </div>
-  </section>
-  <p v-else-if="loaded">No posts found</p>
-  <p v-else>Loading...</p>
+    <section class="posts" v-if="loaded && posts.length !== 0">
+      <div v-for="post in posts" :key="post._id">
+        <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPostFeed" @editPost="updateEditing" />
+        <EditPostForm v-else :post="post" @refreshPosts="getPostFeed" @editPost="updateEditing" />
+      </div>
+    </section>
+    <p v-else-if="loaded">No posts found</p>
+    <p v-else>Loading...</p>
+  </div>
 </template>
 
 <style scoped>

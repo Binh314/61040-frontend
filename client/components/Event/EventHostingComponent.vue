@@ -25,7 +25,7 @@ async function getHostingEvents() {
 }
 
 onBeforeMount(async () => {
-  if (isLoggedIn) {
+  if (isLoggedIn.value) {
     await getHostingEvents();
   } 
   loaded.value = true;

@@ -21,10 +21,19 @@ let profile = ref<Record<string, string>>();
 let editing = ref("");
 const username = ref("");
 const interval = ref();
+const expanded = ref(false);
 
 const messaging = ref<Array<string>>();
 
 // setInterval(getMessages, 1000);
+
+function expandChat() {
+  expanded.value = true;
+}
+
+function minimizeChat() {
+  expanded.value = false;
+}
 
 async function refreshList() {
   await getMessages();
@@ -102,20 +111,44 @@ onBeforeUnmount(async () => {
 <template>
   <div class="pure-grid">
     <div class="pure-u-1-4">
-      <h1>Messages</h1>
-      <button @click="newMessage">New Message</button>
-      <MessageListComponent :messaging="messaging" @sendMessage="refreshList"/>
+      <div class=" messageList">
+        <h1>Messages</h1>
+        <button v-if="username" class="pure-button pure-button-primary" @click="newMessage">New Message</button>
+        <MessageListComponent :messaging="messaging" @sendMessage="refreshList"/>
+      </div>
     </div>
-    <div class="pure-u-1-2">
-      <MessageComponent v-if="username" :username="username" @sendMessage="refreshList"/>
-      <MessageNewComponent v-else @newMessage="refreshList"/>
-    </div>
-    <div class="pure-u-1-4">
+    <div :class="(expanded) ? 'pure-u-3-4' : 'pure-u-1-2'">
+      <div class="chatbox">
+        <MessageComponent v-if="username" :username="username" @sendMessage="refreshList"/>
+        <MessageNewComponent v-else @newMessage="refreshList"/>
+        <font-awesome-icon v-if="expanded" :icon="['fas', 'chevron-left']" size="3x" class="expand" @click="minimizeChat" />
+        <font-awesome-icon v-else :icon="['fas', 'chevron-right']" size="3x" class="expand" @click="expandChat" />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.expand:hover {
+  cursor: pointer;
+}
+
+.expand {
+  margin-left: .25em;
+}
+
+.chatbox {
+  display: flex;
+  align-items: center;
+}
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 section {
   display: flex;
   flex-direction: column;
