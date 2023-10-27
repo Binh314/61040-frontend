@@ -93,6 +93,7 @@ async function updateMode() {
       <fieldset>
         <legend>Update your current location</legend>
         <input type="text" class="locInput" placeholder="New address (leave blank to use current location)" v-model="address"/>
+        &nbsp;
         <button type="submit" class="pure-button pure-button-primary">
           {{ (updatingLoc) ? "Updating..." : "Update Location" }} 
         </button>
@@ -103,6 +104,7 @@ async function updateMode() {
       <fieldset>
         <legend>Change your username</legend>
         <input type="text" placeholder="New username" v-model="username" required />
+        &nbsp;
         <button type="submit" class="pure-button pure-button-primary">Update username</button>
       </fieldset>
     </form>
@@ -110,6 +112,7 @@ async function updateMode() {
       <fieldset>
         <legend>Change your password</legend>
         <input type="password" placeholder="New password" v-model="password" required />
+        &nbsp;
         <button type="submit" class="pure-button pure-button-primary">Update password</button>
       </fieldset>
     </form>

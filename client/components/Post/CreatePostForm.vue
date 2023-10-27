@@ -31,23 +31,28 @@ const emptyForm = () => {
 </script>
 
 <template>
-  <form @submit.prevent="createPost(content, files)">
-    <label for="content">Post Contents:</label>
-    <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
-
-    <label for="photos"> Attach Photos: </label>
-    <TagsInput class="photos" :initTags="files" tagName="photo url" @updateTags="updatePhotos" />
-    <div class="files">
-      <img v-for="file in files" class="postImage" :src="file">
-    </div>
-    <menu>
-    <li><button type="submit" class="pure-button-primary pure-button">Create Post</button></li>
-    <li><button class="btn-small pure-button" @click.prevent="emit('refreshPosts')">Cancel</button></li>
-  </menu>
-  </form>
+  <article>
+    <form @submit.prevent="createPost(content, files)">
+      <label for="content">Post Contents:</label>
+      <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
+      <label for="photos"> Attach Photos: </label>
+      <TagsInput class="photos" :initTags="files" tagName="photo url" @updateTags="updatePhotos" />
+      <div class="files">
+        <img v-for="file in files" class="postImage" :src="file">
+      </div>
+      <menu>
+      <li><button type="submit" class="pure-button-primary pure-button">Create Post</button></li>
+      <li><button class="btn-small pure-button" @click.prevent="emit('refreshPosts')">Cancel</button></li>
+    </menu>
+    </form>
+  </article>
 </template>
 
 <style scoped>
+
+article {
+  border-style: dashed;
+}
 
 .postImage {
   object-fit: scale-down;

@@ -180,6 +180,7 @@ async function updateMode() {
 
 <style scoped>
 
+
 .photo{
   height: 50vh;
   max-width: 100%;

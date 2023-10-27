@@ -180,6 +180,7 @@ menu {
   list-style-type: none;
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 1em;
   padding: 0;
   margin: 0;

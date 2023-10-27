@@ -109,7 +109,7 @@ onBeforeUnmount(async () => {
 </script>
 
 <template>
-  <div class="pure-grid">
+  <div class="pure-grid page">
     <div class="pure-u-1-4">
       <div class=" messageList">
         <h1>Messages</h1>
@@ -131,6 +131,7 @@ onBeforeUnmount(async () => {
 </template>
 
 <style scoped>
+
 
 .newMessage {
   margin-left: 1em;

@@ -116,8 +116,12 @@ h2 {
 }
 
 .messagesSection {
-  border-style: solid;
+  border-style: dashed;
   border-radius: 1em;
+  background-color: white;
+  border-radius: 1em;
+  box-shadow: 0.5em 1em 1em black;
+  border-width: .25em;
 }
 
 .messages {

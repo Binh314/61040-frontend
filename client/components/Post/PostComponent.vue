@@ -50,7 +50,6 @@ const deletePost = async () => {
 <style scoped>
 
 
-
 article {
   background-color: var(--base-bg);
   border-radius: 1em;
@@ -58,6 +57,7 @@ article {
   flex-direction: column;
   gap: 0.5em;
   padding: 1em;
+  border-style: dashed;
 }
 
 .eventModeContainer:hover {
@@ -114,5 +114,7 @@ menu {
   display: flex;
   flex-wrap: wrap;
 }
+
+
 
 </style>

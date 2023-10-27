@@ -154,10 +154,10 @@ async function updateMode() {
         </div>
       </div>
     </div>
-    <article class="timestamp">
+    <div class="timestamp">
       <p v-if="props.event.dateCreated !== props.event.dateUpdated">Edited on: {{ formatDate(props.event.dateUpdated) }}</p>
       <p v-else>Created on: {{ formatDate(props.event.dateCreated) }}</p>
-    </article>
+    </div>
 </template>
 
 <style scoped>

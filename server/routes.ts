@@ -50,6 +50,7 @@ class Routes {
   async deleteUser(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
     Profile.delete(new ObjectId(user.toString()));
+    Location.delete(user);
     WebSession.end(session);
     return await User.delete(user);
   }
@@ -76,7 +77,6 @@ class Routes {
   @Router.post("/logout")
   async logOut(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
-    Location.delete(user);
     WebSession.end(session);
     return { msg: "Logged out!" };
   }

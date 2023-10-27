@@ -47,6 +47,10 @@ function removeTag(i: number) {
 
 <style scoped>
 
+input {
+  padding: .25em;
+}
+
 span {
   line-height: 2em;
 }

@@ -2,7 +2,7 @@
 import { useToastStore } from "@/stores/toast";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 import router from "./router";
 
@@ -11,6 +11,9 @@ const currentRouteName = computed(() => currentRoute.name);
 const userStore = useUserStore();
 const { isLoggedIn, currentUsername, eventMode } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
+
+
+const bgColor = ref("var(--page-bg)")
 
 // Make sure to update the session before mounting the app in case the user is already logged in
 onBeforeMount(async () => {
@@ -31,8 +34,8 @@ function goToEventModeInfo() {
   <section class="banner" v-if="eventMode" @click="goToEventModeInfo">
     <h3>Nakama is in Event Mode. Click for more information.</h3>
   </section>
-  <br>
-  <div class = "pure-grid page">
+  <br v-if="eventMode">
+  <div class = "pure-grid page pageContent" :style="(eventMode) ? 'background-color: red' : ''">
     <div class="pure-u-1-6"> <!--2/12-->
       <header>
         <!-- <div class = "col"> -->
@@ -100,14 +103,19 @@ function goToEventModeInfo() {
 <style scoped>
 @import "./assets/toast.css";
 
+/* https://stackoverflow.com/questions/39761120/invert-svg-image-using-css */
+img { /* svg on an img tag */
+  -webkit-filter: invert(1); /* safari 6.0 - 9.0 */
+          filter: invert(1);
+}
+.pageContent {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+}
+
 li {
   display: flex;
   align-items: center;
-}
-
-.route {
-  font-size: 20px;
-  line-height: 3em;
 }
 
 .banner {
@@ -118,6 +126,7 @@ li {
   padding:0.25em;
   position: fixed;
   width: 100%;
+  z-index: 1
 }
 h3 {
   margin: 0;
@@ -141,7 +150,9 @@ h3 {
 
 nav {
   padding: 1em 2em;
-  background-color: rgba(211, 211, 211, 0.5);
+  /* background-color: rgba(211, 211, 211, 0.5); */
+  background-color: var(--dark-bg);
+  color: white;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -149,6 +160,17 @@ nav {
   height: 100vh;
   position: fixed;
   /* z-index: 1; */
+}
+
+.route {
+  font-size: 20px;
+  line-height: 3em;
+  color: white;
+  /* -webkit-text-stroke: 1px black; */
+}
+
+h2 {
+  color: white;
 }
 
 h1 {

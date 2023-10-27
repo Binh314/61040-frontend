@@ -64,32 +64,37 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="row">
+  <div class="profileInfo">
+    <div class="row">
+    </div>
+    <section class="profile" v-if="profile">
+      <article>
+        <ProfileComponent v-if="editing !== profile._id" :profile="profile" @refreshProfile="getProfile"
+        @editProfile="updateEditing" />
+        <EditProfileForm v-else :profile="profile" @refreshProfile="getProfile" @editProfile="updateEditing" />
+      </article>
+    </section>
+    <p v-else-if="loaded">No profile found</p>
+    <p v-else>Loading...</p>
+    <br>
+    <h2>Posts</h2>
+    <section class="posts" v-if="loaded && posts.length !== 0">
+      <div v-for="post in posts" :key="post._id">
+        <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
+        <EditPostForm v-else :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
+      </div>
+    </section>
+    <p v-else-if="loaded">No posts found</p>
+    <p v-else>Loading...</p>
   </div>
-  <section class="profile" v-if="profile">
-    <article>
-      <ProfileComponent v-if="editing !== profile._id" :profile="profile" @refreshProfile="getProfile"
-      @editProfile="updateEditing" />
-      <EditProfileForm v-else :profile="profile" @refreshProfile="getProfile" @editProfile="updateEditing" />
-    </article>
-  </section>
-  <p v-else-if="loaded">No profile found</p>
-  <p v-else>Loading...</p>
-
-  <br>
-
-  <h2>Posts</h2>
-  <section class="posts" v-if="loaded && posts.length !== 0">
-    <article v-for="post in posts" :key="post._id">
-      <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
-      <EditPostForm v-else :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
-    </article>
-  </section>
-  <p v-else-if="loaded">No posts found</p>
-  <p v-else>Loading...</p>
 </template>
 
 <style scoped>
+.profileInfo {
+  margin: auto 1em;
+}
+
+
 section {
   display: flex;
   flex-direction: column;

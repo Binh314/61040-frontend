@@ -45,13 +45,13 @@ onBeforeMount(async () => {
 .header:hover {
   cursor: pointer;
   text-decoration: underline;
-  background-color: gray;
 }
 
 .header {
-  background-color: lightgray;
+  background-color: var(--dark-bg);
   border-bottom: solid;
   border-radius: 1em;
+  color: white;
 }
 
 .container {

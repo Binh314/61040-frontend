@@ -109,7 +109,8 @@ const emptyForm = () => {
 }
 
 form {
-  background-color: var(--base-bg);
+  background-color: var(--dark-bg);
+  color: white;
   border-radius: 1em;
   display: flex;
   flex-direction: row;
@@ -133,8 +134,11 @@ form {
   width: 50%;
 }
 .messagesSection {
-  border-style: solid;
+  border-style: dashed;
   border-radius: 1em;
+  background-color: white;
+  box-shadow: 0.5em 1em 1em black;
+  border-width: .25em;
 }
 
 .messages {

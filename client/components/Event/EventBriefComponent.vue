@@ -50,7 +50,7 @@ async function getEventPage() {
 }
 
 article:hover {
-  background-color: darkgray;
+  background-color: lightgray;
   cursor:pointer;
 }
 

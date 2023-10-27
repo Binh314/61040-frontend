@@ -1,9 +1,25 @@
 /* Add some global styles here! */
 
 :root {
-  --red: rgb(208, 67, 12);
-  --base-bg: #f1f3f5;
+  --red: #e54657;
+  --offwhite: #f1f3f5;
+  --base-bg: #ffffff;
+  --dark-bg: #6A4782;
+  --page-bg: #D4B7E5;
 }
+
+
+* {
+  /* font-family: "Comic Sans MS"; */
+  font-family: "GlobalFont";
+}
+
+@font-face {
+  font-family: GlobalFont;
+  src: url("@/assets/fonts/WildWords/CCWildWordsLower-Regular.ttf");
+}
+
+
 
 button.btn-small {
   font-size: 80%;
@@ -12,11 +28,24 @@ button.btn-small {
 button.button-error {
   color: white;
   background: var(--red);
+  box-shadow: 0.5em 0.5em 1em white;
+  border: white;
+  border-style: solid;
+  border-width: .25em;
+}
+
+button.pure-button {
+  border-radius: 1em;
+  padding: 1em;
 }
 
 button.pure-button-primary {
-  border-radius: 1em;
-  padding: 1em;
+  /* background-color: #669AD1; */
+
+  box-shadow: 0.5em 0.5em 1em white;
+  border: white;
+  border-style: solid;
+  border-width: .25em;
 }
 
 a.button {
@@ -37,12 +66,27 @@ a.button {
   gap: 1em;
 }
 
-* {
-  /* font-family: "Comic Sans MS"; */
-  font-family: "GlobalFont";
+article {
+  border-style: solid;
+  box-shadow: 1em 1em 1em black;
+  border-width: .25em;
 }
 
-@font-face {
-  font-family: GlobalFont;
-  src: url("@/assets/fonts/WildWords/CCWildWordsLower-Regular.ttf");
+article button.pure-button-primary {
+  box-shadow: none;
+  border: none;
+}
+
+form button.pure-button-primary {
+  box-shadow: none;
+  border: none;
+}
+
+article button.pure-button-error {
+  box-shadow: none;
+  border: none;
+}
+
+input {
+  padding: 0.5em;
 }
