@@ -43,7 +43,7 @@ async function getEvents(host?: string) {
     return;
   }
   searchHost.value = host ? host : "";
-  events.value = eventResults;
+  events.value = eventResults.filter((event: {endTime: any}) => Date.parse(event.endTime) > Date.now());
 }
 
 function updateEditing(id: string) {
@@ -84,12 +84,12 @@ onBeforeMount(async () => {
         </section>
       </div>
       <div v-else>
-        <div class="row">
-          <button class="pure-button pure-button-primary" @click="createEvent" v-if="isLoggedIn" >Create an Event</button>
+        <!-- <div class="row">
           <h2 v-if="!searchHost"></h2>
-          <h2 v-else> {{ searchHost }}:</h2>
+          <h2 v-else> {{ searchHost }}:</h2> -->
           <!-- <SearchEventForm @getEventsByHost="getEvents" /> -->
-        </div>
+        <!-- </div> -->
+        <button class="pure-button pure-button-primary create" @click="createEvent" v-if="isLoggedIn" >Create an Event</button>
         <section class="events" v-if="loaded && events.length !== 0">
           <!-- <EventComponent @seeMoreEventDetails="getEvent"/> -->
           <article v-for="event in events" :key="event._id">
@@ -111,6 +111,12 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
+
+.create {
+  margin-left: 1em;
+  margin-bottom: 2em;
+}
+
 section {
   display: flex;
   flex-direction: column;

@@ -35,8 +35,7 @@ async function getEventPage() {
       Happening Right Now!
     </p>
     <p class = "location"> 
-      <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> 
-      <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
+      <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
         {{event.location}}
       </a> 
     </p>

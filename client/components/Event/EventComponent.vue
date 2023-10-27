@@ -9,7 +9,7 @@ import ProfileHeaderComponent from "../Profile/ProfileHeaderComponent.vue";
 
 const props = defineProps(["event", "detailed"]);
 const emit = defineEmits(["editEvent", "refreshEvents", "seeMoreEventDetails", "seeLessEventDetails"]);
-const { currentUsername } = storeToRefs(useUserStore());
+const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
 
 const addEventActive = ref(false);
 
@@ -87,8 +87,7 @@ const indicateAttendance = async () => {
     <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon" /> {{ formatEventDate(props.event.startTime) }} &ndash;  {{ formatEventDate(props.event.endTime) }}
   </p>
   <p class = "location">
-    <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" />
-    <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
+    <font-awesome-icon :icon="['fas', 'location-dot']" size="lg" class="icon" /> <a :href="`http://maps.google.com/?q=${event.location}`" target="_blank">
       {{event.location}}
     </a>
   </p>
@@ -127,7 +126,7 @@ const indicateAttendance = async () => {
       <li><button class="btn-small pure-button" @click="emit('editEvent', props.event._id)">Edit</button></li>
       <li><button class="button-error btn-small pure-button" @click="deleteEvent">Delete</button></li>
     </menu>
-    <div v-else class="dropdownBox">
+    <div v-else-if="isLoggedIn" class="dropdownBox">
       <div class="addEvent">
         <button class="pure-button pure-button-primary dropdownButton" @click="toggleDropdown">{{ dropdownText }}</button>
         <div class="dropdownOptions" v-if="addEventActive">

@@ -58,7 +58,7 @@ export default class EventConcept {
 
   async getEvents(query: Filter<EventDoc>) {
     const events = await this.events.readMany(query, {
-      sort: { startTime: -1 },
+      sort: { startTime: 1 },
     });
     return events;
   }

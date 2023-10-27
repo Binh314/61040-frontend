@@ -450,11 +450,18 @@ class Routes {
     return location;
   }
 
-  @Router.patch("/location")
+  @Router.patch("/location/address")
   async updateLocation(session: WebSessionDoc, address: string) {
     const user = WebSession.getUser(session);
     const addressLocation = await Location.getFromAddress(address);
     await Location.update(user, { location: addressLocation });
+    return { msg: "Location updated successfully" };
+  }
+
+  @Router.patch("/location/coords")
+  async updateLocationCoords(session: WebSessionDoc, lat: number, lon: number) {
+    const user = WebSession.getUser(session);
+    await Location.update(user, { location: { lat, lon } });
     return { msg: "Location updated successfully" };
   }
 

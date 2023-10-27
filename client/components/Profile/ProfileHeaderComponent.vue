@@ -16,6 +16,7 @@ const props = defineProps(["username"]);
 let profile = ref<Record<string, string>>({});
 
 async function goToMessages() {
+  if (!isLoggedIn.value) return;
   void router.push({ name: "Messages", params: {username: props.username} });
 }
 
@@ -44,7 +45,7 @@ onBeforeMount(async () => {
       <span class="name"> {{ profile.name }} </span>
       <span class="username"> @{{ props.username }} </span>
     </span>
-    <font-awesome-icon v-if="username !== currentUsername" class="icon" :icon="['far', 'envelope']" size="lg" @click.stop="goToMessages" />
+    <font-awesome-icon v-if="username !== currentUsername && isLoggedIn" class="icon" :icon="['far', 'envelope']" size="lg" @click.stop="goToMessages" />
   </div>
 </template>
 

@@ -10,10 +10,13 @@ const { currentUsername, isLoggedIn, eventMode } = storeToRefs(useUserStore());
 
 <template>
   <main>
-    <section>
-      <h1 v-if="isLoggedIn"> </h1>
-      <h1 v-else>Please login!</h1>
-    </section>
+    <div class="pure-grid" v-if="!isLoggedIn">
+      <div class="pure-u-2-3">
+        <section>
+          <h1 >Please login!</h1>
+        </section>
+      </div>
+    </div>
     <div class="pure-grid">
       <div class="pure-u-2-3">
         <h1>Profile</h1>

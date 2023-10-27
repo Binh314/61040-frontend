@@ -6,7 +6,6 @@ import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
-import SearchPostForm from "./SearchPostForm.vue";
 
 const { isLoggedIn } = storeToRefs(useUserStore());
 
@@ -67,12 +66,12 @@ onBeforeMount(async () => {
     </section>
   </div>
   <div v-else>
-    <button class="pure-button pure-button-primary" @click="createPost" v-if="isLoggedIn" >Create a Post</button>
-    <div class="row">
-      <h2 v-if="!searchAuthor">Posts:</h2>
+    <!-- <div class="row">
+      <h2 v-if="!searchAuthor"></h2>
       <h2 v-else>Posts by {{ searchAuthor }}:</h2>
       <SearchPostForm @getPostsByAuthor="getPosts" />
-    </div>
+    </div> -->
+    <button class="pure-button pure-button-primary create" @click="createPost" v-if="isLoggedIn" >Create a Post</button>
     <section class="posts" v-if="loaded && posts.length !== 0">
       <div v-for="post in posts" :key="post._id">
         <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPostFeed" @editPost="updateEditing" />
@@ -89,6 +88,11 @@ section {
   display: flex;
   flex-direction: column;
   gap: 1em;
+}
+
+.create {
+  margin-left: 1em;
+  margin-bottom: 2em;
 }
 
 section,

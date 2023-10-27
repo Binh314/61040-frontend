@@ -9,11 +9,12 @@ import { computed, onBeforeMount, ref } from "vue";
 
 const props = defineProps(["profile", "ownProfile"]);
 const emit = defineEmits(["editProfile", "refreshProfile"]);
-const { currentUsername, eventMode } = storeToRefs(useUserStore());
+const { currentUsername, eventMode, isLoggedIn } = storeToRefs(useUserStore());
 
 const commonInterests = ref<Array<string>>([]);
 
 async function goToMessages() {
+  if (!isLoggedIn.value) return;
   void router.push({ name: "Messages", params: {username: props.profile.person} });
 }
 
@@ -56,7 +57,7 @@ onBeforeMount( async () => {
             {{ props.profile.name }}
           </span>
 
-          <font-awesome-icon v-if="props.profile.person.username !== currentUsername" class="message" :icon="['far', 'envelope']" size="lg" @click.stop="goToMessages" />
+          <font-awesome-icon v-if="props.profile.person.username !== currentUsername && isLoggedIn" class="message" :icon="['far', 'envelope']" size="lg" @click.stop="goToMessages" />
         </h1>
         <br>
         <h2 class="commonInterests" v-if="commonInterests.length > 0" ><font-awesome-icon class="icon" :icon="['fas', 'heart']" size="lg" /> also likes {{  commonInterests.join(", ")  }}</h2>

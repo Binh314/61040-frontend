@@ -4,18 +4,24 @@ import EventUpcomingComponent from "@/components/Event/EventUpcomingComponent.vu
 import PostFeedComponent from "@/components/Post/PostFeedComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import { onBeforeMount } from "vue";
+import router from "../router";
 
-const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
+const { currentUsername, isLoggedIn, eventMode } = storeToRefs(useUserStore());
+onBeforeMount(() => {
+  if (eventMode.value) 
+    router.push({name: "EventMode"});
+})
 </script>
 
 <template>
   <main>
-    <section>
-      <h1 v-if="isLoggedIn"> </h1>
-      <h1 v-else>Please login!</h1>
-    </section>
     <div class="pure-grid">
       <div class="pure-u-2-3">
+        <section>
+          <h1 v-if="isLoggedIn"> </h1>
+          <h1 v-else>Please login!</h1>
+        </section>
         <h1>Home</h1>
         <PostFeedComponent/>
       </div>

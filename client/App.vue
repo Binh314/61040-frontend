@@ -4,6 +4,7 @@ import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeMount } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
+import router from "./router";
 
 const currentRoute = useRoute();
 const currentRouteName = computed(() => currentRoute.name);
@@ -19,10 +20,17 @@ onBeforeMount(async () => {
     // User is not logged in
   }
 });
+
+function goToEventModeInfo() {
+  router.push({ name: "EventModeInfo" });
+}
 </script>
 
 <template>
   <!-- <div class = "row"> -->
+  <section class="banner" v-if="eventMode" @click="goToEventModeInfo">
+    <h3>Nakama is in Event Mode. Click for more information.</h3>
+  </section>
   <div class = "pure-grid page">
     <div class="pure-u-1-6"> <!--2/12-->
       <header>
@@ -91,18 +99,22 @@ onBeforeMount(async () => {
 <style scoped>
 @import "./assets/toast.css";
 
-/* .row {
-  display: flex;
+.banner {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 0;
+  background-color: lightgray;
+  padding:0.25em;
+}
+h3 {
+  margin: 0;
 }
 
-.col {
-  flex: 50%;
-} */
+.banner:hover {
+  background-color: gray;
+  cursor: pointer;
+}
 
-/* .content {
-  display: flex;
-  align-items: end;
-} */
 .pages {
   display:flex;
   flex-direction: column;

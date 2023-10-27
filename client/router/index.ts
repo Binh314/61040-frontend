@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
 import EventFeedView from "../views/EventFeedView.vue";
+import EventModeInfoView from "../views/EventModeInfoView.vue";
 import EventModeView from "../views/EventModeView.vue";
 import EventView from "../views/EventView.vue";
 import HomeView from "../views/HomeView.vue";
@@ -20,6 +21,11 @@ const router = createRouter({
       path: "/",
       name: "Home",
       component: HomeView,
+    },
+    {
+      path: "/about",
+      name: "EventModeInfo",
+      component: EventModeInfoView,
     },
     {
       path: "/EventMode",
