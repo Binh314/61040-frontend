@@ -31,6 +31,7 @@ function goToEventModeInfo() {
   <section class="banner" v-if="eventMode" @click="goToEventModeInfo">
     <h3>Nakama is in Event Mode. Click for more information.</h3>
   </section>
+  <br>
   <div class = "pure-grid page">
     <div class="pure-u-1-6"> <!--2/12-->
       <header>
@@ -115,6 +116,8 @@ li {
   margin-bottom: 0;
   background-color: lightgray;
   padding:0.25em;
+  position: fixed;
+  width: 100%;
 }
 h3 {
   margin: 0;

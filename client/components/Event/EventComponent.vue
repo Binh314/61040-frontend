@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { formatDate, formatEventDate, formatTime } from "@/utils/formatDate";
 import { storeToRefs } from "pinia";
@@ -10,6 +11,7 @@ import ProfileHeaderComponent from "../Profile/ProfileHeaderComponent.vue";
 const props = defineProps(["event", "detailed"]);
 const emit = defineEmits(["editEvent", "refreshEvents", "seeMoreEventDetails", "seeLessEventDetails"]);
 const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
+const {turnOnEventMode, turnOffEventMode} = useUserStore();
 
 const addEventActive = ref(false);
 
@@ -68,6 +70,23 @@ const indicateAttendance = async () => {
     }
   addEventActive.value = false;
   emit("refreshEvents");
+  updateMode();
+}
+
+async function updateMode() {
+  let eventResults;
+  try {
+    eventResults = await fetchy("/api/events/at", "GET");
+  } catch {
+    turnOffEventMode();
+  }
+
+  if (eventResults.length > 0) {
+    turnOnEventMode();
+    void router.push({ name: "EventMode" });
+    return;
+  }
+  turnOffEventMode();
 }
 
 

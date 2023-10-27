@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import TagsInput from "@/components/Global/TagsInput.vue";
+import router from "@/router";
 import { formatDatepick, toDateString } from "@/utils/formatDate";
 import { ref } from "vue";
 import { useToastStore } from "../../stores/toast";
+import { useUserStore } from "../../stores/user";
 import { fetchy } from "../../utils/fetchy";
+
+const { turnOffEventMode, turnOnEventMode } = useUserStore();
 
 const title = ref("");
 const photo = ref("");
@@ -45,6 +49,7 @@ const createEvent = async (title: string, location: string, description: string,
   }
   emit("refreshEvents");
   emptyForm();
+  updateMode();
 };
 
 function updateTopics(tags: string[]) {
@@ -77,6 +82,23 @@ const emptyForm = () => {
   amenities.value.length = 0;
   accommodations.value.length = 0;
 };
+
+async function updateMode() {
+  let eventResults;
+  try {
+    eventResults = await fetchy("/api/events/at", "GET");
+  } catch {
+    turnOffEventMode();
+  }
+
+  if (eventResults.length > 0) {
+    turnOnEventMode();
+    void router.push({ name: "EventMode" });
+    return;
+  }
+  turnOffEventMode();
+}
+
 </script>
 
 <!-- Source for Preventing Submission on Enter:
