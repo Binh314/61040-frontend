@@ -49,36 +49,36 @@ function goToEventModeInfo() {
               <div class="pages">
                 <div>
                   <li v-if="!eventMode">
-                    <font-awesome-icon :icon="['fas', 'house']" size="lg" class="icon" />
-                    <RouterLink :to="{ name: 'Home' }" :class="{ underline: currentRouteName == 'Home' }">Home </RouterLink>
+                    <font-awesome-icon :icon="['fas', 'house']" size="2xl" class="icon" />
+                    <RouterLink :to="{ name: 'Home' }" :class="`route ${ (currentRouteName == 'Home') ? 'underline' : '' }`">Home </RouterLink>
                   </li>
                   <li v-if="eventMode">
-                    <font-awesome-icon :icon="['fas', 'house']" size="lg" class="icon" />
-                    <RouterLink :to="{ name: 'EventMode' }" :class="{ underline: currentRouteName == 'EventMode' }">Home </RouterLink>
+                    <font-awesome-icon :icon="['fas', 'house']" size="2xl" class="icon" />
+                    <RouterLink :to="{ name: 'EventMode' }" :class="`route ${ (currentRouteName == 'EventMode') ? 'underline' : '' }`">Home </RouterLink>
                   </li>
                   <li v-if="!eventMode">
-                    <font-awesome-icon :icon="['fas', 'calendar']" size="lg" class="icon"/>
-                    <RouterLink :to="{ name: 'Events' }" :class="{ underline: currentRouteName == 'Events' }">Events </RouterLink>
+                    <font-awesome-icon :icon="['fas', 'calendar']" size="2xl" class="icon"/>
+                    <RouterLink :to="{ name: 'Events' }" :class="`route ${ (currentRouteName == 'Events') ? 'underline' : '' }`">Events </RouterLink>
                   </li>
                   <li v-if="isLoggedIn">
-                    <font-awesome-icon :icon="['fas', 'envelope']" size="lg" class="icon"/>
-                    <RouterLink :to="{ name: 'Messages' }" :class="{ underline: currentRouteName == 'Messages' }">Messages </RouterLink>
+                    <font-awesome-icon :icon="['fas', 'envelope']" size="2xl" class="icon"/>
+                    <RouterLink :to="{ name: 'Messages' }" :class="`route ${ (currentRouteName == 'Messages') ? 'underline' : '' }`">Messages </RouterLink>
                   </li>
                 </div>
 
                 <div>
                   <li v-if="isLoggedIn">
-                    <font-awesome-icon :icon="['fas', 'gear']" size="lg" class="icon"/>
-                    <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }">Settings </RouterLink>
+                    <font-awesome-icon :icon="['fas', 'gear']" size="2xl" class="icon"/>
+                    <RouterLink :to="{ name: 'Settings' }" :class="`route ${ (currentRouteName == 'Settings') ? 'underline' : '' }`">Settings </RouterLink>
                   </li>
                   <li v-else>
-                    <font-awesome-icon :icon="['fas', 'right-to-bracket']" size="lg" class="icon" />
-                    <RouterLink :to="{ name: 'Login' }" :class="{ underline: currentRouteName == 'Login' }">Login </RouterLink>
+                    <font-awesome-icon :icon="['fas', 'right-to-bracket']" size="2xl" class="icon" />
+                    <RouterLink :to="{ name: 'Login' }" :class="`route ${ (currentRouteName == 'Login') ? 'underline' : '' }`">Login </RouterLink>
                   </li>
                   <br>
                   <li v-if="isLoggedIn">
-                    <font-awesome-icon :icon="['fas', 'user']" size="lg" class="icon"/>
-                    <RouterLink :to="{ name: 'Profile', params: {username: currentUsername} }" :class="{ underline: currentRouteName == 'Profile' }">Profile </RouterLink>
+                    <font-awesome-icon :icon="['fas', 'user']" size="2xl" class="icon"/>
+                    <RouterLink :to="{ name: 'Profile', params: {username: currentUsername} }" :class="`route ${ (currentRouteName == 'Profile') ? 'underline' : '' }`">Profile </RouterLink>
                   </li>
                 </div>
               </div>
@@ -98,6 +98,16 @@ function goToEventModeInfo() {
 
 <style scoped>
 @import "./assets/toast.css";
+
+li {
+  display: flex;
+  align-items: center;
+}
+
+.route {
+  font-size: 20px;
+  line-height: 3em;
+}
 
 .banner {
   text-align: center;

@@ -273,7 +273,7 @@ class Routes {
   async getAttendingEvents(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
     const timeNow = new Date();
-    const events = await Event.getEvents({ endTime: { $gte: timeNow }, attending: { $in: [user] } });
+    const events = await Event.getEvents({ endTime: { $gte: timeNow }, $or: [{ host: user }, { attending: { $in: [user] } }] });
     return Responses.events(events);
   }
 

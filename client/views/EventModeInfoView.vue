@@ -39,7 +39,7 @@ function exitEventMode() {
         <p>You are currently attending <b>{{ events.join(', ') }} </b>.</p>
         <p v-if="events.length === 1"> If you are <b>NOT attending</b> this event, please <b>press the button</b> below to <b>exit Event Mode</b>.</p>
         <p v-else> If you are <b>NOT attending</b> any of these events, please click the button below to exit <b>Event Mode</b>.</p>
-        <div class="button"><button class="pure-button" @click="exitEventMode">Exit Event Mode</button></div>
+        <div class="button"><button class="pure-button button-error" @click="exitEventMode">Exit Event Mode</button></div>
       </main>
     </div>
   </div>

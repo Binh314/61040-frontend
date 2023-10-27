@@ -117,6 +117,7 @@ h2 {
 
 .messagesSection {
   border-style: solid;
+  border-radius: 1em;
 }
 
 .messages {

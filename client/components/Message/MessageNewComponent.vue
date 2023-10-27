@@ -103,6 +103,11 @@ const emptyForm = () => {
 
 <style scoped>
 
+.profile {
+  border-bottom:solid;
+  border-radius : 1em;
+}
+
 form {
   background-color: var(--base-bg);
   border-radius: 1em;
@@ -129,6 +134,7 @@ form {
 }
 .messagesSection {
   border-style: solid;
+  border-radius: 1em;
 }
 
 .messages {

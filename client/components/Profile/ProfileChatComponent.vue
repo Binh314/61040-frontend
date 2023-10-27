@@ -50,7 +50,8 @@ onBeforeMount(async () => {
 
 .header {
   background-color: lightgray;
-  /* border-style: solid; */
+  border-bottom: solid;
+  border-radius: 1em;
 }
 
 .container {

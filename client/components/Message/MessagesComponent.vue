@@ -113,8 +113,10 @@ onBeforeUnmount(async () => {
     <div class="pure-u-1-4">
       <div class=" messageList">
         <h1>Messages</h1>
-        <button v-if="username" class="pure-button pure-button-primary" @click="newMessage">New Message</button>
-        <MessageListComponent :messaging="messaging" @sendMessage="refreshList"/>
+        <div class="list">
+          <button v-if="username" class="pure-button pure-button-primary newMessage" @click="newMessage">New Message</button>
+          <MessageListComponent :messaging="messaging" @sendMessage="refreshList"/>
+        </div>
       </div>
     </div>
     <div :class="(expanded) ? 'pure-u-3-4' : 'pure-u-1-2'">
@@ -130,7 +132,9 @@ onBeforeUnmount(async () => {
 
 <style scoped>
 
-
+.newMessage {
+  margin-left: 1em;
+}
 .expand:hover {
   cursor: pointer;
 }
