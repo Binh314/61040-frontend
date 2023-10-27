@@ -130,6 +130,7 @@ onBeforeUnmount(async () => {
 
 <style scoped>
 
+
 .expand:hover {
   cursor: pointer;
 }
@@ -141,6 +142,7 @@ onBeforeUnmount(async () => {
 .chatbox {
   display: flex;
   align-items: center;
+  margin-left: 2em;
 }
 
 .messageList {

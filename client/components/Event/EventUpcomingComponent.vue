@@ -5,7 +5,7 @@ import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 
-const { isLoggedIn } = storeToRefs(useUserStore());
+const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
 
 const loaded = ref(false);
 let events = ref<Array<Record<string, string>>>([]);
@@ -22,7 +22,12 @@ async function getEventFeed(host?: string) {
     return;
   }
   searchHost.value = host ? host : "";
-  events.value = eventResults;
+  events.value = eventResults.filter(
+    (e: {host: any, attending: any, interested: any}) => 
+      e.host !== currentUsername.value &&
+      !e.attending.includes(currentUsername.value) &&
+      !e.interested.includes(currentUsername.value)
+  );
 }
 
 async function getEvents(host?: string) {
@@ -33,7 +38,13 @@ async function getEvents(host?: string) {
   } catch (_) {
     return;
   }
-  events.value = eventResults;
+  // console.log(eventResults);
+  events.value = eventResults.filter(
+    (e: {host: any, attending: any, interested: any}) => 
+      e.host !== currentUsername.value &&
+      !e.attending.includes(currentUsername.value) &&
+      !e.interested.includes(currentUsername.value)
+  );
 }
 
 onBeforeMount(async () => {
@@ -70,6 +81,8 @@ p,
   margin: 0 auto;
   /* max-width: 60em; */
 }
+
+
 
 article {
   background-color: var(--base-bg);

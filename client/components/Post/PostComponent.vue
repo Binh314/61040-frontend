@@ -35,19 +35,21 @@ const deletePost = async () => {
       <img v-for="file in props.post.files" class="postImage" :src="file">
     </p>
     <div class="base">
-      <menu v-if="props.post.author == currentUsername && !eventMode">
+      <menu class="buttons" v-if="props.post.author == currentUsername && !eventMode">
         <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
         <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
       </menu>
-      <article class="timestamp" v-if="!eventMode">
+    </div>
+    <div class="timestamp" v-if="!eventMode">
         <p v-if="props.post.dateCreated !== props.post.dateUpdated">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
         <p v-else>Created on: {{ formatDate(props.post.dateCreated) }}</p>
-      </article>
     </div>
   </article>
 </template>
 
 <style scoped>
+
+
 
 article {
   background-color: var(--base-bg);
@@ -78,17 +80,17 @@ menu {
   flex-direction: row;
   gap: 1em;
   padding: 0;
-  margin: 0;
+  margin: 0 ;
+  justify-content: space-between;
 }
 
 .timestamp {
-  display: flex;
-  justify-content: flex-end;
+  text-align: right;
   font-size: 0.9em;
   font-style: italic;
 }
 
-.base {
+/* .base {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -96,7 +98,7 @@ menu {
 
 .base article:only-child {
   margin-left: auto;
-}
+} */
 
 .postImage {
   object-fit:scale-down;
