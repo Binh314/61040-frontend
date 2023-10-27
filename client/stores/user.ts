@@ -19,7 +19,6 @@ export const useUserStore = defineStore(
 
     const turnOnEventMode = () => {
       eventMode.value = true;
-      root.style.setProperty("--dark-bg", "black");
     };
 
     const turnOffEventMode = () => {

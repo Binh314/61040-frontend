@@ -39,7 +39,7 @@ function goToEventModeInfo() {
     <div class="pure-u-1-6"> <!--2/12-->
       <header>
         <!-- <div class = "col"> -->
-        <nav>
+        <nav :style="(eventMode) ? 'color: black' : ''">
           <div class="title">
             <img src="@/assets/images/nika.svg" />
             <RouterLink v-if="eventMode" :to="{ name: 'EventMode' }">
