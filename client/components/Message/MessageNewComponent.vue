@@ -10,12 +10,13 @@ const text = ref("");
 const emit = defineEmits(["refreshPosts"]);
 const props = defineProps(["username"]);
 const loading = ref(false);
-const { isLoggedIn, currentUsername } = storeToRefs(useUserStore());
+const { isLoggedIn, currentUsername, eventMode } = storeToRefs(useUserStore());
 const interval = ref();
 const validUsername = ref(false);
 const username = ref("");
 
 let messages = ref<Array<Record<string, string>>>([]);
+const navColor = ref("#F98A1D");
 
 async function goToMessages() {
   void router.push({ name: "Messages", params: {username: username.value} });
@@ -74,7 +75,7 @@ const emptyForm = () => {
 <template>
   <div class="messagesSection">
     <section class="profile">
-      <form class="userForm" @submit.prevent="sendMessage(text)">
+      <form class="userForm" @submit.prevent="sendMessage(text)" :style="(eventMode) ? `background-color: ${navColor}` : ''">
         <label for="userInput">New Message To:</label>
         <input id="userInput" type="text" :class="(validUsername) ? 'valid' : 'invalid'" v-model="username" placeholder="Enter username to message." autocomplete="off" @input="checkProfile"/>
       </form>

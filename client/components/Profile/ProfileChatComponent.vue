@@ -1,12 +1,18 @@
 <script setup lang="ts">
 
 import router from "@/router";
+import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
+import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
 import { useRoute, } from "vue-router";
 
+const { currentUsername, eventMode, isLoggedIn } = storeToRefs(useUserStore());
+
 const currentRoute = useRoute();
 const props = defineProps(["username"]);
+
+const navColor = ref("#F98A1D");
 
 let profile = ref<Record<string, string>>({});
 
@@ -30,7 +36,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="header" @click="goToProfile">
+  <div class="header" @click="goToProfile" :style="(eventMode) ? `background-color: ${navColor}` : ''">
     <div class="container">
       <img v-if="profile.photo" :src="profile.photo"/>
       <img v-else src="@/assets/images/user-solid.png"/>

@@ -190,6 +190,8 @@ p {
   max-width: 100%;
   border-radius: 1em;
   object-fit: scale-down;
+
+  
 }
 
 .title {

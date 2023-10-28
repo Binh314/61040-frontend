@@ -23,13 +23,17 @@
 
 button.btn-small {
   font-size: 80%;
+  background-color: #ADBED0;
+  color: black;
+  font-weight: bold;
 }
 
 button.button-error {
   color: white;
   background: var(--red);
-  box-shadow: 0.5em 0.5em 1em white;
-  border: white;
+
+  box-shadow: .5em .5em 1em black, .5em .5em 1em 1em white;
+  border-color: black;
   border-style: solid;
   border-width: .25em;
 }
@@ -42,10 +46,12 @@ button.pure-button {
 button.pure-button-primary {
   /* background-color: #669AD1; */
 
-  box-shadow: 0.5em 0.5em 1em white;
-  border: white;
+  box-shadow: .75em .75em 1em black, .75em .75em 1em 2em white;
+  border-color: black;
   border-style: solid;
   border-width: .25em;
+
+  font-weight: bold;
 }
 
 a.button {
@@ -72,20 +78,36 @@ article {
   border-width: .25em;
 }
 
-article button.pure-button-primary {
+article button.pure-button {
   box-shadow: none;
-  border: none;
+  border: solid;
+  border-color: black;
+
+  
+  border-style: solid;
+  box-shadow: 0.5em 0.5em 1em black;
+  border-width: .25em;
+
+  font-weight: bold;
 }
 
-form button.pure-button-primary {
+form button.pure-button {
   box-shadow: none;
-  border: none;
+  border: solid;
+  border-color: black;
+
+  
+  border-style: solid;
+  box-shadow: 0.5em 0.5em 1em black;
+  border-width: .25em;
+
+  font-weight: bold;
 }
 
-article button.pure-button-error {
+/* article button.pure-button-error {
   box-shadow: none;
   border: none;
-}
+}  */
 
 input {
   padding: 0.5em;

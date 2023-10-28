@@ -85,6 +85,9 @@ onBeforeUnmount(async () => {
   padding: 1em;
   background-color: var(--base-bg);
   border-radius: 1em;
+  border-style: solid;
+  box-shadow: 1em 1em 1em black;
+  border-width: .25em;
 }
 
 .container:hover {

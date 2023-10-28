@@ -12,8 +12,8 @@ const userStore = useUserStore();
 const { isLoggedIn, currentUsername, eventMode } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
 
-
-const bgColor = ref("var(--page-bg)")
+const navColor = ref("#F98A1D");
+const bgColor = ref("#D2C6A4");
 
 // Make sure to update the session before mounting the app in case the user is already logged in
 onBeforeMount(async () => {
@@ -35,11 +35,11 @@ function goToEventModeInfo() {
     <h3>Nakama is in Event Mode. Click for more information.</h3>
   </section>
   <br v-if="eventMode">
-  <div class = "pure-grid page pageContent" :style="(eventMode) ? 'background-color: red' : ''">
+  <div class = "pure-grid page pageContent" :style="(eventMode) ? `background-color: ${bgColor}` : ''">
     <div class="pure-u-1-6"> <!--2/12-->
       <header>
         <!-- <div class = "col"> -->
-        <nav :style="(eventMode) ? 'color: black' : ''">
+        <nav :style="`${(eventMode) ? 'background-color:' + navColor : ''}`">
           <div class="title">
             <img src="@/assets/images/nika.svg" />
             <RouterLink v-if="eventMode" :to="{ name: 'EventMode' }">
@@ -122,7 +122,7 @@ li {
   text-align: center;
   margin: 0;
   margin-bottom: 0;
-  background-color: lightgray;
+  background-color: #ADBED0;;
   padding:0.25em;
   position: fixed;
   width: 100%;

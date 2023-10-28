@@ -12,6 +12,7 @@ const { currentUsername, eventMode } = storeToRefs(useUserStore());
 
 async function goToMessages(author: string) {
   if (!eventMode.value) return;
+  if (currentUsername.value === props.post.author) return;
   void router.push({ name: "Messages", params: {username: author} });
 }
 
@@ -28,7 +29,7 @@ const deletePost = async () => {
 </script>
 
 <template>
-  <article :class="(eventMode) ? 'eventModeContainer' : 'container'" @click="goToMessages(props.post.author)" >
+  <article :class="(eventMode && props.post.author !== currentUsername) ? 'eventModeContainer' : 'container'" @click="goToMessages(props.post.author)" >
     <p class="author"> <ProfileHeaderComponent :username="props.post.author"/> </p>
     <p>{{ props.post.content }}</p>
     <p class="files">

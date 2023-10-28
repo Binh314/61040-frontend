@@ -120,7 +120,8 @@ h2 {
   border-radius: 1em;
   background-color: white;
   border-radius: 1em;
-  box-shadow: 0.5em 1em 1em black;
+  /* box-shadow: 0.5em 1em 1em black; */
+  box-shadow: 1em 2em 1em black;
   border-width: .25em;
 }
 
@@ -151,12 +152,20 @@ h2 {
   background-color: plum;
   padding: 0.5em 1em;
   border-radius: 1em;
+
+  border-style: solid;
+  box-shadow: 0.5em .5em 1em black;
+  border-width: .25em;
 }
 
 .received {
   padding: 0.5em 1em;
   background-color: lightgray;
   border-radius: 1em;
+
+  border-style: solid;
+  box-shadow: 0.5em .5em 1em black;
+  border-width: .25em;
 }
 
 .messagesSection {

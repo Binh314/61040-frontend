@@ -50,7 +50,7 @@ class Routes {
   async deleteUser(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
     Profile.delete(new ObjectId(user.toString()));
-    Location.delete(user);
+    // Location.delete(user);
     WebSession.end(session);
     return await User.delete(user);
   }
